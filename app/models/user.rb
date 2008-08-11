@@ -1,8 +1,9 @@
 class User < ActiveRecord::Base
 	attr_accessor :password
 
-	#:name, :user_name, :password, :email, :year_of_birth, :time_zone, :gender
-	validates_presence_of :name, :email, :password, :message => 'is required'
-	validates_uniqueness_of :user_name, :email
+	validates_presence_of :name, :email, :password, :user_name, :year_of_birth, :time_zone, :gender, :message => 'is required'
+	validates_uniqueness_of :user_name, :email, :message => "is already used by another user"
 	validates_length_of :password, :in => 6..12, :allow_nil => :true
+	validates_length_of :user_name, :in => 2..30, :allow_nil => :true
+	validates_format_of :year_of_birth, :with => /^\d+$/, :allow_nil => :true, :message => "is not a whole number"
 end
