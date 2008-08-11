@@ -2,7 +2,7 @@ class UsersController < ApplicationController
 	# GET /users
 	# GET /users.xml
 	def index
-		# FIXME: Remove this
+		# FIXME: Have this require the user to be admin
 		@users = User.find(:all)
 
 		respond_to do |format|
@@ -42,6 +42,7 @@ class UsersController < ApplicationController
 	# POST /users.xml
 	def create
 		@user = User.new(params[:user])
+		@user.user_type = UserType::NAMES_ABBREVIATIONS.select { |k, v| v == 'U' }.first.last
 
 		respond_to do |format|
 			if @user.save
@@ -61,7 +62,7 @@ class UsersController < ApplicationController
 		@user = User.find(params[:id])
 
 		respond_to do |format|
-			if @user.update_attributes(params[:User])
+			if @user.update_attributes(params[:user])
 				flash[:notice] = 'User was successfully updated.'
 				format.html { redirect_to(@user) }
 				format.xml	{ head :ok }

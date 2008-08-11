@@ -2,16 +2,7 @@
 
 <%= error_messages_for :user %>
 
-<% form_for(@user) do |f| %>
-  <p>
-    <b>Name</b><br />
-    <%= f.text_field :name %>
-  </p>
-
-  <p>
-    <%= f.submit "Update" %>
-  </p>
-<% end %>
+<%= render :partial => 'user', :object => @user, :locals => { :button_name => 'Update'} %>
 
 <%= link_to 'Show', @user %> |
 <%= link_to 'Back', users_path %>

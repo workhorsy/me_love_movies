@@ -2,39 +2,7 @@
 
 <%= error_messages_for :user %>
 
-<% form_for(@user) do |f| %>
-	<p>
-		<b>Name</b><br />
-		<%= f.text_field :name %>
-	</p>
-	<p>
-		<b>User Name</b><br />
-		<%= f.text_field :user_name %>
-	</p>
-	<p>
-		<b>Password</b><br />
-		<%= f.password_field :password %>
-	</p>
-	<p>
-		<b>Email</b><br />
-		<%= f.text_field :email %>
-	</p>
-	<p>
-		<b>Year of Birth</b><br />
-		<%= f.date_select(:year_of_birth, :order => [:year], :start_year => Time.now.year, :end_year => (Time.now.year - 140), :include_blank => true) %>
-	</p>
-	<p>
-		<b>Time Zone</b><br />
-		<%= f.time_zone_select :time_zone, TimeZone.all %>
-	</p>
-	<p>
-		<b>Gender</b><br />
-		<%= f.select :gender, Sex::NAMES_ABBREVIATIONS, {:selected => 'U'} %>
-	</p>
-	<p>
-		<%= f.submit "Create" %>
-	</p>
-<% end %>
+<%= render :partial => 'user', :object => @user, :locals => { :button_name => 'Create'} %>
 
 <%= link_to 'Back', users_path %>
 

@@ -2,7 +2,30 @@
 	<b>Name:</b>
 	<%=h @user.name %>
 </p>
-
+<p>
+	<b>User Name:</b>
+	<%=h @user.user_name %>
+</p>
+<p>
+	<b>Email:</b>
+	<%=h @user.email %>
+</p>
+<p>
+	<b>Year of birth:</b>
+	<%=h @user.year_of_birth %>
+</p>
+<p>
+	<b>Time Zone:</b>
+	<%=h @user.time_zone %>
+</p>
+<p>
+	<b>Gender:</b>
+	<%=h Sex::NAMES_ABBREVIATIONS.select { |k, v| v == @user.gender }.first.first %>
+</p>
+<p>
+	<b>User Type:</b>
+	<%=h UserType::NAMES_ABBREVIATIONS.select { |k, v| v == @user.user_type }.first.first %>
+</p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
