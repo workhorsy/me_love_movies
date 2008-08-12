@@ -109,4 +109,12 @@ class UsersController < ApplicationController
 			format.xml	{ render :xml => @users }
 		end
 	end
+
+	private
+
+	def authorize_originating_user_only
+		if params[:id].to_i != session[:user_id]
+			render :layout => 'default', :text => "<p id=\"flash_notice\">You don't have permission to access this page.</p>"
+		end
+	end
 end
