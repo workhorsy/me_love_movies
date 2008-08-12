@@ -98,18 +98,6 @@ class UsersController < ApplicationController
 		end
 	end
 
-	# GET /users/list
-	# GET /users/list.xml
-	def list
-		# FIXME: Have this require the user to be admin
-		@users = User.find(:all)
-
-		respond_to do |format|
-			format.html # index.html.erb
-			format.xml	{ render :xml => @users }
-		end
-	end
-
 	private
 
 	def authorize_originating_user_only

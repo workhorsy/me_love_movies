@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :home
   map.resources :search
   map.resources :titles
+  map.resources :admin, :collection => { :list_users => :get }
 
   # The priority is based upon order of creation: first created -> highest priority.
 
