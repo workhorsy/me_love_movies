@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
 	layout 'default'
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'destroy']
 
 	# GET /users
 	# GET /users.xml
@@ -29,11 +30,6 @@ class UsersController < ApplicationController
 		end
 	end
 
-	# GET /users/1/edit
-	def edit
-		@user = User.find(params[:id])
-	end
-
 	# POST /users
 	# POST /users.xml
 	def create
@@ -50,6 +46,11 @@ class UsersController < ApplicationController
 				format.xml	{ render :xml => @user.errors, :status => :unprocessable_entity }
 			end
 		end
+	end
+
+	# GET /users/1/edit
+	def edit
+		@user = User.find(params[:id])
 	end
 
 	# PUT /users/1
