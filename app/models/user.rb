@@ -4,7 +4,6 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
 	validates_presence_of :name, :email, :user_name, :year_of_birth, :time_zone, :gender, :message => 'is required'
 	validates_uniqueness_of :user_name, :email, :message => "is already used by another user"
-	validates_length_of :password, :in => 6..12, :allow_nil => :true
 	validates_length_of :user_name, :in => 2..30, :allow_nil => :true
 	validates_format_of :year_of_birth, :with => /^\d+$/, :allow_nil => :true, :message => "is not a whole number"
 
@@ -38,10 +37,17 @@ class User < ActiveRecord::Base
 	private
 
 	def password_is_valid
+		# Just return if there was previous error
 		return if errors['password'] != nil && errors['password'].length > 0
 
+		# Skip validation if there are no changes
+		return if self.id != nil && password.blank? && password_confirmation.blank?
+
+		# Do password validation
 		if password_confirmation != password
 			errors.add('password', "does not match")
+		elsif password.length < 6 || password.length > 12
+			errors.add('password', "must be between 6 and 12 characters long")
 		elsif hashed_password.blank?
 			errors.add('password', "is required")
 		end

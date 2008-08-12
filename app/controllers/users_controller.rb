@@ -1,6 +1,12 @@
 class UsersController < ApplicationController
 	layout 'default'
 
+	# GET /users
+	# GET /users.xml
+	def index
+		redirect_to :controller => 'home', :action => 'index'
+	end
+
 	# GET /users/1
 	# GET /users/1.xml
 	def show
