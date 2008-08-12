@@ -9,13 +9,23 @@
 </head>
 <body>
 
-<h1>Me Love Movies</h1>
+<h1>Me Love Movies</h1> <%= "Howdy " + User.find(session[:user_id]).name if session[:user_id] %>
 
 <div>
 	<ul>
 		<li><%= link_to 'Home', :controller => 'home', :action => 'index' %></li>
 		<li><%= link_to 'Search', :controller => 'search', :action => 'index' %></li>
-		<li><%= link_to 'My Account/Login', :controller => 'users', :action => 'index' %></li>
+		<% if session[:user_id] %>
+		<li>
+			<%= link_to 'My Account', :controller => 'users', :action => 'show', :id => session[:user_id] %>
+			\ <%= link_to 'Logout', :controller => 'users', :action => 'login' %>
+		</li>
+		<% else %>
+		<li>
+			<%= link_to 'Login', :controller => 'users', :action => 'login' %>
+			\ <%= link_to 'Signup', :controller => 'users', :action => 'new' %>
+		</li>
+		<% end %>
 	</ul>
 </div>
 

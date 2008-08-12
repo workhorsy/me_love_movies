@@ -41,9 +41,9 @@ class User < ActiveRecord::Base
 		return if errors['password'] != nil && errors['password'].length > 0
 
 		if password_confirmation != password
-			errors.add_to_base("Passwords do not match")
+			errors.add('password', "does not match")
 		elsif hashed_password.blank?
-			errors.add_to_base("Missing password")
+			errors.add('password', "is required")
 		end
 	end
 

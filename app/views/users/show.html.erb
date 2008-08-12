@@ -27,5 +27,3 @@
 	<%=h UserType::NAMES_ABBREVIATIONS.select { |k, v| v == @user.user_type }.first.first %>
 </p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>

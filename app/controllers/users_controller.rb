@@ -1,18 +1,6 @@
 class UsersController < ApplicationController
 	layout 'default'
 
-	# GET /users
-	# GET /users.xml
-	def index
-		# FIXME: Have this require the user to be admin
-		@users = User.find(:all)
-
-		respond_to do |format|
-			format.html # index.html.erb
-			format.xml	{ render :xml => @users }
-		end
-	end
-
 	# GET /users/1
 	# GET /users/1.xml
 	def show
@@ -96,7 +84,8 @@ class UsersController < ApplicationController
 		user = User.authenticate(params[:user_name], params[:password])
 		if user
 			session[:user_id] = user.id
-			redirect_to(:action => :index)
+			flash[:notice] = "Successfully loged in."
+			redirect_to(:controller => 'home', :action => :index)
 		else
 			flash[:notice] = "Login failed. Try again."
 		end
