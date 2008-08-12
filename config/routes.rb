@@ -1,5 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :users
+  map.resources :users, :collection => { :login => :get, :list => :get }
+  map.resources :home
+  map.resources :search
+  map.resources :titles
 
   # The priority is based upon order of creation: first created -> highest priority.
 

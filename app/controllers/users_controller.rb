@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+	layout 'default'
+
 	# GET /users
 	# GET /users.xml
 	def index
@@ -82,6 +84,33 @@ class UsersController < ApplicationController
 		respond_to do |format|
 			format.html { redirect_to(users_url) }
 			format.xml	{ head :ok }
+		end
+	end
+
+	# GET /users/login
+	# GET /users/login.xml
+	def login
+		session[:user_id] = nil
+		return unless request.post?
+
+		user = User.authenticate(params[:user_name], params[:password])
+		if user
+			session[:user_id] = user.id
+			redirect_to(:action => :index)
+		else
+			flash[:notice] = "Login failed. Try again."
+		end
+	end
+
+	# GET /users/list
+	# GET /users/list.xml
+	def list
+		# FIXME: Have this require the user to be admin
+		@users = User.find(:all)
+
+		respond_to do |format|
+			format.html # index.html.erb
+			format.xml	{ render :xml => @users }
 		end
 	end
 end

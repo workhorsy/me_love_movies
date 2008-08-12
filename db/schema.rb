@@ -24,7 +24,8 @@ ActiveRecord::Schema.define(:version => 3) do
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "user_name"
-    t.string   "password"
+    t.string   "hashed_password"
+    t.string   "salt"
     t.string   "time_zone"
     t.integer  "year_of_birth"
     t.string   "gender"

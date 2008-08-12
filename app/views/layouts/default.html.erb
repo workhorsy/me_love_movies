@@ -13,9 +13,9 @@
 
 <div>
 	<ul>
-		<li>Home</li>
-		<li>Search</li>
-		<li>My Account/Login</li>
+		<li><%= link_to 'Home', :controller => 'home', :action => 'index' %></li>
+		<li><%= link_to 'Search', :controller => 'search', :action => 'index' %></li>
+		<li><%= link_to 'My Account/Login', :controller => 'users', :action => 'index' %></li>
 	</ul>
 </div>
 
