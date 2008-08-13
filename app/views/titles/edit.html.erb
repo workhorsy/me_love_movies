@@ -1,0 +1,7 @@
+<h1>Editing title</h1>
+
+<%= error_messages_for :title %>
+
+<%= render :partial => 'title', :object => @title, :locals => { :button_name => 'Update'} %>
+
+<%= link_to 'Back to title', @title %>

@@ -1,0 +1,38 @@
+
+<% form_for(title) do |f| %>
+	<p>
+		<b>Name</b><br />
+		<%= f.text_field :name %>
+	</p>
+	<p>
+		<b>Release Date</b><br />
+		<%= f.text_field :release_date %>
+	</p>
+	<p>
+		<b>Source</b><br />
+		<%= f.text_field :source %>
+	</p>
+	<p>
+		<b>Director</b><br />
+		<%= f.text_field :director %>
+	</p>
+	<p>
+		<b>Cast</b><br />
+		<%= f.text_field :director, :rows => 5, :cols => 10 %>
+	</p>
+	<p>
+		<b>Runtime</b><br />
+		<%= f.select_time :run_time %>
+	</p>
+	<p>
+		<b>Rating</b><br />
+		<%= f.select :gender, Rating::NAMES_ABBREVIATIONS, {:selected => title.rating || 'U'} %>
+	</p>
+	<p>
+		<b>Premise</b><br />
+		<%= f.text_field :premise %>
+	</p>
+	<p>
+		<%= f.submit button_name %>
+	</p>
+<% end %>

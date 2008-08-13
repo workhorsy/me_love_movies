@@ -9,11 +9,29 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 3) do
+ActiveRecord::Schema.define(:version => 5) do
+
+  create_table "ratings", :force => true do |t|
+    t.string "name"
+    t.string "abbreviation"
+  end
 
   create_table "sexes", :force => true do |t|
     t.string "name"
     t.string "abbreviation"
+  end
+
+  create_table "titles", :force => true do |t|
+    t.string   "name"
+    t.date     "release_date"
+    t.string   "source"
+    t.string   "director"
+    t.text     "cast"
+    t.time     "run_time"
+    t.string   "rating"
+    t.text     "premise"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "user_types", :force => true do |t|

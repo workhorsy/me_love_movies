@@ -1,0 +1,34 @@
+<p>
+	<b>Name:</b>
+	<%=h @title.name %>
+</p>
+<p>
+	<b>Release Date:</b>
+	<%=h @title.release_date %>
+</p>
+<p>
+	<b>Source:</b>
+	<%=h @title.source %>
+</p>
+<p>
+	<b>Director:</b>
+	<%=h @title.director %>
+</p>
+<p>
+	<b>Cast:</b>
+	<%=h @title.cast %>
+</p>
+<p>
+	<b>Runtime:</b>
+	<%=h @title.run_time %>
+</p>
+<p>
+	<b>Rating:</b>
+	<%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %>
+</p>
+<p>
+	<b>Premise:</b>
+	<%=h @title.premise %>
+</p>
+
+<%= link_to 'Edit title information', edit_title_path(@title) %>

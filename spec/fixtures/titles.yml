@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  release_date: 2008-08-12
+  source: MyString
+  director: MyString
+  cast: MyText
+  run_time: 2008-08-12 17:13:45
+  rating: MyString
+  premise: MyText
+
+two:
+  name: MyString
+  release_date: 2008-08-12
+  source: MyString
+  director: MyString
+  cast: MyText
+  run_time: 2008-08-12 17:13:45
+  rating: MyString
+  premise: MyText
