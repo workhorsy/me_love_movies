@@ -28,6 +28,10 @@ class TitleRatingsController < ApplicationController
 	def new
 		@title_rating = TitleRating.new
 
+		# Make sure there is a title id
+		#@title_rating.title_id = params[:title_id]
+		# FIXME: Add the hash_many and belongs_to
+
 		respond_to do |format|
 			format.html # new.html.erb
 			format.xml	{ render :xml => @title_rating }

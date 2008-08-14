@@ -31,4 +31,8 @@
 	<%=h @title.premise %>
 </p>
 
+
+<%= link_to 'Rate this film', :controller => 'title_ratings', :action => 'new', :title_id => @title.id %> <br /> 
+<%= link_to 'Review this film', :controller => 'title_reviews', :action => 'new', :title_id => @title.id %> <br />
 <%= link_to 'Edit title information', edit_title_path(@title) %>
+
