@@ -54,6 +54,10 @@ class TitlesController < ApplicationController
 	# GET /titles/1/edit
 	def edit
 		@title = Title.find(params[:id])
+		return unless @title.release_date
+		@title.release_date_year = @title.release_date.year
+		@title.release_date_month = @title.release_date.month
+		@title.release_date_day = @title.release_date.day
 	end
 
 	# PUT /titles/1

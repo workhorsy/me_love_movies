@@ -7,4 +7,12 @@ module ApplicationHelper
 		session[:user_id] = nil unless user
 		return user
 	end
+
+	def get_months_hash
+		i = 1
+		%w{January February March April May June July August September October November December}.collect do |m|
+			i += 1
+			[m, i]
+		end
+	end
 end

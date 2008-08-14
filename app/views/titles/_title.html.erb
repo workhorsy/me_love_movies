@@ -5,10 +5,6 @@
 		<%= f.text_field :name %>
 	</p>
 	<p>
-		<b>Release Date</b><br />
-		<%= f.text_field :release_date %>
-	</p>
-	<p>
 		<b>Source</b><br />
 		<%= f.text_field :source %>
 	</p>
@@ -17,20 +13,27 @@
 		<%= f.text_field :director %>
 	</p>
 	<p>
-		<b>Cast</b><br />
-		<%= f.text_field :director, :rows => 5, :cols => 10 %>
+		<b>Release Date</b><br />
+		<%= f.select :release_date_year, (1800..Time.now.year).to_a.reverse, :selected => title.release_date_year, :include_blank => true %> year
+		<%= f.select :release_date_month, get_months_hash, :include_blank => true %> month
+		<%= f.select :release_date_day , (1..31).to_a, :include_blank => true %> day
 	</p>
 	<p>
 		<b>Runtime</b><br />
-		<%= f.select_time :run_time %>
+		<%= f.select :runtime_hours, (0..99), :include_blank => true %> hours
+		<%= f.select :runtime_minutes, (0..59), :include_blank => true %> minutes
 	</p>
 	<p>
 		<b>Rating</b><br />
-		<%= f.select :gender, Rating::NAMES_ABBREVIATIONS, {:selected => title.rating || 'U'} %>
+		<%= f.select :rating, Rating::NAMES_ABBREVIATIONS, {:selected => title.rating || 'U'} %>
+	</p>
+	<p>
+		<b>Cast</b><br />
+		<%= f.text_area :director, :rows => 5 %>
 	</p>
 	<p>
 		<b>Premise</b><br />
-		<%= f.text_field :premise %>
+		<%= f.text_area :premise, :rows => 5 %>
 	</p>
 	<p>
 		<%= f.submit button_name %>

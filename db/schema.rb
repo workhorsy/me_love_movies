@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 5) do
     t.string   "source"
     t.string   "director"
     t.text     "cast"
-    t.time     "run_time"
+    t.integer  "runtime"
     t.string   "rating"
     t.text     "premise"
     t.datetime "created_at"

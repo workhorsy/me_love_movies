@@ -6,7 +6,7 @@ class CreateTitles < ActiveRecord::Migration
       t.string :source
       t.string :director
       t.text :cast
-      t.time :run_time
+      t.integer :runtime
       t.string :rating
       t.text :premise
 

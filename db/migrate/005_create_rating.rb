@@ -5,7 +5,7 @@ class CreateRating < ActiveRecord::Migration
 			t.string :abbreviation
 		end
 
-		Sex.create([
+		Rating.create([
 			{:name => 'Unspecified', :abbreviation => 'U'},
 			{:name => 'G', :abbreviation => 'G'},
 			{:name => 'PG', :abbreviation => 'PG'},
