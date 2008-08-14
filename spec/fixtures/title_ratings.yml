@@ -1,0 +1,53 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  action: 1
+  comedy: 1
+  drama: 1
+  scifi: 1
+  romance: 1
+  musical: 1
+  kids: 1
+  adventure: 1
+  mystery: 1
+  suspense: 1
+  horror: 1
+  fantasy: 1
+  tv: 1
+  war: 1
+  western: 1
+  sports: 1
+  premise: 1
+  plot: 1
+  score: 1
+  acting: 1
+  special_effects: 1
+  pace: 1
+  character_development: 1
+  cinematography: 1
+
+two:
+  action: 1
+  comedy: 1
+  drama: 1
+  scifi: 1
+  romance: 1
+  musical: 1
+  kids: 1
+  adventure: 1
+  mystery: 1
+  suspense: 1
+  horror: 1
+  fantasy: 1
+  tv: 1
+  war: 1
+  western: 1
+  sports: 1
+  premise: 1
+  plot: 1
+  score: 1
+  acting: 1
+  special_effects: 1
+  pace: 1
+  character_development: 1
+  cinematography: 1

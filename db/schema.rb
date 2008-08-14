@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 5) do
+ActiveRecord::Schema.define(:version => 6) do
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -19,6 +19,35 @@ ActiveRecord::Schema.define(:version => 5) do
   create_table "sexes", :force => true do |t|
     t.string "name"
     t.string "abbreviation"
+  end
+
+  create_table "title_ratings", :force => true do |t|
+    t.integer  "action"
+    t.integer  "comedy"
+    t.integer  "drama"
+    t.integer  "scifi"
+    t.integer  "romance"
+    t.integer  "musical"
+    t.integer  "kids"
+    t.integer  "adventure"
+    t.integer  "mystery"
+    t.integer  "suspense"
+    t.integer  "horror"
+    t.integer  "fantasy"
+    t.integer  "tv"
+    t.integer  "war"
+    t.integer  "western"
+    t.integer  "sports"
+    t.integer  "premise"
+    t.integer  "plot"
+    t.integer  "music"
+    t.integer  "acting"
+    t.integer  "special_effects"
+    t.integer  "pace"
+    t.integer  "character_development"
+    t.integer  "cinematography"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "titles", :force => true do |t|

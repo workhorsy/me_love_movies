@@ -3,3 +3,9 @@
 #flash_notice {
 	color: green;
 }
+
+.title_rating_attribute {
+	width: 260px;
+	float: left;
+	padding: 5px;
+}
