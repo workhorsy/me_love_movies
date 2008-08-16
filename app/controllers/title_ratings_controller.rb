@@ -29,8 +29,8 @@ class TitleRatingsController < ApplicationController
 		@title_rating = TitleRating.new
 
 		# Make sure there is a title id
-		#@title_rating.title_id = params[:title_id]
-		# FIXME: Add the hash_many and belongs_to
+		@title_name = Title.find(params[:title_id]).name
+		@title_rating.title_id = params[:title_id]
 
 		respond_to do |format|
 			format.html # new.html.erb
@@ -41,15 +41,36 @@ class TitleRatingsController < ApplicationController
 	# GET /title_ratings/1/edit
 	def edit
 		@title_rating = TitleRating.find(params[:id])
+
+		# Make sure there is a title id
+		@title_name = Title.find(@title_rating.title_id).name
 	end
 
 	# POST /title_ratings
 	# POST /title_ratings.xml
 	def create
 		@title_rating = TitleRating.new(params[:title_rating])
+		@title_rating.user_id = session[:user_id]
 
 		respond_to do |format|
-			if @title_rating.save
+			# Save the title_rating, then if there is another by the same user, undo the save and print a warning
+			was_saved = false
+			begin
+				TitleRating.transaction do
+					was_saved = @title_rating.save
+					if TitleRating.count(:conditions => ["title_id=? and user_id=?", @title_rating.title_id, @title_rating.user_id]) > 1
+						was_saved = false
+						raise ""
+					end
+				end
+			rescue Exception => err
+				if err.message == ""
+					@title_rating.errors.add_to_base("The user already has a rating for this title.")
+				else
+					raise
+				end
+			end
+			if was_saved
 				flash[:notice] = 'TitleRating was successfully created.'
 				format.html { redirect_to(@title_rating) }
 				format.xml	{ render :xml => @title_rating, :status => :created, :location => @title_rating }

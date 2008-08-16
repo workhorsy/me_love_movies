@@ -1,6 +1,7 @@
 class CreateTitleRatings < ActiveRecord::Migration
   def self.up
     create_table :title_ratings do |t|
+      t.integer :title_id
       t.integer :action
       t.integer :comedy
       t.integer :drama

@@ -2,6 +2,8 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
+	has_many :title_ratings
+
 	validates_presence_of :name, :email, :user_name, :year_of_birth, :time_zone, :gender, :message => 'is required'
 	validates_uniqueness_of :user_name, :email, :message => "is already used by another user"
 	validates_length_of :user_name, :in => 2..30, :allow_blank => :true

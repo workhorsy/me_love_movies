@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 6) do
+ActiveRecord::Schema.define(:version => 8) do
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -48,6 +48,8 @@ ActiveRecord::Schema.define(:version => 6) do
     t.integer  "cinematography"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "title_id"
+    t.integer  "user_id"
   end
 
   create_table "titles", :force => true do |t|
