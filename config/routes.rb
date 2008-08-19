@@ -1,12 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :title_ratings
-
-  map.resources :title_ratings
-
   map.resources :users, :collection => { :login => :get, :list => :get }
   map.resources :home
-  map.resources :search
   map.resources :titles
+  map.resources :title_ratings
+  map.resources :title_rankings
   map.resources :admin, :collection => { :list_users => :get }
 
   # The priority is based upon order of creation: first created -> highest priority.
