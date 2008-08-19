@@ -3,7 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :home
   map.resources :titles
   map.resources :title_ratings
-  map.resources :title_rankings
+  map.resources :title_reviews
   map.resources :admin, :collection => { :list_users => :get }
 
   # The priority is based upon order of creation: first created -> highest priority.

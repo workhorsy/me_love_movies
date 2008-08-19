@@ -1,0 +1,7 @@
+<h1>Reviewing '<%= @title_name %>'</h1>
+
+<%= error_messages_for :title_review %>
+
+<%= render :partial => 'title_review', :object => @title_review, :locals => { :button_name => 'Create'} %>
+
+<%= link_to 'Back', title_reviews_path %>

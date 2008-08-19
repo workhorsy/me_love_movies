@@ -1,0 +1,24 @@
+<h1>Listing title_reviews</h1>
+
+<table>
+	<tr>
+		<th>User</th>
+		<th>Title</th>
+		<th>Body</th>
+	</tr>
+
+<% for title_review in @title_reviews %>
+	<tr>
+		<td><%=h title_review.user_id %></td>
+		<td><%=h title_review.title_id %></td>
+		<td><%=h title_review.body %></td>
+		<td><%= link_to 'Show', title_review %></td>
+		<td><%= link_to 'Edit', edit_title_review_path(title_review) %></td>
+		<td><%= link_to 'Destroy', title_review, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New title_review', new_title_review_path %>
