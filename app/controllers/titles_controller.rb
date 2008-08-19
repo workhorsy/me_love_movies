@@ -17,6 +17,7 @@ class TitlesController < ApplicationController
 	def show
 		@title = Title.find(params[:id])
 		@users = User.find(:all)
+		@title_reviews = TitleReview.find(:all, :conditions => ["title_id=?", @title.id])
 
 		respond_to do |format|
 			format.html # show.html.erb

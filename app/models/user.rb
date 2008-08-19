@@ -36,6 +36,10 @@ class User < ActiveRecord::Base
 		self.hashed_password = User.encrypted_password(self.password, self.salt)
 	end
 
+	def avatar_file_or_default
+		self.avatar_file || "/images/default_avatar.png"
+	end
+
 	private
 
 	def password_is_valid

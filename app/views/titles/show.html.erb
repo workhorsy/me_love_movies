@@ -1,5 +1,5 @@
 
-<div>
+<div style="border: 3px solid red; padding: 7px;">
 	<h2>Information</h2>
 	<b>Name:</b>
 	<%=h @title.name %><br />
@@ -23,10 +23,12 @@
 	<%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %><br />
 
 	<b>Premise:</b>
-	<%=h @title.premise %>
+	<%=h @title.premise %><br />
+
+	<%= link_to 'Edit title information', edit_title_path(@title) %>
 </div>
 
-<div style="float: left;">
+<div style="float: left; border: 3px solid green; padding: 7px;">
 	<h2>Ratings</h2>
 	<div style="float: left;">
 		<h3>Genre:</h3>
@@ -39,7 +41,7 @@
 	</div>
 
 	<h3>Attributes:</h3>
-	<div>
+	<div style="float: left;">
 		<% for attribute in Title::attributes %>
 		<div class="small_left_item">
 			<b><%=h attribute.gsub('_', ' ').capitalize %>:</b>
@@ -47,19 +49,18 @@
 		</div>
 		<% end %>
 	</div>
+	<%= link_to 'Rate this film', :controller => 'title_ratings', :action => 'new', :title_id => @title.id %>
 </div>
 
-<div style="float: left;">
+<div style="border: 3px solid blue; padding: 7px;">
 	<h2>Reviews</h2>
-	<div class="small_left_item">
-		<% for user in @users %>
-		<%=h user.user_name %>
-		<% end %>
+	<%= link_to 'Review this film', :controller => 'title_reviews', :action => 'new', :title_id => @title.id %>
+	<% for review in @title_reviews %>
+	<div style="border: 3px solid black; margin: 10px;">
+		<%= image_tag review.user.avatar_file_or_default, :size => "100x100" %><br />
+		<b><%=h review.user.name %></b><br />
+		<%=h review.body %>
 	</div>
+	<% end %>
 </div>
-
-
-<%= link_to 'Rate this film', :controller => 'title_ratings', :action => 'new', :title_id => @title.id %> <br /> 
-<%= link_to 'Review this film', :controller => 'title_reviews', :action => 'new', :title_id => @title.id %> <br />
-<%= link_to 'Edit title information', edit_title_path(@title) %>
 
