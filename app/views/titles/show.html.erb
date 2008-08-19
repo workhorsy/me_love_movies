@@ -1,35 +1,62 @@
-<p>
+
+<div>
+	<h2>Information</h2>
 	<b>Name:</b>
-	<%=h @title.name %>
-</p>
-<p>
+	<%=h @title.name %><br />
+
 	<b>Release Date:</b>
-	<%=h @title.release_date %>
-</p>
-<p>
+	<%=h @title.release_date %><br />
+
 	<b>Source:</b>
-	<%=h @title.source %>
-</p>
-<p>
+	<%=h @title.source %><br />
+
 	<b>Director:</b>
-	<%=h @title.director %>
-</p>
-<p>
+	<%=h @title.director %><br />
+
 	<b>Cast:</b>
-	<%=h @title.cast %>
-</p>
-<p>
+	<%=h @title.cast %><br />
+
 	<b>Runtime:</b>
-	<%=h @title.runtime %>
-</p>
-<p>
+	<%=h @title.runtime %><br />
+
 	<b>Rating:</b>
-	<%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %>
-</p>
-<p>
+	<%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %><br />
+
 	<b>Premise:</b>
 	<%=h @title.premise %>
-</p>
+</div>
+
+<div style="float: left;">
+	<h2>Ratings</h2>
+	<div style="float: left;">
+		<h3>Genre:</h3>
+		<% for genre in Title::genres %>
+		<div class="small_left_item">
+			<b><%= genre.gsub('_', ' ').capitalize %>:</b>
+			<%=h @title.average_rating(genre) || 'none' %>
+		</div>
+		<% end %>
+	</div>
+
+	<h3>Attributes:</h3>
+	<div>
+		<% for attribute in Title::attributes %>
+		<div class="small_left_item">
+			<b><%=h attribute.gsub('_', ' ').capitalize %>:</b>
+			<%=h @title.average_rating(attribute) || 'none' %>
+		</div>
+		<% end %>
+	</div>
+</div>
+
+<div style="float: left;">
+	<h2>Reviews</h2>
+	<div class="small_left_item">
+		<% for user in @users %>
+		<%=h user.user_name %>
+		<% end %>
+	</div>
+</div>
 
 
 <%= link_to 'Rate this film', :controller => 'title_ratings', :action => 'new', :title_id => @title.id %> <br /> 

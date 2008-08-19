@@ -11,6 +11,25 @@ class Title < ActiveRecord::Base
 	validates_uniqueness_of :name
 	validates_length_of :name, :in => 2..255, :allow_blank => :true
 
+	def self.genres
+		%w{action comedy drama scifi romance musical kids adventure 
+				mystery suspense horror fantasy tv war western sports}
+	end
+
+	def self.attributes
+		%w{premise plot music acting special_effects pace 
+				character_development cinematography}
+	end
+
+	def average_rating(name)
+		fields = Title::genres + Title::attributes
+
+		# Make sure the field exists
+		raise "There is no field named #{name} to rate." unless fields.include? name
+
+		TitleRating::average(name)
+	end
+
 	def runtime_minutes
 		@runtime_minutes
 	end

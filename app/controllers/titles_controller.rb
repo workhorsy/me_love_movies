@@ -16,6 +16,7 @@ class TitlesController < ApplicationController
 	# GET /titles/1.xml
 	def show
 		@title = Title.find(params[:id])
+		@users = User.find(:all)
 
 		respond_to do |format|
 			format.html # show.html.erb
