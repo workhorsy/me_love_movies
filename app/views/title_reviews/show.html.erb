@@ -1,11 +1,12 @@
-<p>
-  <b>User:</b>
-  <%=h @title_review.user_id %>
-</p>
 
 <p>
   <b>Title:</b>
-  <%=h @title_review.title_id %>
+  <%=h @title_review.title.name %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%=h @title_review.user.name %>
 </p>
 
 <p>

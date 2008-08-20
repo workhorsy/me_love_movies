@@ -12,6 +12,8 @@ class UsersController < ApplicationController
 	# GET /users/1.xml
 	def show
 		@user = User.find(params[:id])
+		@title_reviews = TitleReview.find(:all, :conditions => ["user_id=?", @user.id])
+		@title_reviews = @title_reviews.sort {|x,y| Title.find_by_id(y.title_id).name <=> Title.find_by_id(x.title_id).name }.reverse
 
 		respond_to do |format|
 			format.html # show.html.erb

@@ -28,3 +28,10 @@
 </p>
 
 <%= link_to 'Edit user information', edit_user_path(@user) %>
+
+<h2>Reviews by this user</h2>
+<% for review in @title_reviews %>
+<%= link_to review.title.name, :controller => 'title_reviews', :action => 'show', :id => review.id %><br />
+<% end %>
+
+
