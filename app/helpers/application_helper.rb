@@ -9,7 +9,7 @@ module ApplicationHelper
 	end
 
 	def get_months_hash
-		i = 1
+		i = 0
 		%w{January February March April May June July August September October November December}.collect do |m|
 			i += 1
 			[m, i]
