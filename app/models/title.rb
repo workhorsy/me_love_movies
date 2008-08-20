@@ -27,7 +27,7 @@ class Title < ActiveRecord::Base
 		# Make sure the field exists
 		raise "There is no field named #{name} to rate." unless fields.include? name
 
-		TitleRating::average(name)
+		TitleRating::average(name, :conditions => ["title_id=?", self.id])
 	end
 
 	def runtime_minutes
