@@ -1,11 +1,28 @@
 
 <% form_for(title_review) do |f| %>
 	<b>Body:</b><br />
-	<%= f.text_area :body, :rows => 5 %>
+	<%= f.text_area :body, :rows => 10, :cols => 70, :onMouseUp => "print_body_length();", :onChange => "print_body_length();", :onKeyUp => "print_body_length();"%><br />
+
+	<span id="span_length"></span>
 
 	<%= f.hidden_field :title_id, :value => title_review.title_id %>
 
 	<p>
 		<%= f.submit button_name %>
 	</p>
+
+	<script type="text/javascript" language="JavaScript">
+		function print_body_length() {
+			var max_length = <%=TitleReview::max_body_length %>;
+			var actual_length = $('title_review_body').value.length;
+
+			if(max_length - actual_length >= 0) {
+				var count = max_length - actual_length;
+				$('span_length').innerHTML = "You have " + count + " characters remaining.";
+			} else {
+				var count = actual_length - max_length;
+				$('span_length').innerHTML = "You have " + count + " too many characters!";
+			}
+		}
+	</script>
 <% end %>
