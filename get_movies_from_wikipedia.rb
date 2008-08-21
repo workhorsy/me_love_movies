@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'hpricot'
 require 'open-uri'
+require 'active_record'
 
 
 # Create a user agent to make the sites think this is a browser
@@ -68,7 +69,7 @@ def get_movie_director(doc)
 			next if row.search("th").length == 0
 
 			if row.search("th")[0].innerText.downcase == 'directed by'
-				return row.search("td")[0].innerText.gsub("\n", ', ')
+				return row.search("td")[0].innerText.gsub("\n", ', ').gsub(',,', ',')
 			end
 		end
 	end
@@ -82,7 +83,7 @@ def get_movie_cast(doc)
 			next if row.search("th").length == 0
 
 			if row.search("th")[0].innerText.downcase == 'starring'
-				return row.search("td")[0].innerText.gsub("\n", ', ')
+				return row.search("td")[0].innerText.gsub("\n", ', ').gsub(',,', ',')
 			end
 		end
 	end
@@ -110,7 +111,7 @@ def get_movie_release_date(doc)
 			next if row.search("th").length == 0
 
 			if row.search("th")[0].innerText.downcase == 'release date(s)'
-				return row.search("td")[0].innerText
+				return row.search("td")[0].innerText.gsub("(United States)", "").strip
 			end
 		end
 	end
@@ -118,12 +119,60 @@ def get_movie_release_date(doc)
 	return nil
 end
 
-def get_movie_title(doc)
+def get_movie_name(doc)
 	doc.search("//table[@class='infobox vevent']").each do |table|
 		return table.search("tr").search("th").first.innerText
 	end
 
 	return nil
+end
+
+def format_date(value)
+	months = %w{january february march april may june july august september october november december}
+	return unless value
+
+	# Try parsing the date
+	begin
+		return Date.parse(value)
+	rescue
+	end
+
+	day, month, year = value.split(' ')
+
+	# raise if the format is unknow
+	raise "Unknow date format '#{value}'" unless day || month || year
+
+	# if it is just a year
+	begin
+		if day.to_i > 0 && month == nil && year == nil
+			year, month, day = day, 1, 1
+			return Date.strptime("#{year}-#{month}-#{day}", '%F')
+		end
+	rescue
+	end
+
+	# If that failed, try parsing it as a long date
+	begin
+		month.downcase!
+		month = months.index(month)+1 if months.include? month
+		return Date.strptime("#{year}-#{month}-#{day}")
+	rescue
+		puts "Failed: Date broke with '#{value}'"
+	end
+end
+
+# Connect to the website database
+connection_format = { :adapter => 'mysql',
+						:encoding => 'utf8',
+						:database => 'me_love_movies_development',
+						:username => 'root',
+						:password => 'letmein',
+						:socket => '/var/run/mysqld/mysqld.sock'}
+ActiveRecord::Base.establish_connection(connection_format)
+
+# Load all the models from the website
+%w{rating sex title title_rating title_review user user_type}.each do |file|
+	require "app/models/#{file}.rb"
 end
 
 # Get all the contents pages
@@ -132,22 +181,34 @@ contents =
 	"/wiki/List_of_films:_#{n}"
 end
 
-# Scrape each film linked from each contents page
-counter = 0
+# Scrape each film and add it to the database
 contents.each do |contents_page_url|
 	urls = get_movies_from_contents(contents_page_url)
 	urls.each do |page_url|
 		doc = get_movie_page_from_url(page_url)
 
-		title = get_movie_title(doc)
+		name = get_movie_name(doc)
 		release_date = get_movie_release_date(doc)
 		director = get_movie_director(doc)
 		cast = get_movie_cast(doc)
 		runtime = get_movie_runtime(doc)
+		#premise = get_movie_story(doc)
 
-		puts [title, release_date, director, cast, runtime].inspect
-		raise "Done" if counter >= 100
-		counter += 1
+		#puts [name, release_date, director, cast, runtime].inspect
+
+		title = Title.new
+		title.name = name
+		title.release_date = format_date(release_date)
+		title.rating = "U"
+		title.director = director
+		title.cast = cast
+		title.runtime = runtime.to_i
+		#title.premise = premise
+		if title.save
+			puts "Saved: '#{title.name}'"
+		else
+			puts "Failed: '#{title.name}' " + title.errors.inspect
+		end
 	end
 end
 
