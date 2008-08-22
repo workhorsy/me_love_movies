@@ -207,16 +207,14 @@ contents.each do |contents_page_url|
 
 		# Determine if we should add the date to the name
 		include_year = false
-		Title.connection.execute("SELECT count(*) FROM `titles` WHERE name like '#{name}(____)' Or name like '#{name}';").each do |n|
-			include_year = true if n.first.to_i > 0
-			break
-		end
+		count = Title.count(:all, :conditions => ["name like ? or name like ?", "#{name}", "#{name}(____)"])
+		include_year = true if count > 0
 
-		# If there is another title with the same name, add its date to the name
+		# If there is another title with the same name, change the older one to include the date
 		other_title = Title.find_by_name(name)
-		if other_title
+		if other_title && other_title.release_date.year != title.release_date.year
 			if other_title.update_attributes(:name => "#{other_title.name}(#{other_title.release_date.year})")
-				puts "Renamed: #{name} to #{other_title.name}"
+				puts "Renamed: '#{name}' to '#{other_title.name}'"
 			end
 		end
 
