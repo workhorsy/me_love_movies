@@ -4,4 +4,4 @@
 
 <%= render :partial => 'title_review', :object => @title_review, :locals => { :button_name => 'Create'} %>
 
-<%= link_to 'Back', title_reviews_path %>
+<%= link_to "Back to '#{@title_name}'", :controller => 'titles', :action => 'show', :id => @title_review.title_id %>

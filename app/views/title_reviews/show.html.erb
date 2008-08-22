@@ -15,5 +15,5 @@
 </p>
 
 
-<%= link_to 'Edit', edit_title_review_path(@title_review) %> |
-<%= link_to 'Back', title_reviews_path %>
+<%= link_to 'Edit this review', edit_title_review_path(@title_review) %> <br />
+<%= link_to "Back to '#{@title_review.title.name}'", :controller => 'titles', :action => 'show', :id => @title_review.title.id %>

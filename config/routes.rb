@@ -4,7 +4,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :titles
   map.resources :title_ratings
   map.resources :title_reviews
-  map.resources :admin, :collection => { :list_users => :get }
+  map.resources :admin, :collection => { :list_users => :get,
+										:list_title_reviews => :get }
 
   map.root :controller => "home"
 

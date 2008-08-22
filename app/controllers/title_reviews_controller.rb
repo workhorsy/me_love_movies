@@ -4,12 +4,7 @@ class TitleReviewsController < ApplicationController
 	# GET /title_reviews
 	# GET /title_reviews.xml
 	def index
-		@title_reviews = TitleReview.find(:all)
-
-		respond_to do |format|
-			format.html # index.html.erb
-			format.xml	{ render :xml => @title_reviews }
-		end
+		redirect_to :controller => 'home', :action => 'index'
 	end
 
 	# GET /title_reviews/1

@@ -1,7 +1,10 @@
 
 <% form_for(title_review) do |f| %>
 	<b>Body:</b><br />
-	<%= f.text_area :body, :rows => 10, :cols => 70, :onMouseUp => "print_body_length();", :onChange => "print_body_length();", :onKeyUp => "print_body_length();"%><br />
+	<%= f.text_area :body, :rows => 10, :cols => 70, :onMouseUp => "print_body_length();",
+													:onChange => "print_body_length();",
+													:onKeyUp => "print_body_length();"%>
+	<br />
 
 	<span id="span_length"></span>
 
@@ -12,10 +15,25 @@
 	</p>
 
 	<script type="text/javascript" language="JavaScript">
+		var prev_length = -1;
+		var max_length = <%=TitleReview::max_body_length %>;
+		var red_value = 255 / max_length;
+
+		// Have the length updated at least every second
+		setInterval(print_body_length, 1000);
+
 		function print_body_length() {
-			var max_length = <%=TitleReview::max_body_length %>;
 			var actual_length = $('title_review_body').value.length;
 
+			// just return if the length is the same
+			if(actual_length == prev_length) {
+				return;
+			}
+
+			// save the length as the previous
+			prev_length = actual_length;
+
+			// update the message if the text changed
 			if(max_length - actual_length >= 0) {
 				var count = max_length - actual_length;
 				$('span_length').innerHTML = "You have " + count + " characters remaining.";
@@ -23,6 +41,30 @@
 				var count = actual_length - max_length;
 				$('span_length').innerHTML = "You have " + count + " too many characters!";
 			}
+			$('span_length').style.color = rgb_to_hexadecimal(red_value * actual_length, 0, 0);
+		}
+
+		function rgb_to_hexadecimal(red, green, blue)
+		{
+			// Don't allow colors to be greater than 255
+			red > 255 ? red = 255 : red = Math.floor(red);
+			green > 255 ? green = 255 : green = Math.floor(green);
+			blue > 255 ? blue = 255 : blue = Math.floor(blue);
+
+			// Convert the color to a hexedecimal string
+			var color = (red * 65536) + (green * 256) + blue;
+			color = color.toString(16);
+
+			// Pad the string with extra zeros
+			length = color.length;
+			if(length < 6) {
+				for(i=0; i<6-length; i++) {
+					color = '0' + color;
+				}
+			}
+
+			return '#' + color;
 		}
 	</script>
 <% end %>
+
