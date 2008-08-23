@@ -32,5 +32,7 @@
 	</div>
 </div>
 
-<%= link_to 'Edit', edit_title_rating_path(@title_rating) %> |
-<%= link_to 'Back', title_ratings_path %>
+<%= link_to 'Edit this rating', edit_title_rating_path(@title_rating) %> <br />
+<%= link_to "Back to '#{@title_rating.title.name}'", :controller => 'titles', :action => 'show', :id => @title_rating.title.id %>
+
+

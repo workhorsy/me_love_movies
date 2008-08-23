@@ -33,5 +33,17 @@ class AdminController < ApplicationController
 			format.xml	{ render :xml => @title_reviews }
 		end
 	end
+
+	# GET /admin/list_title_ratings
+	# GET /admin/list_title_ratings.xml
+	def list_title_ratings
+		# FIXME: Have this require the user to be admin
+		@title_ratings = TitleRating.find(:all)
+
+		respond_to do |format|
+			format.html
+			format.xml	{ render :xml => @title_ratings }
+		end
+	end
 end
 

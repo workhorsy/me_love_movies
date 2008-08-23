@@ -1,8 +1,7 @@
-<h1>Rating '<%= @title_name %>'</h1>
+<h1>Editing Rating For '<%= @title_rating.title.name %>'</h1>
 
 <%= error_messages_for :title_rating %>
 
 <%= render :partial => 'title_rating', :object => @title_rating, :locals => { :button_name => 'Update'} %>
 
-<%= link_to 'Show', @title_rating %> |
-<%= link_to 'Back', title_ratings_path %>
+<%= link_to "Don't edit", @title_rating %>

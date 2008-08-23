@@ -4,13 +4,9 @@ class TitleRatingsController < ApplicationController
 	# GET /title_ratings
 	# GET /title_ratings.xml
 	def index
-		@title_ratings = TitleRating.find(:all)
-
-		respond_to do |format|
-			format.html # index.html.erb
-			format.xml	{ render :xml => @title_ratings }
-		end
+		redirect_to :controller => 'home', :action => 'index'
 	end
+
 
 	# GET /title_ratings/1
 	# GET /title_ratings/1.xml
@@ -51,6 +47,7 @@ class TitleRatingsController < ApplicationController
 	def create
 		@title_rating = TitleRating.new(params[:title_rating])
 		@title_rating.user_id = session[:user_id]
+		@title_name = Title.find(@title_rating.title_id).name
 
 		respond_to do |format|
 			# Save the title_rating, then if there is another by the same user, undo the save and print a warning
