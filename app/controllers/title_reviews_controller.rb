@@ -21,6 +21,16 @@ class TitleReviewsController < ApplicationController
 	# GET /title_reviews/new
 	# GET /title_reviews/new.xml
 	def new
+		# If this user already has a review for this title, have 
+		# them edit the existing one instead
+		user = User.find(session[:user_id])
+		review = TitleReview.find(:first, :conditions => ["user_id=? and title_id=?", user.id, params[:title_id]])
+		if user && review
+			redirect_to :action => 'edit', :id => review.id
+			return
+		end
+
+		# If not, make a new review
 		@title_review = TitleReview.new
 
 		# Make sure there is a title id
