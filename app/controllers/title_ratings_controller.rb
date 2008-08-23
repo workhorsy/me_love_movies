@@ -22,6 +22,16 @@ class TitleRatingsController < ApplicationController
 	# GET /title_ratings/new
 	# GET /title_ratings/new.xml
 	def new
+		# If this user already has a rating for this title, have 
+		# them edit the existing one instead
+		user = User.find(session[:user_id])
+		rating = TitleRating.find(:first, :conditions => ["user_id=? and title_id=?", user.id, params[:title_id]])
+		if user && rating
+			redirect_to :action => 'edit', :id => rating.id
+			return
+		end
+
+		# If not, make a new rating
 		@title_rating = TitleRating.new
 
 		# Make sure there is a title id
