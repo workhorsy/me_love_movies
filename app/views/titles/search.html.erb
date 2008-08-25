@@ -1,0 +1,35 @@
+<h1>Title Search</h1>
+
+<% if @titles %>
+<% for title in @titles %>
+	<%= link_to title.name, :controller => 'titles', :action => 'show', :id => title.id %><br />
+<% end %>
+<% end %>
+
+<% unless @titles %>
+<% form_for :title_rating, :url => {:action => 'search'} do |f| %>
+	<fieldset>
+		<legend>Genre</legend>
+		<% for genre in Title::genres %>
+		<div class="title_rating_attribute">
+			<%= f.select genre, (0..5), :include_blank => true %>
+			<b><%= genre.gsub('_', ' ').capitalize %></b>
+		</div>
+		<% end %>
+	</fieldset>
+
+	<fieldset>
+		<legend>Attributes</legend>
+		<% for attribute in Title::attributes %>
+		<div class="title_rating_attribute">
+			<%= f.select attribute, (0..5), :include_blank => true %>
+			<b><%= attribute.gsub('_', ' ').capitalize %></b>
+		</div>
+		<% end %>
+	</fieldset>
+
+	<p>
+		<%= f.submit 'Search' %>
+	</p>
+<% end %>
+<% end %>

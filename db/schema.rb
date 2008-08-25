@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 9) do
+ActiveRecord::Schema.define(:version => 10) do
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -71,6 +71,30 @@ ActiveRecord::Schema.define(:version => 9) do
     t.text     "premise"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "avg_action"
+    t.integer  "avg_comedy"
+    t.integer  "avg_drama"
+    t.integer  "avg_scifi"
+    t.integer  "avg_romance"
+    t.integer  "avg_musical"
+    t.integer  "avg_kids"
+    t.integer  "avg_adventure"
+    t.integer  "avg_mystery"
+    t.integer  "avg_suspense"
+    t.integer  "avg_horror"
+    t.integer  "avg_fantasy"
+    t.integer  "avg_tv"
+    t.integer  "avg_war"
+    t.integer  "avg_western"
+    t.integer  "avg_sports"
+    t.integer  "avg_premise"
+    t.integer  "avg_plot"
+    t.integer  "avg_music"
+    t.integer  "avg_acting"
+    t.integer  "avg_special_effects"
+    t.integer  "avg_pace"
+    t.integer  "avg_character_development"
+    t.integer  "avg_cinematography"
   end
 
   create_table "user_types", :force => true do |t|

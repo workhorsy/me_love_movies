@@ -88,4 +88,44 @@ class TitlesController < ApplicationController
 			format.xml	{ head :ok }
 		end
 	end
+
+	# GET /titles/search
+	# GET /titles/search.xml
+	def search
+		@title_rating = TitleRating.new
+		@titles = nil
+
+		# Just return unless this is the post back from the search button
+		return unless request.post?
+
+		# Generate a rating object from our search
+		desired_rating = TitleRating.new(params[:title_rating])
+
+		# Get only the fields that are not nil
+		fields = (Title::genres + Title::attributes)
+		selected_fields = fields.select { |f| desired_rating.send(f) }
+
+		# FIXME: This should not be done each time there is a search. Instead have rake do it every minute or so
+		# or use memcached
+		# Update the averages of all the titles
+		Title.find(:all).each do |title|
+			avgs = ActiveRecord::Base.connection.select_all(
+					"select " + fields.collect { |f| "Avg(#{f})" }.join(', ') + " from title_ratings where title_id = #{title.id}").first
+			
+			fields.each do |f|
+				title.send("avg_#{f}=", avgs["Avg(#{f})"])
+			end
+
+			title.save!
+		end
+
+		@titles = Title.find(:all, :conditions => [
+													selected_fields.collect { |f| "avg_#{f}=?" }.join(' or '),
+													*selected_fields.collect { |f| desired_rating.send(f) }
+													],
+								:order => selected_fields.collect { |f| "avg_#{f}" }.join(', '),
+								:limit => 10)
+	end
 end
+
+

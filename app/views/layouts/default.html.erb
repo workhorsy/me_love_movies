@@ -16,7 +16,7 @@
 <div id="navigation">
 	<ul>
 		<li><%= link_to 'Home', :controller => 'home', :action => 'index' %></li>
-		<li><%= link_to 'Search', :controller => 'search', :action => 'index' %></li>
+		<li><%= link_to 'Search', :controller => 'titles', :action => 'search' %></li>
 		<% if session[:user_id] %>
 		<li>
 			<%= link_to 'My Account', :controller => 'users', :action => 'show', :id => session[:user_id] %>
@@ -34,14 +34,14 @@
 
 <p id="flash_notice"><%= flash[:notice] %></p>
 
-<%= yield  %>
+<%= yield %>
 
 <hr />
 <div id="footer">
 	Copyright &copy; 2008 Me Love Movies
 	<% if CodeBase.is_available -%>
 		| Bazaar info: nick "<%=CodeBase::NICK%>" revno <%=CodeBase::REVNO%>
-		<%= link_to_function "log", "Element.toggle('bazaar_log');" %>
+		<%= link_to_function "log", "Element.toggle('bazaar_log')" %>
 		<div id="bazaar_log" style="display: none; text-align: left; margin: 10px; padding: 5px;">
 			<pre><%=h CodeBase::LOG %></pre>
 		</div>

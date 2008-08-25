@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :users, :collection => { :login => :get, :list => :get }
   map.resources :home
-  map.resources :titles
+  map.resources :titles, :collection => { :search => :get }
   map.resources :title_ratings
   map.resources :title_reviews
   map.resources :admin, :collection => { :list_users => :get,
