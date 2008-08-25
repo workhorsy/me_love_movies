@@ -69,7 +69,7 @@ def get_movie_director(doc)
 			next if row.search("th").length == 0
 
 			if row.search("th")[0].innerText.downcase == 'directed by'
-				return row.search("td")[0].innerText.gsub("\n", ', ').gsub(',,', ',')
+				return row.search("td")[0].innerText.gsub(/\[[0-9]*\]/, '').gsub("\n", ', ').gsub(',,', ',')
 			end
 		end
 	end
@@ -83,7 +83,7 @@ def get_movie_cast(doc)
 			next if row.search("th").length == 0
 
 			if row.search("th")[0].innerText.downcase == 'starring'
-				return row.search("td")[0].innerText.gsub("\n", ', ').gsub(',,', ',')
+				return row.search("td")[0].innerText.gsub(/\[[0-9]*\]/, '').gsub("\n", ', ').gsub(',,', ',')
 			end
 		end
 	end
