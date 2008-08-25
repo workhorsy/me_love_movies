@@ -21,15 +21,6 @@ class Title < ActiveRecord::Base
 				character_development cinematography}
 	end
 
-	def average_rating(name)
-		fields = Title::genres + Title::attributes
-
-		# Make sure the field exists
-		raise "There is no field named #{name} to rate." unless fields.include? name
-
-		TitleRating::average(name, :conditions => ["title_id=?", self.id])
-	end
-
 	def runtime_minutes
 		@runtime_minutes
 	end

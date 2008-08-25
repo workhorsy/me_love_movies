@@ -35,7 +35,7 @@
 		<% for genre in Title::genres %>
 		<div class="small_left_item">
 			<b><%= genre.gsub('_', ' ').capitalize %>:</b>
-			<%=h @title.average_rating(genre) || 'none' %>
+			<%=h @title.send("avg_#{genre}") || 'none' %>
 		</div>
 		<% end %>
 	</div>
@@ -45,7 +45,7 @@
 		<% for attribute in Title::attributes %>
 		<div class="small_left_item">
 			<b><%=h attribute.gsub('_', ' ').capitalize %>:</b>
-			<%=h @title.average_rating(attribute) || 'none' %>
+			<%=h @title.send("avg_#{attribute}") || 'none' %>
 		</div>
 		<% end %>
 	</div>
