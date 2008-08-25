@@ -44,3 +44,16 @@
 	float: left;
 	padding: 5px;
 }
+
+#footer {
+	height: 30px;
+	width: auto;
+	padding: 0px;
+	padding-top: 10px;
+	margin: 10px;
+	color:  #000000;
+	font-family: Arial, Helvetica, Georgia, serif;
+	text-align: center;
+	font-size: 1.0em;
+	clear: both;
+}
