@@ -98,12 +98,22 @@ class TitlesController < ApplicationController
 		# Just return unless this is the post back from the search button
 		return unless request.post?
 
+		# Make sure something was selected
+		if params[:title_rating].values.uniq == [""]
+			respond_to do |format|
+				flash[:notice] = "No search parameters were selected"
+				format.html { render :action => "search" }
+				format.xml	{ render :xml => @title_rating.errors, :status => :unprocessable_entity }
+			end
+			return
+		end
+
 		# Generate a rating object from our search
-		desired_rating = TitleRating.new(params[:title_rating])
+		@title_rating = TitleRating.new(params[:title_rating])
 
 		# Get only the fields that are not nil
 		fields = (Title::genres + Title::attributes)
-		selected_fields = fields.select { |f| desired_rating.send(f) }
+		selected_fields = fields.select { |f| @title_rating.send(f) }
 
 		# FIXME: This should not be done each time there is a search. Instead have rake do it every minute or so
 		# or use memcached
@@ -121,7 +131,7 @@ class TitlesController < ApplicationController
 
 		@titles = Title.find(:all, :conditions => [
 													selected_fields.collect { |f| "avg_#{f}=?" }.join(' or '),
-													*selected_fields.collect { |f| desired_rating.send(f) }
+													*selected_fields.collect { |f| @title_rating.send(f) }
 													],
 								:order => selected_fields.collect { |f| "avg_#{f}" }.join(', '),
 								:limit => 10)

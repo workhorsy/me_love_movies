@@ -1,13 +1,6 @@
 <h1>Title Search</h1>
 
-<% if @titles %>
-<% for title in @titles %>
-	<%= link_to title.name, :controller => 'titles', :action => 'show', :id => title.id %><br />
-<% end %>
-<% end %>
-
-<% unless @titles %>
-<% form_for :title_rating, :url => {:action => 'search'} do |f| %>
+<% form_for @title_rating, :url => {:action => 'search'} do |f| %>
 	<fieldset>
 		<legend>Genre</legend>
 		<% for genre in Title::genres %>
@@ -32,4 +25,20 @@
 		<%= f.submit 'Search' %>
 	</p>
 <% end %>
+
+<% if @titles %>
+<a name="results"><h2>Search Results</h2></a>
+<div style="padding-bottom: 200px;">
+	<script type="text/javascript" language="JavaScript">
+		document.location = "#results";
+	</script>
+	<% for title in @titles %>
+	<%= link_to title.name, :controller => 'titles', :action => 'show', :id => title.id %><br />
+	<% end %>
+	<% if @titles.length == 0 %>
+		Ther were not results for your search
+	<% end %>
+</div>
 <% end %>
+
+
