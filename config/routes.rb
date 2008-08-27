@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :users, :collection => { :login => :get, :list => :get }
+  map.resources :users, :member => { :update_user_type => :post },
+						:collection => { :login => :get, :list => :get }
   map.resources :home
   map.resources :titles, :collection => { :search => :get }
   map.resources :title_ratings

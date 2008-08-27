@@ -4,11 +4,24 @@
 <table>
 	<tr>
 		<th>Name</th>
+		<th>Permissions</th>
 	</tr>
 
 <% for user in @users -%>
 	<tr>
 		<td><%=h user.name %></td>
+		<td>
+		<% for name in %w{user critic moderator administrator} %>
+			<%= radio_button("user", "user_type", name, :onclick => "$('poop_#{user.id}').value='#{name}'") + name.capitalize %>
+		<% end %>
+		<input type="text" id="poop_<%=user.id%>" name="poop_<%=user.id%>" value="nothing yet ...">
+			<%= observe_field "poop_#{user.id}",
+								:url => { :controller => 'users', :action => 'update_user_type', :id => user.id },
+								:frequency => 0.25,
+								:on => "changed",
+								:update => 'flash_notice',
+								:with => "'my_custom_key=' + value" %>
+		</td>
 		<td><%= link_to 'Show', user %></td>
 		<td><%= link_to 'Edit', edit_user_path(user) %></td>
 		<td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>

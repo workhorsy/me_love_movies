@@ -7,8 +7,9 @@ class CreateUserTypes < ActiveRecord::Migration
 
 		UserType.create([
 			{:name => 'User', :abbreviation => 'U'},
+			{:name => 'Critic', :abbreviation => 'C'},
 			{:name => 'Moderator', :abbreviation => 'M'},
-			{:name => 'Critic', :abbreviation => 'C'}
+			{:name => 'Administrator', :abbreviation => 'A'}
 		])
 	end
 
