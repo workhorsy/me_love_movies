@@ -42,4 +42,9 @@
 <%= link_to review.title.name, :controller => 'title_reviews', :action => 'show', :id => review.id %><br />
 <% end %>
 
+<h2>Ratings by this user</h2>
+<% for ratings in @title_ratings %>
+<%= link_to ratings.title.name, :controller => 'title_ratings', :action => 'show', :id => ratings.id %><br />
+<% end %>
+
 
