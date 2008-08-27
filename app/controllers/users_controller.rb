@@ -107,10 +107,16 @@ class UsersController < ApplicationController
 	# GET /users/update_user_type
 	# GET /users/update_user_type.xml
 	def update_user_type
-		@user = User.find(params[:id])
-		@user.user_type = params[:my_custom_key][0..0]
+		@user, name = nil, nil
+		begin
+			@user = User.find(params[:id])
+			pair = UserType::NAMES_ABBREVIATIONS.select { |k, v| k == params[:user_type] }.first
+			name = pair.first
+			@user.user_type = pair.last
+		rescue
+		end
 		if @user.save
-			render :text => "The user #{@user.name} is now a " + params.inspect
+			render :text => "The user #{@user.name} is now a " + name
 		else
 			render :text => "Error updating the user!"
 		end
