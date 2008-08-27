@@ -12,7 +12,8 @@
 		<td><%=h user.name %></td>
 		<td>
 		<% for name in %w{User Critic Moderator Administrator} %>
-			<%= radio_button("user", "user_type[#{user.id}]", name, :onclick => "$('status_#{user.id}').value='#{name}'") + name %>
+			<% is_checked = (name[0..0] == user.user_type) %>
+			<%= radio_button("user", "user_type[#{user.id}]", name, :checked => is_checked, :onclick => "$('status_#{user.id}').value='#{name}'") + name %>
 		<% end %>
 		<input type="hidden" id="status_<%=user.id%>" value="">
 			<%= observe_field "status_#{user.id}",

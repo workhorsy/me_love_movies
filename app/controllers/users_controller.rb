@@ -107,6 +107,19 @@ class UsersController < ApplicationController
 	# GET /users/update_user_type
 	# GET /users/update_user_type.xml
 	def update_user_type
+		# Make sure the user making this request is an admin
+		unless User.find(session[:user_id]).user_type == 'A'
+			render :text => "You are not an Administrator"
+			return
+		end
+
+		# Make sure the user is not locking themselves out
+		if session[:user_id] == params[:id].to_i
+			render :partial => "admin/cant_lock_yourself_out", :locals => { :user_id => params[:id].to_i }
+			return
+		end
+
+		# Change the user's permissions
 		@user, name = nil, nil
 		begin
 			@user = User.find(params[:id])
