@@ -111,24 +111,11 @@ class TitlesController < ApplicationController
 		# Generate a rating object from our search
 		@title_rating = TitleRating.new(params[:title_rating])
 
-		# Get only the fields that are not nil
+		# Get only the fields that were not blank
 		fields = (Title::genres + Title::attributes)
 		selected_fields = fields.select { |f| @title_rating.send(f) }
 
-		# FIXME: This should not be done each time there is a search. Instead have rake do it every minute or so
-		# or use memcached
-		# Update the averages of all the titles
-		Title.find(:all).each do |title|
-			avgs = ActiveRecord::Base.connection.select_all(
-					"select " + fields.collect { |f| "Avg(#{f})" }.join(', ') + " from title_ratings where title_id = #{title.id}").first
-			
-			fields.each do |f|
-				title.send("avg_#{f}=", avgs["Avg(#{f})"])
-			end
-
-			title.save!
-		end
-
+		# Find the titles that have matching field values. Order by most matching.
 		@titles = Title.find(:all, :conditions => [
 													selected_fields.collect { |f| "avg_#{f}=?" }.join(' or '),
 													*selected_fields.collect { |f| @title_rating.send(f) }

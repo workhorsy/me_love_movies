@@ -16,4 +16,24 @@ class TitleRating < ActiveRecord::Base
 		# If all the fields were blank, show the error
 		errors.add_to_base("At least one rating must be selected.") unless are_ratings
 	end
+
+	def after_create
+		update_title_average
+	end
+
+	def after_update
+		update_title_average
+	end
+
+	def after_destroy
+		update_title_average
+	end
+
+	def update_title_average
+		fields = (Title::genres + Title::attributes)
+		ActiveRecord::Base.connection.execute(
+			"update titles set " +
+			fields.collect { |f| "avg_#{f}=(select Avg(#{f}) from title_ratings where title_id=#{self.title_id})" }.join(', ') +
+			"where id=#{self.title_id}")
+	end
 end

@@ -7,7 +7,6 @@ class TitleRatingsController < ApplicationController
 		redirect_to :controller => 'home', :action => 'index'
 	end
 
-
 	# GET /title_ratings/1
 	# GET /title_ratings/1.xml
 	def show
@@ -117,3 +116,5 @@ class TitleRatingsController < ApplicationController
 		end
 	end
 end
+
+
