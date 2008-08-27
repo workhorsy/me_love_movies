@@ -15,7 +15,17 @@ class TitlesController < ApplicationController
 	# GET /titles/1
 	# GET /titles/1.xml
 	def show
-		@title = Title.find(params[:id])
+		# Determine if the id is the name or id
+		id_is_name = (params[:id].to_i == 0 && params[:id] != "0")
+
+		if id_is_name
+			@title = Title.find_by_name(params[:id])
+			raise "Couldn't find Title with name=#{params[:id]}" unless @title
+		
+		else
+			@title = Title.find(params[:id])
+		end
+
 		@users = User.find(:all)
 		@title_reviews = TitleReview.find(:all, :conditions => ["title_id=?", @title.id])
 
