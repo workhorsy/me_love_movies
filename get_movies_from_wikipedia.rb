@@ -121,7 +121,7 @@ end
 
 def get_movie_name(doc)
 	doc.search("//table[@class='infobox vevent']").each do |table|
-		return table.search("tr").search("th").first.innerText
+		return table.search("tr").search("th").first.innerText.gsub("\n", ' ').gsub(/\s+/, ' ')
 	end
 
 	return nil
