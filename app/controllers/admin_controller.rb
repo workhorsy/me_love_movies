@@ -1,5 +1,6 @@
 class AdminController < ApplicationController
 	layout 'default'
+	before_filter :authorize_admin_only
 
 	# GET /admin
 	# GET /admin.xml
@@ -43,6 +44,15 @@ class AdminController < ApplicationController
 		respond_to do |format|
 			format.html
 			format.xml	{ render :xml => @title_ratings }
+		end
+	end
+
+	private
+
+	def authorize_admin_only
+		@user = User.find_by_id(session[:user_id])
+		unless @user && @user.user_type == UserType::NAMES_ABBREVIATIONS.select { |k, v| v == 'A' }.first.last
+			render :layout => 'default', :text => "<p id=\"flash_notice\">You don't have permission to access this page.</p>"
 		end
 	end
 end
