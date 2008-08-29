@@ -130,8 +130,7 @@ class TitlesController < ApplicationController
 													selected_fields.collect { |f| "avg_#{f}=?" }.join(' or '),
 													*selected_fields.collect { |f| @title_rating.send(f) }
 													],
-								:order => selected_fields.collect { |f| "avg_#{f}" }.join(', '),
-								:limit => 10)
+								:order => selected_fields.collect { |f| "avg_#{f}" }.join(', '))
 	end
 end
 
