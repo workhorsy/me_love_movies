@@ -1,66 +1,67 @@
 <h1>Listing Ratings</h1>
 
+<% if @title_ratings.length == 0 %>
+	<p>There are no ratings.</p>
+<% else %>
 <table>
-  <tr>
-    <th>Action</th>
-    <th>Comedy</th>
-    <th>Drama</th>
-    <th>Scifi</th>
-    <th>Romance</th>
-    <th>Musical</th>
-    <th>Kids</th>
-    <th>Adventure</th>
-    <th>Mystery</th>
-    <th>Suspense</th>
-    <th>Horror</th>
-    <th>Fantasy</th>
-    <th>Tv</th>
-    <th>War</th>
-    <th>Western</th>
-    <th>Sports</th>
-    <th>Premise</th>
-    <th>Plot</th>
-    <th>Music</th>
-    <th>Acting</th>
-    <th>Special effects</th>
-    <th>Pace</th>
-    <th>Character development</th>
-    <th>Cinematography</th>
-  </tr>
+	<tr>
+		<th>Action</th>
+		<th>Comedy</th>
+		<th>Drama</th>
+		<th>Scifi</th>
+		<th>Romance</th>
+		<th>Musical</th>
+		<th>Kids</th>
+		<th>Adventure</th>
+		<th>Mystery</th>
+		<th>Suspense</th>
+		<th>Horror</th>
+		<th>Fantasy</th>
+		<th>Tv</th>
+		<th>War</th>
+		<th>Western</th>
+		<th>Sports</th>
+		<th>Premise</th>
+		<th>Plot</th>
+		<th>Music</th>
+		<th>Acting</th>
+		<th>Special effects</th>
+		<th>Pace</th>
+		<th>Character development</th>
+		<th>Cinematography</th>
+	</tr>
 
-<% for title_rating in @title_ratings %>
-  <tr>
-    <td><%=h title_rating.action %></td>
-    <td><%=h title_rating.comedy %></td>
-    <td><%=h title_rating.drama %></td>
-    <td><%=h title_rating.scifi %></td>
-    <td><%=h title_rating.romance %></td>
-    <td><%=h title_rating.musical %></td>
-    <td><%=h title_rating.kids %></td>
-    <td><%=h title_rating.adventure %></td>
-    <td><%=h title_rating.mystery %></td>
-    <td><%=h title_rating.suspense %></td>
-    <td><%=h title_rating.horror %></td>
-    <td><%=h title_rating.fantasy %></td>
-    <td><%=h title_rating.tv %></td>
-    <td><%=h title_rating.war %></td>
-    <td><%=h title_rating.western %></td>
-    <td><%=h title_rating.sports %></td>
-    <td><%=h title_rating.premise %></td>
-    <td><%=h title_rating.plot %></td>
-    <td><%=h title_rating.music %></td>
-    <td><%=h title_rating.acting %></td>
-    <td><%=h title_rating.special_effects %></td>
-    <td><%=h title_rating.pace %></td>
-    <td><%=h title_rating.character_development %></td>
-    <td><%=h title_rating.cinematography %></td>
-    <td><%= link_to 'Show', title_rating %></td>
-    <td><%= link_to 'Edit', edit_title_rating_path(title_rating) %></td>
-    <td><%= link_to 'Destroy', title_rating, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+	<% for title_rating in @title_ratings %>
+	<tr>
+		<td><%=h title_rating.action %></td>
+		<td><%=h title_rating.comedy %></td>
+		<td><%=h title_rating.drama %></td>
+		<td><%=h title_rating.scifi %></td>
+		<td><%=h title_rating.romance %></td>
+		<td><%=h title_rating.musical %></td>
+		<td><%=h title_rating.kids %></td>
+		<td><%=h title_rating.adventure %></td>
+		<td><%=h title_rating.mystery %></td>
+		<td><%=h title_rating.suspense %></td>
+		<td><%=h title_rating.horror %></td>
+		<td><%=h title_rating.fantasy %></td>
+		<td><%=h title_rating.tv %></td>
+		<td><%=h title_rating.war %></td>
+		<td><%=h title_rating.western %></td>
+		<td><%=h title_rating.sports %></td>
+		<td><%=h title_rating.premise %></td>
+		<td><%=h title_rating.plot %></td>
+		<td><%=h title_rating.music %></td>
+		<td><%=h title_rating.acting %></td>
+		<td><%=h title_rating.special_effects %></td>
+		<td><%=h title_rating.pace %></td>
+		<td><%=h title_rating.character_development %></td>
+		<td><%=h title_rating.cinematography %></td>
+		<td><%= link_to 'Show', title_rating %></td>
+		<td><%= link_to 'Edit', edit_title_rating_path(title_rating) %></td>
+		<td><%= link_to 'Destroy', title_rating, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+	<% end %>
 </table>
+<% end %>
 
-<br />
-
-<%= link_to 'New title_rating', new_title_rating_path %>

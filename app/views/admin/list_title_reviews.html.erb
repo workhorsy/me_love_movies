@@ -1,5 +1,8 @@
 <h1>Listing Title Reviews</h1>
 
+<% if @title_reviews.length == 0 %>
+	<p>There are no reviews.</p>
+<% else %>
 <table>
 	<tr>
 		<th>User</th>
@@ -7,7 +10,7 @@
 		<th>Body</th>
 	</tr>
 
-<% for title_review in @title_reviews %>
+	<% for title_review in @title_reviews %>
 	<tr>
 		<td><%=h title_review.user_id %></td>
 		<td><%=h title_review.title_id %></td>
@@ -16,9 +19,7 @@
 		<td><%= link_to 'Edit', edit_title_review_path(title_review) %></td>
 		<td><%= link_to 'Destroy', title_review, :confirm => 'Are you sure?', :method => :delete %></td>
 	</tr>
-<% end %>
+	<% end %>
 </table>
+<% end %>
 
-<br />
-
-<%= link_to 'New title_review', new_title_review_path %>

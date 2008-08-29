@@ -55,12 +55,19 @@
 <div style="border: 3px solid blue; padding: 7px;">
 	<h2>Reviews</h2>
 	<%= link_to 'Review this film', :controller => 'title_reviews', :action => 'new', :title_id => @title.id %>
+
+	<% if @title_reviews.length == 0 %>
+		<p>There are no reviews.</p>
+	<% end %>
+
 	<% for review in @title_reviews %>
 	<div style="border: 3px solid black; margin: 10px;">
 		<%= image_tag review.user.avatar_file_or_default, :size => "100x100" %><br />
 		<b><%= link_to(
 			h(review.user.name), 
-		:controller => 'users', :action => 'show', :id => review.user.id) %></b><br />
+			:controller => 'users', 
+			:action => 'show', 
+			:id => review.user.id) %></b><br />
 
 		<%=h review.body %>
 	</div>

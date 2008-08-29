@@ -38,13 +38,20 @@
 </div>
 
 <h2>Reviews by this user</h2>
-<% for review in @title_reviews %>
-<%= link_to review.title.name, :controller => 'title_reviews', :action => 'show', :id => review.id %><br />
+<% if @title_reviews.length == 0 %>
+	This user has no reviews.
+<% else %>
+	<% for review in @title_reviews %>
+	<%= link_to review.title.name, :controller => 'title_reviews', :action => 'show', :id => review.id %><br />
+	<% end %>
 <% end %>
 
 <h2>Ratings by this user</h2>
-<% for ratings in @title_ratings %>
-<%= link_to ratings.title.name, :controller => 'title_ratings', :action => 'show', :id => ratings.id %><br />
+<% if @title_ratings.length == 0 %> 
+	This user has no ratings.
+<% else %>
+	<% for ratings in @title_ratings %>
+	<%= link_to ratings.title.name, :controller => 'title_ratings', :action => 'show', :id => ratings.id %><br />
+	<% end %>
 <% end %>
-
 
