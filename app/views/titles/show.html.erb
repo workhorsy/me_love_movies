@@ -52,24 +52,33 @@
 	<%= link_to 'Rate this film', :controller => 'title_ratings', :action => 'new', :title_id => @title.id %>
 </div>
 
-<div style="border: 3px solid blue; padding: 7px;">
+<div style="border: 3px solid purple; padding: 7px;">
 	<h2>Reviews</h2>
-	<%= link_to 'Review this film', :controller => 'title_reviews', :action => 'new', :title_id => @title.id %>
 
-	<% if @title_reviews.length == 0 %>
-		<p>There are no reviews.</p>
-	<% end %>
+	<%= link_to_function 'Users', "Element.show('user_container'); Element.hide('moderator_container'); Element.hide('critic_container')" %>
+	<%= link_to_function 'Moderators', "Element.show('moderator_container'); Element.hide('user_container'); Element.hide('critic_container')" %>
+	<%= link_to_function 'Critics', "Element.show('critic_container'); Element.hide('moderator_container'); Element.hide('user_container')" %>
 
-	<% for review in @title_reviews %>
-	<div style="border: 3px solid black; margin: 10px;">
-		<%= image_tag review.user.avatar_file_or_default, :size => "100x100" %><br />
-		<b><%= link_to(
-			h(review.user.name), 
-			:controller => 'users', 
-			:action => 'show', 
-			:id => review.user.id) %></b><br />
+	<% for user_type in %w{user moderator critic} %>
+	<div id="<%=user_type%>_container" style="<%= user_type!='user' ? 'display: none; ' : '' %>border: 3px solid blue; padding: 7px;">
+		<%= link_to 'Review this film', :controller => 'title_reviews', :action => 'new', :title_id => @title.id %>
 
-		<%=h review.body %>
+		<% if @title_reviews[user_type].length == 0 %>
+			<p>There are no reviews.</p>
+		<% end %>
+
+		<% for review in @title_reviews[user_type] %>
+		<div style="border: 3px solid black; margin: 10px;">
+			<%= image_tag review.user.avatar_file_or_default, :size => "100x100" %><br />
+			<b><%= link_to(
+				h(review.user.name), 
+				:controller => 'users', 
+				:action => 'show', 
+				:id => review.user.id) %></b><br />
+
+			<%=h review.body %>
+		</div>
+		<% end %>
 	</div>
 	<% end %>
 </div>

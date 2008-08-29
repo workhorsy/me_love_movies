@@ -26,12 +26,23 @@ class TitlesController < ApplicationController
 			@title = Title.find(params[:id])
 		end
 
-		@users = User.find(:all)
-		@title_reviews = TitleReview.find(:all, :conditions => ["title_id=?", @title.id])
+		# Find all the reviews and sort them by user type
+		@title_reviews = { 'user' => [], 
+						'moderator' => [], 
+						'critic' => [] }
+
+		reviews = TitleReview.find(:all, :conditions => ["title_id=?", @title.id])
+		reviews.each do |review|
+			case review.user.user_type
+				when 'U': @title_reviews['user'] << review
+				when 'A', 'M': @title_reviews['moderator'] << review
+				when 'C': @title_reviews['critic'] << review
+			end
+		end
 
 		respond_to do |format|
 			format.html # show.html.erb
-			format.xml	{ render :xml => @title }
+			format.xml	{ render :xml => @title_reviews }
 		end
 	end
 
