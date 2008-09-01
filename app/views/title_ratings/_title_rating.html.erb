@@ -6,8 +6,8 @@
 		var IE = document.all ? true : false;
 		var mouse_x = 0;
 		var mouse_y = 0;
-		var prev_mouse_x = 0;
-		var prev_mouse_y = 0;
+		var prev_mouse_x = -1;
+		var prev_mouse_y = -1;
 		var star_on = "<img src=\"/images/heart_on.jpg\" />";
 		var star_off = "<img src=\"/images/heart_off.jpg\" />";
 		var star_max = 5;
@@ -25,7 +25,7 @@
 			prev_mouse_y = mouse_y;
 
 			for(i=0; i<id_rects.length; i++) {
-				c = $(id_rects[i] + '_info');
+				var c = $(id_rects[i] + '_info');
 				if(!(mouse_x >= c.offsetLeft && mouse_x <= (c.offsetLeft + c.offsetWidth) &&
 					mouse_y >= c.offsetTop && mouse_y <= (c.offsetTop + c.offsetHeight))) {
 					var newHTML = star_off;
@@ -160,6 +160,10 @@
 		<% end %>
 	</fieldset>
 	</div>
+
+	<script type="text/javascript" language="JavaScript">
+		check_mouse_off();
+	</script>
 
 	<%= f.hidden_field :title_id, :value => title_rating.title_id %>
 
