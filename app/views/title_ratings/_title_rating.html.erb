@@ -6,6 +6,8 @@
 		var IE = document.all ? true : false;
 		var mouse_x = 0;
 		var mouse_y = 0;
+		var prev_mouse_x = 0;
+		var prev_mouse_y = 0;
 		var star_on = "<img src=\"/images/heart_on.jpg\" />";
 		var star_off = "<img src=\"/images/heart_off.jpg\" />";
 		var star_max = 5;
@@ -15,6 +17,13 @@
 
 		var id_rects = [];
 		function check_mouse_off() {
+			if(mouse_x == prev_mouse_x &&
+				mouse_y == prev_mouse_y) {
+				return;
+			}
+			prev_mouse_x = mouse_x;
+			prev_mouse_y = mouse_y;
+
 			for(i=0; i<id_rects.length; i++) {
 				c = $(id_rects[i] + '_info');
 				if(!(mouse_x >= c.offsetLeft && mouse_x <= (c.offsetLeft + c.offsetWidth) &&
