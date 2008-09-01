@@ -1,17 +1,56 @@
 
 <% form_for(title_rating) do |f| %>
+	<div id="container">
+
+	<script type="text/javascript" language="JavaScript">
+		var IE = document.all ? true : false;
+		var mouse_x = 0;
+		var mouse_y = 0;
+
+		setInterval(check_mouse_off, 250);
+
+		var id_rects = [];
+		function check_mouse_off() {
+			for(i=0; i<id_rects.length; i++) {
+				c = id_rects[i];
+				if(!(mouse_x >= c.offsetLeft && mouse_x <= (c.offsetLeft + c.offsetWidth) &&
+					mouse_y >= c.offsetTop && mouse_y <= (c.offsetTop + c.offsetHeight))) {
+					c.innerHTML = '<%= "<img src=\"/images/heart_off.jpg\" />" * 6 %>';
+				}
+			}
+		}
+
+		container = $('container');
+		container.onmousemove = function(e) {
+			var tempX = 0;
+			var tempY = 0;
+			if (IE) { // grab the x-y pos.s if browser is IE
+				tempX = e.clientX + document.body.scrollLeft;
+				tempY = e.clientY + document.body.scrollTop;
+			} else {  // grab the x-y pos.s if browser is NS
+				tempX = e.pageX;
+				tempY = e.pageY;
+			}
+
+			mouse_x = tempX;
+			mouse_y = tempY;
+		}
+	</script>
+
 	<fieldset>
 		<legend>Genre</legend>
 		<% for genre in Title::genres %>
 		<% n = Title::genres.index(genre) %>
-		<div id="genre_<%=n%>"
-			class="title_rating_attribute">
-			<%= image_tag 'heart_off.jpg' %><%= image_tag 'heart_on.jpg' %><%= image_tag 'heart_on.jpg' %><%= image_tag 'heart_on.jpg' %><%= image_tag 'heart_on.jpg' %><%= image_tag 'heart_on.jpg' %>
+		<div id="genre_<%=n%>_container"
+				class="title_rating_attribute">
+			<span id="genre_<%=n%>">
+				<%= image_tag('heart_off.jpg') * 6 %>
+			</span>
 			<b><%= genre.gsub('_', ' ').capitalize %></b>
 		</div>
-		<script>
-		var IE = document.all ? true : false;
-		$('genre_<%=n%>').onmousemove = function getMouseXY(e) {
+		<script type="text/javascript" language="JavaScript">
+		id_rects.push($('genre_<%=n%>'));
+		$('genre_<%=n%>').onmousemove = function(e) {
 			var control = $('genre_<%=n%>');
 			var image_width = 20;
 			var tempX = 0;
@@ -30,7 +69,7 @@
 			var star_off = "<img src=\"/images/heart_off.jpg\" />";
 			var star_max = 5;
 			var star_count = parseInt(tempX / image_width);
-			if(star_count > star_max) star_count = star_max;
+			if(star_count > star_max) star_count = 0;
 
 			var content = star_off;
 			for(i=0; i<star_count; i++) {
@@ -39,7 +78,7 @@
 			for(i=0; i<star_max-star_count; i++) {
 				content += star_off;
 			}
-			control.innerHTML = content + " <b>" + "<%=genre.gsub('_', ' ').capitalize%>" + "</b>";
+			control.innerHTML = content;
 		}
 		</script>
 		<% end %>
@@ -49,14 +88,16 @@
 		<legend>Attributes</legend>
 		<% for attribute in Title::attributes %>
 		<% n = Title::attributes.index(attribute) %>
-		<div id="attribute_<%=n%>"
-			class="title_rating_attribute">
-			<%= image_tag 'heart_off.jpg' %><%= image_tag 'heart_on.jpg' %><%= image_tag 'heart_on.jpg' %><%= image_tag 'heart_on.jpg' %><%= image_tag 'heart_on.jpg' %><%= image_tag 'heart_on.jpg' %>
+		<div id="attribute_<%=n%>_container"
+				class="title_rating_attribute">
+			<span id="attribute_<%=n%>">
+				<%= image_tag('heart_off.jpg') * 6 %>
+			</span>
 			<b><%= attribute.gsub('_', ' ').capitalize %></b>
 		</div>
-		<script>
-		var IE = document.all ? true : false;
-		$('attribute_<%=n%>').onmousemove = function getMouseXY(e) {
+		<script type="text/javascript" language="JavaScript">
+		id_rects.push($('attribute_<%=n%>'));
+		$('attribute_<%=n%>').onmousemove = function(e) {
 			var control = $('attribute_<%=n%>');
 			var image_width = 20;
 			var tempX = 0;
@@ -75,7 +116,7 @@
 			var star_off = "<img src=\"/images/heart_off.jpg\" />";
 			var star_max = 5;
 			var star_count = parseInt(tempX / image_width);
-			if(star_count > star_max) star_count = star_max;
+			if(star_count > star_max) star_count = 0;
 
 			var content = star_off;
 			for(i=0; i<star_count; i++) {
@@ -84,11 +125,12 @@
 			for(i=0; i<star_max-star_count; i++) {
 				content += star_off;
 			}
-			control.innerHTML = content + " <b>" + "<%=attribute.gsub('_', ' ').capitalize%>" + "</b>";
+			control.innerHTML = content;
 		}
 		</script>
 		<% end %>
 	</fieldset>
+	</div>
 
 	<%= f.hidden_field :title_id, :value => title_rating.title_id %>
 
