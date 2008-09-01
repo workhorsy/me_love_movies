@@ -16,11 +16,11 @@
 		var id_rects = [];
 		function check_mouse_off() {
 			for(i=0; i<id_rects.length; i++) {
-				c = $(id_rects[i]);
+				c = $(id_rects[i] + '_info');
 				if(!(mouse_x >= c.offsetLeft && mouse_x <= (c.offsetLeft + c.offsetWidth) &&
 					mouse_y >= c.offsetTop && mouse_y <= (c.offsetTop + c.offsetHeight))) {
 					var newHTML = star_off;
-					var count = parseInt($(id_rects[i] + '_value').value);
+					var count = parseInt($(id_rects[i]).value);
 					for(j=0; j<count; j++) {
 						newHTML += star_on;
 					}
@@ -52,27 +52,26 @@
 	<fieldset>
 		<legend>Genre</legend>
 		<% for genre in Title::genres %>
-		<% n = Title::genres.index(genre) %>
-		<div id="genre_<%=n%>_container"
+		<div id="title_rating_<%=genre%>_container"
 				class="title_rating_attribute">
-			<input id="genre_<%=n%>_value" type="hidden" value="0" />
-			<span id="genre_<%=n%>">
+			<input id="title_rating_<%=genre%>" name="title_rating[<%=genre%>]" type="hidden" value="<%= @title_rating.send(genre) || 0 %>" />
+			<span id="title_rating_<%=genre%>_info">
 				<%= image_tag('heart_off.jpg') * 6 %>
 			</span>
 			<b><%= genre.gsub('_', ' ').capitalize %></b>
 		</div>
 		<script type="text/javascript" language="JavaScript">
-		id_rects.push('genre_<%=n%>');
+		id_rects.push('title_rating_<%=genre%>');
 
-		$('genre_<%=n%>').onclick = function() {
-			var value = $('genre_<%=n%>_value');
-			var control = $('genre_<%=n%>');
+		$('title_rating_<%=genre%>_info').onclick = function() {
+			var value = $('title_rating_<%=genre%>');
+			var control = $('title_rating_<%=genre%>_info');
 			var on_count = control.innerHTML.split('on').length-1;
 			value.value = on_count;
 		}
 
-		$('genre_<%=n%>').onmousemove = function(e) {
-			var control = $('genre_<%=n%>');
+		$('title_rating_<%=genre%>_info').onmousemove = function(e) {
+			var control = $('title_rating_<%=genre%>_info');
 			var tempX = 0;
 			var tempY = 0;
 			if (IE) { // grab the x-y pos.s if browser is IE
@@ -104,27 +103,26 @@
 	<fieldset>
 		<legend>Attributes</legend>
 		<% for attribute in Title::attributes %>
-		<% n = Title::attributes.index(attribute) %>
-		<div id="attribute_<%=n%>_container"
+		<div id="title_rating_<%=attribute%>_container"
 				class="title_rating_attribute">
-			<input id="attribute_<%=n%>_value" type="hidden" value="0" />
-			<span id="attribute_<%=n%>">
+			<input id="title_rating_<%=attribute%>" name="title_rating[<%=attribute%>]" type="hidden" value="<%= @title_rating.send(attribute) || 0 %>" />
+			<span id="title_rating_<%=attribute%>_info">
 				<%= image_tag('heart_off.jpg') * 6 %>
 			</span>
 			<b><%= attribute.gsub('_', ' ').capitalize %></b>
 		</div>
 		<script type="text/javascript" language="JavaScript">
-		id_rects.push('attribute_<%=n%>');
+		id_rects.push('title_rating_<%=attribute%>');
 
-		$('attribute_<%=n%>').onclick = function() {
-			var value = $('attribute_<%=n%>_value');
-			var control = $('attribute_<%=n%>');
+		$('title_rating_<%=attribute%>_info').onclick = function() {
+			var value = $('title_rating_<%=attribute%>');
+			var control = $('title_rating_<%=attribute%>_info');
 			var on_count = control.innerHTML.split('on').length-1;
 			value.value = on_count;
 		}
 
-		$('attribute_<%=n%>').onmousemove = function(e) {
-			var control = $('attribute_<%=n%>');
+		$('title_rating_<%=attribute%>_info').onmousemove = function(e) {
+			var control = $('title_rating_<%=attribute%>_info');
 			var tempX = 0;
 			var tempY = 0;
 			if (IE) { // grab the x-y pos.s if browser is IE

@@ -57,6 +57,9 @@ class TitleRatingsController < ApplicationController
 		@title_rating = TitleRating.new(params[:title_rating])
 		@title_rating.user_id = session[:user_id]
 		@title_name = Title.find(@title_rating.title_id).name
+		(Title::attributes + Title::genres).each do |name|
+			@title_rating.send("#{name}=", nil) if @title_rating.send(name) == 0
+		end
 
 		respond_to do |format|
 			# Save the title_rating, then if there is another by the same user, undo the save and print a warning
@@ -91,6 +94,9 @@ class TitleRatingsController < ApplicationController
 	# PUT /title_ratings/1.xml
 	def update
 		@title_rating = TitleRating.find(params[:id])
+		(Title::attributes + Title::genres).each do |name|
+			params['title_rating'][name] = nil if params['title_rating'][name] == '0'
+		end
 
 		respond_to do |format|
 			if @title_rating.update_attributes(params[:title_rating])
