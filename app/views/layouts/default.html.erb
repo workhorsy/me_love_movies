@@ -39,6 +39,7 @@
 <hr />
 <div id="footer">
 	Copyright &copy; 2008 Me Love Movies
+	| The site is running in <%= RAILS_ENV %> mode
 	<% if CodeBase.is_available -%>
 		| Bazaar:  
 		<%= link_to_remote "log", :update => "bazaar_log",
