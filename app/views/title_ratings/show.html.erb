@@ -18,8 +18,9 @@
 		<div class="title_rating_attribute">
 			<span id="genre_<%=n%>">
 				<% count = @title_rating.title.send("avg_#{genre}") || 0 %>
-				<%= "<img src=\"/images/heart_on.jpg\" />" * count %>
-				<%= "<img src=\"/images/heart_off.jpg\" />" * (5 - count) %>
+				<%= 
+					("<img src=\"/images/heart_on.jpg\" />" * count) + ("<img src=\"/images/heart_off.jpg\" />" * (5 - count))
+				-%>
 			</span>
 			<b><%=h genre.gsub('_', ' ').capitalize %></b>
 		</div>
@@ -33,8 +34,9 @@
 		<div class="title_rating_attribute">
 			<span id="attribute_<%=n%>">
 				<% count = @title_rating.title.send("avg_#{attribute}") || 0 %>
-				<%= "<img src=\"/images/heart_on.jpg\" />" * count %>
-				<%= "<img src=\"/images/heart_off.jpg\" />" * (5 - count) %>
+				<%= 
+					("<img src=\"/images/heart_on.jpg\" />" * count) + ("<img src=\"/images/heart_off.jpg\" />" * (5 - count))
+				-%>
 			</span>
 			<b><%=h attribute.gsub('_', ' ').capitalize %></b>
 		</div>
