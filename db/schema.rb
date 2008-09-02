@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 10) do
+ActiveRecord::Schema.define(:version => 11) do
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -50,6 +50,14 @@ ActiveRecord::Schema.define(:version => 10) do
     t.datetime "updated_at"
     t.integer  "title_id"
     t.integer  "user_id"
+  end
+
+  create_table "title_review_ratings", :force => true do |t|
+    t.integer  "title_review_id"
+    t.integer  "user_id"
+    t.integer  "rating"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "title_reviews", :force => true do |t|

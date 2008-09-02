@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	layout 'default'
-	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'destroy']
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'destroy', 'set_review_rating']
 
 	# GET /users
 	# GET /users.xml
@@ -76,6 +76,7 @@ class UsersController < ApplicationController
 		end
 	end
 
+=begin
 	# DELETE /users/1
 	# DELETE /users/1.xml
 	def destroy
@@ -87,6 +88,7 @@ class UsersController < ApplicationController
 			format.xml	{ head :ok }
 		end
 	end
+=end
 
 	# GET /users/login
 	# GET /users/login.xml
@@ -104,9 +106,9 @@ class UsersController < ApplicationController
 		end
 	end
 
-	# GET /users/update_user_type
-	# GET /users/update_user_type.xml
-	def update_user_type
+	# GET /users/set_user_type
+	# GET /users/set_user_type.xml
+	def set_user_type
 		# Make sure the user making this request is an admin
 		unless User.find(session[:user_id]).user_type == 'A'
 			render :text => "You are not an Administrator"
@@ -132,6 +134,34 @@ class UsersController < ApplicationController
 			render :text => "The user #{@user.name} is now a " + name
 		else
 			render :text => "Error updating the user!"
+		end
+	end
+
+	def set_review_rating
+		# Get the review, user, and new rating
+		user = User.find_by_id(session[:user_id])
+		review = TitleReview.find_by_id(params[:review_id])
+		score = params[:rating]
+
+		unless user && review
+			render :text => "No such review to rate."
+			return
+		end
+
+		# Find an existing rating or create a new one
+		rating = TitleRating.find(:first, :conditions => ["user_id=? and title_review_id=?", user.id, review.id])
+		unless rating
+			rating = TitleReviewRating.new
+			rating.user_id = user.id
+			rating.title_review_id = review.id
+		end
+		rating.rating = score
+		
+		# Save the rating
+		if rating.save
+			render :text => "Saved the title review rating."
+		else
+			render :text => "Error saving the title review rating." 
 		end
 	end
 

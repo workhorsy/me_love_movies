@@ -64,7 +64,63 @@
 	<%= link_to 'Rate this film', :controller => 'title_ratings', :action => 'new', :title_id => @title.id %>
 </div>
 
-<div style="border: 3px solid purple; padding: 7px;">
+<div id="reviews" style="border: 3px solid purple; padding: 7px;">
+	<script type="text/javascript" language="JavaScript">
+		var IE = document.all ? true : false;
+		var mouse_x = 0;
+		var mouse_y = 0;
+		var prev_mouse_x = -1;
+		var prev_mouse_y = -1;
+		var star_on = "<img src=\"/images/heart_on.jpg\" />";
+		var star_off = "<img src=\"/images/heart_off.jpg\" />";
+		var star_max = 5;
+		var image_width = 20;
+
+		setInterval(check_mouse_off, 125);
+
+		var id_rects = [];
+		function check_mouse_off() {
+			if(mouse_x == prev_mouse_x &&
+				mouse_y == prev_mouse_y) {
+				return;
+			}
+			prev_mouse_x = mouse_x;
+			prev_mouse_y = mouse_y;
+
+			for(i=0; i<id_rects.length; i++) {
+				var c = $(id_rects[i] + '_info');
+				if(!(mouse_x >= c.offsetLeft && mouse_x <= (c.offsetLeft + c.offsetWidth) &&
+					mouse_y >= c.offsetTop && mouse_y <= (c.offsetTop + c.offsetHeight))) {
+					var newHTML = star_off;
+					var count = parseInt($(id_rects[i]).value);
+					for(j=0; j<count; j++) {
+						newHTML += star_on;
+					}
+					for(j=0; j<star_max-count; j++) {
+						newHTML += star_off;
+					}
+					c.innerHTML = newHTML;
+				}
+			}
+		}
+
+		container = $('reviews');
+		container.onmousemove = function(e) {
+			var tempX = 0;
+			var tempY = 0;
+			if (IE) { // grab the x-y pos.s if browser is IE
+				tempX = e.clientX + document.body.scrollLeft;
+				tempY = e.clientY + document.body.scrollTop;
+			} else {  // grab the x-y pos.s if browser is NS
+				tempX = e.pageX;
+				tempY = e.pageY;
+			}
+
+			mouse_x = tempX;
+			mouse_y = tempY;
+		}
+	</script>
+
 	<h2>Reviews</h2>
 
 	<%= link_to_function 'Users', "Element.show('user_container'); Element.hide('moderator_container'); Element.hide('critic_container')" %>
@@ -80,6 +136,7 @@
 		<% end %>
 
 		<% for review in @title_reviews[user_type] %>
+		<% id = review.id %>
 		<div style="border: 3px solid black; margin: 10px;">
 			<%= image_tag review.user.avatar_file_or_default, :size => "100x100" %><br />
 			<b><%= link_to(
@@ -89,6 +146,55 @@
 				:id => review.user.id) %></b><br />
 
 			<%=h review.body %>
+			<% user_rating = review.get_user_rating(session[:user_id]) %>
+			<div id="rating_<%=id%>_container">
+				<input id="rating_<%=id%>" type="hidden" value="<%=user_rating%>" />
+				Your rating: 
+				<span id="rating_<%=id%>_info">
+					<%=
+						("<img src=\"/images/heart_on.jpg\" />" * user_rating) +
+						("<img src=\"/images/heart_off.jpg\" />" * (5 - user_rating))
+					%>
+				</span>
+			</div>
+			<script type="text/javascript" language="JavaScript">
+				id_rects.push('rating_<%=id%>');
+
+				$('rating_<%=id%>_info').onclick = function() {
+					var value = $('rating_<%=id%>');
+					var control = $('rating_<%=id%>_info');
+					var on_count = control.innerHTML.split('on').length-1;
+					value.value = on_count;
+					alert("FIXME: This needs to post the rating to the users/set_review_rating action.");
+				}
+
+				$('rating_<%=id%>_info').onmousemove = function(e) {
+					var control = $('rating_<%=id%>_info');
+					var tempX = 0;
+					var tempY = 0;
+					if (IE) { // grab the x-y pos.s if browser is IE
+						tempX = e.clientX + document.body.scrollLeft;
+						tempY = e.clientY + document.body.scrollTop;
+					} else {  // grab the x-y pos.s if browser is NS
+						tempX = e.pageX;
+						tempY = e.pageY;
+					}
+					tempX -= control.offsetLeft;
+					tempY -= control.offsetTop;
+
+					var star_count = parseInt(tempX / image_width);
+					if(star_count > star_max) star_count = 0;
+
+					var content = star_off;
+					for(i=0; i<star_count; i++) {
+						content += star_on;
+					}
+					for(i=0; i<star_max-star_count; i++) {
+						content += star_off;
+					}
+					control.innerHTML = content;
+				}
+			</script>
 		</div>
 		<% end %>
 	</div>

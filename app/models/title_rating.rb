@@ -1,6 +1,7 @@
 class TitleRating < ActiveRecord::Base
 	belongs_to :title
 	belongs_to :user
+	has_many :title_review_ratings
 
 	validates_presence_of :user, :title
 	validate :is_at_least_one_rating

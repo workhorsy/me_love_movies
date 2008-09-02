@@ -17,7 +17,7 @@
 		<% end %>
 		<input type="hidden" id="status_<%=user.id%>" value="">
 			<%= observe_field "status_#{user.id}",
-								:url => { :controller => 'users', :action => 'update_user_type', :id => user.id },
+								:url => { :controller => 'users', :action => 'set_user_type', :id => user.id },
 								:frequency => 0.25,
 								:on => "changed",
 								:update => 'flash_notice',
