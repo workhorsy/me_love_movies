@@ -14,9 +14,14 @@
 	<div style="float: left;">
 		<h3>Genre:</h3>
 		<% for genre in Title::genres %>
-		<div class="small_left_item">
-			<b><%= genre.gsub('_', ' ').capitalize %>:</b>
-			<%=h @title_rating.send(genre) || 'none' %>
+		<% n = Title::genres.index(genre) %>
+		<div class="title_rating_attribute">
+			<span id="genre_<%=n%>">
+				<% count = @title_rating.title.send("avg_#{genre}") || 0 %>
+				<%= "<img src=\"/images/heart_on.jpg\" />" * count %>
+				<%= "<img src=\"/images/heart_off.jpg\" />" * (5 - count) %>
+			</span>
+			<b><%=h genre.gsub('_', ' ').capitalize %></b>
 		</div>
 		<% end %>
 	</div>
@@ -24,9 +29,14 @@
 	<h3>Attributes:</h3>
 	<div style="float: left;">
 		<% for attribute in Title::attributes %>
-		<div class="small_left_item">
-			<b><%=h attribute.gsub('_', ' ').capitalize %>:</b>
-			<%=h @title_rating.send(attribute) || 'none' %>
+		<% n = Title::attributes.index(attribute) %>
+		<div class="title_rating_attribute">
+			<span id="attribute_<%=n%>">
+				<% count = @title_rating.title.send("avg_#{attribute}") || 0 %>
+				<%= "<img src=\"/images/heart_on.jpg\" />" * count %>
+				<%= "<img src=\"/images/heart_off.jpg\" />" * (5 - count) %>
+			</span>
+			<b><%=h attribute.gsub('_', ' ').capitalize %></b>
 		</div>
 		<% end %>
 	</div>
