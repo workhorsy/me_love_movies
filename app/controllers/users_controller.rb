@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	layout 'default'
-	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'destroy', 'set_review_rating']
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'destroy']
 
 	# GET /users
 	# GET /users.xml
@@ -134,34 +134,6 @@ class UsersController < ApplicationController
 			render :text => "The user #{@user.name} is now a " + name
 		else
 			render :text => "Error updating the user!"
-		end
-	end
-
-	def set_review_rating
-		# Get the review, user, and new rating
-		user = User.find_by_id(session[:user_id])
-		review = TitleReview.find_by_id(params[:review_id])
-		score = params[:rating]
-
-		unless user && review
-			render :text => "No such review to rate."
-			return
-		end
-
-		# Find an existing rating or create a new one
-		rating = TitleRating.find(:first, :conditions => ["user_id=? and title_review_id=?", user.id, review.id])
-		unless rating
-			rating = TitleReviewRating.new
-			rating.user_id = user.id
-			rating.title_review_id = review.id
-		end
-		rating.rating = score
-		
-		# Save the rating
-		if rating.save
-			render :text => "Saved the title review rating."
-		else
-			render :text => "Error saving the title review rating." 
 		end
 	end
 

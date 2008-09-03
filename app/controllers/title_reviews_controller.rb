@@ -115,4 +115,39 @@ class TitleReviewsController < ApplicationController
 			format.xml	{ head :ok }
 		end
 	end
+
+	def set_review_rating
+		# Get the review, user, and new rating
+		user = User.find_by_id(session[:user_id])
+		review = TitleReview.find_by_id(params[:review_id])
+		score = params[:rating].to_i
+		score = nil if score == 0
+
+		unless user
+			render :layout => false, :text => "You have to be logged in to do that."
+			return
+		end
+
+		unless review
+			render :layout => false, :text => "No such review to rate."
+			return
+		end
+
+		# Find an existing rating or create a new one
+		rating = TitleReviewRating.find(:first, :conditions => ["user_id=? and title_review_id=?", user.id, review.id])
+		unless rating
+			rating = TitleReviewRating.new
+			rating.user_id = user.id
+			rating.title_review_id = review.id
+		end
+		rating.rating = score
+		
+		# Save the rating
+		if rating.save
+			render :layout => false, :text => "Saved the title review rating."
+		else
+			render :layout => false, :text => "Error saving the title review rating." 
+		end
+	end
 end
+

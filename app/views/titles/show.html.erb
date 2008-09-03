@@ -149,7 +149,7 @@
 			<% user_rating = review.get_user_rating(session[:user_id]) %>
 			<div id="rating_<%=id%>_container">
 				<input id="rating_<%=id%>" type="hidden" value="<%=user_rating%>" />
-				Your rating: 
+				How you rate this review: 
 				<span id="rating_<%=id%>_info">
 					<%=
 						("<img src=\"/images/heart_on.jpg\" />" * user_rating) +
@@ -157,6 +157,7 @@
 					%>
 				</span>
 			</div>
+
 			<script type="text/javascript" language="JavaScript">
 				id_rects.push('rating_<%=id%>');
 
@@ -165,7 +166,8 @@
 					var control = $('rating_<%=id%>_info');
 					var on_count = control.innerHTML.split('on').length-1;
 					value.value = on_count;
-					alert("FIXME: This needs to post the rating to the users/set_review_rating action.");
+					new Ajax.Updater("rating_<%=id%>", '/title_reviews/set_review_rating?rating=' + on_count + '&review_id=' + <%=id%>, {asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')});
+					return false;
 				}
 
 				$('rating_<%=id%>_info').onmousemove = function(e) {
