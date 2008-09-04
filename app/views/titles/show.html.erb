@@ -197,6 +197,18 @@
 					control.innerHTML = content;
 				}
 			</script>
+
+			<% avg_rating = review.avg_user_rating || 0 %>
+			<div id="average_<%=id%>_container">
+				<input id="average_<%=id%>" type="hidden" value="<%=avg_rating%>" />
+				How others rated this review: 
+				<span id="average_<%=id%>_info">
+					<%=
+						("<img src=\"/images/heart_on.jpg\" />" * avg_rating) +
+						("<img src=\"/images/heart_off.jpg\" />" * (5 - avg_rating))
+					%>
+				</span>
+			</div>
 		</div>
 		<% end %>
 	</div>
