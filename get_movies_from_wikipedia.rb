@@ -1,9 +1,23 @@
+#!/usr/bin/env ruby
 
 require 'rubygems'
 require 'hpricot'
 require 'open-uri'
 require 'active_record'
+require 'net/http'
 
+
+# Get the arguments
+$mode = ARGV.first
+
+# Print the usage if there are no args
+if ARGV.length == 0 || %w{ dl-pages-from-wikipedia scrape-pages-into-db }.include?($mode) == false
+	puts "get_movies_from_wikipedia"
+	puts "Usage: get_movies_from_wikipedia dl-pages-from-wikipedia"
+	puts "       get_movies_from_wikipedia scrape-pages-into-db"
+	puts "\n"
+	exit
+end
 
 # Create a user agent to make the sites think this is a browser
 $url_prefix = "http://en.wikipedia.org"
@@ -11,6 +25,10 @@ $user_agent = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008072
 
 def get_movie_page_from_url(page_url)
 	Hpricot(open($url_prefix + page_url, 'User-Agent' => $user_agent))
+end
+
+def get_movie_page_from_file(file_name)
+	Hpricot(open(file_name))
 end
 
 def get_movies_from_contents(page_url)
@@ -111,7 +129,7 @@ def get_movie_release_date(doc)
 			next if row.search("th").length == 0
 
 			if row.search("th")[0].innerText.downcase == 'release date(s)'
-				return row.search("td")[0].innerText.gsub("(United States)", "").strip
+				return format_date(row.search("td")[0].innerText.gsub("(United States)", "").strip)
 			end
 		end
 	end
@@ -121,10 +139,29 @@ end
 
 def get_movie_name(doc)
 	doc.search("//table[@class='infobox vevent']").each do |table|
-		return table.search("tr").search("th").first.innerText.gsub("\n", ' ').gsub(/\s+/, ' ')
+		return format_name(table.search("tr").search("th").first.innerText.gsub("\n", ' ').gsub(/\s+/, ' '))
 	end
 
 	return nil
+end
+
+def format_name(value)
+	# Move 'the' to the end
+	if value.downcase.index('the ') == 0
+		return value[3..-1].strip + ', The'
+	end
+
+	# Move 'A' to the end
+	if value.downcase.index('a ') == 0
+		return value[1..-1].strip + ', A'
+	end
+
+	# Move 'An' to the end
+	if value.downcase.index('an ') == 0
+		return value[2..-1].strip + ', An'
+	end
+
+	return value.strip
 end
 
 def format_date(value)
@@ -161,32 +198,68 @@ def format_date(value)
 	end
 end
 
-# Connect to the website database
-connection_format = { :adapter => 'mysql',
-						:encoding => 'utf8',
-						:database => 'me_love_movies_development',
-						:username => 'root',
-						:password => 'letmein',
-						:socket => '/var/run/mysqld/mysqld.sock'}
-ActiveRecord::Base.establish_connection(connection_format)
+def dl_pages_from_wikipedia
+	# Get all the contents pages
+	contents =
+	%w{A B C D E F G H I J-K L M N-O P Q R S T U-V-W X-Y-Z numbers}.collect do |n|
+		"/wiki/List_of_films:_#{n}"
+	end
 
-# Load all the models from the website
-%w{rating sex title title_rating title_review user user_type}.each do |file|
-	require "app/models/#{file}.rb"
+	contents.each do |contents_page_url|
+		urls = get_movies_from_contents(contents_page_url)
+		urls.each do |page_url|
+			Net::HTTP.start($url_prefix.gsub('http://', '')) do |http|
+				begin
+					resp = http.get(page_url)
+					next unless resp.code == '200'
+					open(page_url[1..-1] + '.html', "wb") do |file|
+						file.write(resp.body)
+					end
+					puts "downloaded: #{page_url}"
+				rescue Exception => err
+					# Just ignore any errors
+				end
+			end
+
+			sleep 2
+		end
+	end
 end
 
-# Get all the contents pages
-contents =
-%w{A B C D E F G H I J-K L M N-O P Q R S T U-V-W X-Y-Z numbers}.collect do |n|
-	"/wiki/List_of_films:_#{n}"
-end
 
-# Scrape each film and add it to the database
-contents.each do |contents_page_url|
-	urls = get_movies_from_contents(contents_page_url)
-	urls.each do |page_url|
-		doc = get_movie_page_from_url(page_url)
+def scrape_pages_into_db
+	# Connect to the website database
+	connection_format = { :adapter => 'mysql',
+							:encoding => 'utf8',
+							:database => 'me_love_movies_development',
+							:username => 'root',
+							:password => 'letmein',
+							:socket => '/var/run/mysqld/mysqld.sock' }
+	ActiveRecord::Base.establish_connection(connection_format)
 
+	# Load all the models from the website
+	%w{rating sex title title_rating title_review user user_type}.each do |file|
+		require "app/models/#{file}.rb"
+	end
+
+	files = (Dir.entries('wiki') - ['.', '..']).sort
+
+	files.each do |file_name|
+		# Skip any files that have the name (series) in them
+		if file_name.include? '(series)'
+			puts "Skipped: '#{file_name}' is a series summary"
+			next
+		end
+
+		# Skip any files that are a year in film
+		if file_name  =~ /^\d\d\d\d_in_film$/
+			puts "Skipped: '#{file_name}' is a 'year in film' review page"
+			next
+		end
+
+		doc = get_movie_page_from_file('wiki/' + file_name)
+
+		# Get all the data from the file
 		name = get_movie_name(doc)
 		release_date = get_movie_release_date(doc)
 		director = get_movie_director(doc)
@@ -194,16 +267,20 @@ contents.each do |contents_page_url|
 		runtime = get_movie_runtime(doc)
 		#premise = get_movie_story(doc)
 
-		#puts [name, release_date, director, cast, runtime].inspect
-
 		title = Title.new
 		title.name = name
-		title.release_date = format_date(release_date)
+		title.release_date = release_date
 		title.rating = "U"
 		title.director = director
 		title.cast = cast
 		title.runtime = runtime.to_i
 		#title.premise = premise
+
+		# Skip anything that is a play
+		if title.name == "Written\302\240by"
+			puts "Skipped: '#{file_name}' is a play"
+			next
+		end
 
 		# Determine if we should add the date to the name
 		include_year = false
@@ -212,10 +289,15 @@ contents.each do |contents_page_url|
 
 		# If there is another title with the same name, change the older one to include the date
 		other_title = Title.find_by_name(name)
-		if other_title && other_title.release_date.year != title.release_date.year
-			if other_title.update_attributes(:name => "#{other_title.name}(#{other_title.release_date.year})")
-				puts "Renamed: '#{name}' to '#{other_title.name}'"
+		begin
+			if other_title && other_title.release_date.year != title.release_date.year
+				if other_title.update_attributes(:name => "#{other_title.name}(#{other_title.release_date.year})")
+					puts "Renamed: '#{name}' to '#{other_title.name}'"
+				end
 			end
+		rescue
+			puts "Failed: '#{file_name}' on adding date to previous title"
+			puts [title, other_title].inspect
 		end
 
 		# Change the name to include the year if needed
@@ -226,11 +308,18 @@ contents.each do |contents_page_url|
 		if title.save
 			puts "Saved: '#{title.name}'"
 		else
-			puts "Failed: '#{page_url}' " + title.errors.inspect
+			puts "Failed: '#{file_name}' " + title.errors.inspect
 		end
 	end
 end
 
 
+case $mode
+	when 'dl-pages-from-wikipedia':
+		dl_pages_from_wikipedia
+	when 'scrape-pages-into-db':
+		scrape_pages_into_db
+end
+puts "Done"
 
 

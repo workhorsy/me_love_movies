@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   create_table "title_ratings", :force => true do |t|
+    t.integer  "title_id"
     t.integer  "action"
     t.integer  "comedy"
     t.integer  "drama"
@@ -48,7 +49,6 @@ ActiveRecord::Schema.define(:version => 12) do
     t.integer  "cinematography"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "title_id"
     t.integer  "user_id"
   end
 
