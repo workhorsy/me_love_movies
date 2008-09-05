@@ -1,6 +1,8 @@
 <h1>Listing titles</h1>
 
 
+<%= will_paginate @titles %>
+
 <table>
 	<tr>
 		<th>Name</th>
@@ -16,6 +18,7 @@
 <% end -%>
 </table>
 
+<%= will_paginate @titles %>
 <br />
 
 <%= link_to 'New title', new_title_path %>

@@ -1,5 +1,7 @@
 <h1>Listing Ratings</h1>
 
+<%= will_paginate @title_ratings %>
+
 <% if @title_ratings.length == 0 %>
 	<p>There are no ratings.</p>
 <% else %>
@@ -64,4 +66,6 @@
 	<% end %>
 </table>
 <% end %>
+
+<%= will_paginate @title_ratings %>
 

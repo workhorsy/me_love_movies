@@ -6,6 +6,10 @@ class TitleRating < ActiveRecord::Base
 	validates_presence_of :user, :title
 	validate :is_at_least_one_rating
 
+	def self.per_page
+		20
+	end
+
 	def is_at_least_one_rating
 		fields = Title::genres + Title::attributes
 

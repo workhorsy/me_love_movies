@@ -14,8 +14,7 @@ class AdminController < ApplicationController
 	# GET /admin/list_users
 	# GET /admin/list_users.xml
 	def list_users
-		# FIXME: Have this require the user to be admin
-		@users = User.find(:all)
+		@users = User.paginate :page => params[:page], :per_page => User.per_page
 
 		respond_to do |format|
 			format.html
@@ -26,8 +25,7 @@ class AdminController < ApplicationController
 	# GET /admin/list_title_reviews
 	# GET /admin/list_title_reviews.xml
 	def list_title_reviews
-		# FIXME: Have this require the user to be admin
-		@title_reviews = TitleReview.find(:all)
+		@title_reviews = TitleReview.paginate :page => params[:page], :per_page => TitleReview.per_page
 
 		respond_to do |format|
 			format.html
@@ -38,8 +36,7 @@ class AdminController < ApplicationController
 	# GET /admin/list_title_ratings
 	# GET /admin/list_title_ratings.xml
 	def list_title_ratings
-		# FIXME: Have this require the user to be admin
-		@title_ratings = TitleRating.find(:all)
+		@title_ratings = TitleRating.paginate :page => params[:page], :per_page => TitleRating.per_page
 
 		respond_to do |format|
 			format.html

@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
 	attr_accessor :password_confirmation
 	validate :password_is_valid
 
+	def self.per_page
+		20
+	end
 
 	def self.authenticate(name, password)
 		user = self.find_by_user_name(name)

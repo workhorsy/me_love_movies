@@ -11,6 +11,10 @@ class Title < ActiveRecord::Base
 	validates_uniqueness_of :name
 	validates_length_of :name, :in => 2..255, :allow_blank => :true
 
+	def self.per_page
+		20
+	end
+
 	def self.genres
 		%w{action comedy drama scifi romance musical kids adventure 
 				mystery suspense horror fantasy tv war western sports}
