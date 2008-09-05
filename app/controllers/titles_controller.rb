@@ -120,13 +120,15 @@ class TitlesController < ApplicationController
 		return unless request.post?
 
 		# Make sure something was selected
-		if params[:title_rating].values.uniq == [""]
+		if params[:title_rating].values.uniq == ["0"]
 			respond_to do |format|
 				flash[:notice] = "No search parameters were selected"
 				format.html { render :action => "search" }
 				format.xml	{ render :xml => @title_rating.errors, :status => :unprocessable_entity }
 			end
 			return
+		else
+			flash[:notice] = nil
 		end
 
 		# Generate a rating object from our search
@@ -141,7 +143,7 @@ class TitlesController < ApplicationController
 													selected_fields.collect { |f| "avg_#{f}=?" }.join(' or '),
 													*selected_fields.collect { |f| @title_rating.send(f) }
 													],
-								:order => selected_fields.collect { |f| "avg_#{f}" }.join(', '))
+								:order => selected_fields.collect { |f| "avg_#{f}" }.join(', ')).reverse
 	end
 end
 
