@@ -188,6 +188,16 @@ def format_date(value)
 	rescue
 	end
 
+	# If that failed, try parsing it as a 'year (country)'
+	begin
+		if value =~ /^\d\d\d\d \(\w*\)$/
+			index = (value =~ /\(\w*\)/) -1
+			year, month, day = value[0..index].strip, 1, 1
+			return Date.strptime("#{year}-#{month}-#{day}", '%F')
+		end
+	rescue
+	end
+
 	# If that failed, try parsing it as a long date
 	begin
 		month.downcase!
@@ -252,7 +262,7 @@ def scrape_pages_into_db
 		end
 
 		# Skip any files that are a year in film
-		if file_name  =~ /^\d\d\d\d_in_film$/
+		if file_name  =~ /\d\d\d\d_in_film/
 			puts "Skipped: '#{file_name}' is a 'year in film' review page"
 			next
 		end
@@ -295,14 +305,18 @@ def scrape_pages_into_db
 					puts "Renamed: '#{name}' to '#{other_title.name}'"
 				end
 			end
-		rescue
-			puts "Failed: '#{file_name}' on adding date to previous title"
-			puts [title, other_title].inspect
-		end
 
-		# Change the name to include the year if needed
-		if include_year
-			title.name += "(#{title.release_date.year})"
+			# Change the name to include the year if needed
+			if include_year
+				title.name += "(#{title.release_date.year})"
+			end
+		rescue
+			if other_title
+				puts "Skipped: '#{title.name}' because of title and date conflict with '#{other_title.name}'."
+			else
+				puts "Skipped: '#{title.name}' because of title and date had a conflict."
+			end
+			next
 		end
 
 		if title.save
@@ -313,7 +327,7 @@ def scrape_pages_into_db
 	end
 end
 
-
+puts "Started at #{DateTime.now.to_s}"
 case $mode
 	when 'dl-pages-from-wikipedia':
 		dl_pages_from_wikipedia
@@ -321,5 +335,6 @@ case $mode
 		scrape_pages_into_db
 end
 puts "Done"
+puts "Finished at #{DateTime.now.to_s}"
 
 
