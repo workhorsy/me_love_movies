@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 12) do
+ActiveRecord::Schema.define(:version => 13) do
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(:version => 12) do
     t.integer  "user_id"
   end
 
+  add_index "title_ratings", ["id"], :name => "index_title_ratings_on_id"
+
   create_table "title_review_ratings", :force => true do |t|
     t.integer  "title_review_id"
     t.integer  "user_id"
@@ -59,6 +61,8 @@ ActiveRecord::Schema.define(:version => 12) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "title_review_ratings", ["id"], :name => "index_title_review_ratings_on_id"
 
   create_table "title_reviews", :force => true do |t|
     t.integer  "user_id"
@@ -68,6 +72,8 @@ ActiveRecord::Schema.define(:version => 12) do
     t.datetime "updated_at"
     t.integer  "avg_user_rating"
   end
+
+  add_index "title_reviews", ["id"], :name => "index_title_reviews_on_id"
 
   create_table "titles", :force => true do |t|
     t.string   "name"
@@ -106,6 +112,9 @@ ActiveRecord::Schema.define(:version => 12) do
     t.integer  "avg_cinematography"
   end
 
+  add_index "titles", ["id"], :name => "index_titles_on_id"
+  add_index "titles", ["name"], :name => "index_titles_on_name"
+
   create_table "user_types", :force => true do |t|
     t.string "name"
     t.string "abbreviation"
@@ -125,5 +134,8 @@ ActiveRecord::Schema.define(:version => 12) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "users", ["id"], :name => "index_users_on_id"
+  add_index "users", ["name"], :name => "index_users_on_name"
 
 end
