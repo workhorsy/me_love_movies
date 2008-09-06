@@ -4,7 +4,7 @@ class TitlesController < ApplicationController
 	# GET /titles
 	# GET /titles.xml
 	def index
-		@titles = Title.paginate(:page => params[:page], :per_page => Title::per_page)
+		@titles = Title.paginate(:page => params[:page], :per_page => Title::per_page, :order => :name)
 
 		respond_to do |format|
 			format.html # index.html.erb
