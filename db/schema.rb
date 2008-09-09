@@ -1,5 +1,5 @@
 # This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of ActiveRecord to incrementally modify your database, and
+# please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
 # Note that this schema.rb definition is the authoritative source for your database schema. If you need
@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 13) do
+ActiveRecord::Schema.define(:version => 14) do
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(:version => 13) do
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "avg_user_rating"
+    t.float    "avg_user_rating"
   end
 
   add_index "title_reviews", ["id"], :name => "index_title_reviews_on_id"
@@ -86,30 +86,30 @@ ActiveRecord::Schema.define(:version => 13) do
     t.text     "premise"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "avg_action"
-    t.integer  "avg_comedy"
-    t.integer  "avg_drama"
-    t.integer  "avg_scifi"
-    t.integer  "avg_romance"
-    t.integer  "avg_musical"
-    t.integer  "avg_kids"
-    t.integer  "avg_adventure"
-    t.integer  "avg_mystery"
-    t.integer  "avg_suspense"
-    t.integer  "avg_horror"
-    t.integer  "avg_fantasy"
-    t.integer  "avg_tv"
-    t.integer  "avg_war"
-    t.integer  "avg_western"
-    t.integer  "avg_sports"
-    t.integer  "avg_premise"
-    t.integer  "avg_plot"
-    t.integer  "avg_music"
-    t.integer  "avg_acting"
-    t.integer  "avg_special_effects"
-    t.integer  "avg_pace"
-    t.integer  "avg_character_development"
-    t.integer  "avg_cinematography"
+    t.float    "avg_action"
+    t.float    "avg_comedy"
+    t.float    "avg_drama"
+    t.float    "avg_scifi"
+    t.float    "avg_romance"
+    t.float    "avg_musical"
+    t.float    "avg_kids"
+    t.float    "avg_adventure"
+    t.float    "avg_mystery"
+    t.float    "avg_suspense"
+    t.float    "avg_horror"
+    t.float    "avg_fantasy"
+    t.float    "avg_tv"
+    t.float    "avg_war"
+    t.float    "avg_western"
+    t.float    "avg_sports"
+    t.float    "avg_premise"
+    t.float    "avg_plot"
+    t.float    "avg_music"
+    t.float    "avg_acting"
+    t.float    "avg_special_effects"
+    t.float    "avg_pace"
+    t.float    "avg_character_development"
+    t.float    "avg_cinematography"
   end
 
   add_index "titles", ["id"], :name => "index_titles_on_id"
