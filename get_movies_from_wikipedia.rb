@@ -244,7 +244,8 @@ def scrape_pages_into_db
 							:database => 'me_love_movies_development',
 							:username => 'root',
 							:password => 'letmein',
-							:socket => '/var/run/mysqld/mysqld.sock' }
+							#:socket => '/var/run/mysqld/mysqld.sock' }
+							:socket => '/var/lib/mysql/mysql.sock' }
 	ActiveRecord::Base.establish_connection(connection_format)
 
 	# Load all the models from the website
