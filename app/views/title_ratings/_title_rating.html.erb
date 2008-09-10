@@ -25,9 +25,28 @@
 			prev_mouse_y = mouse_y;
 
 			for(i=0; i<id_rects.length; i++) {
+				// Determine if we are not on the star set
 				var c = $(id_rects[i] + '_info');
-				if(!(mouse_x >= c.offsetLeft && mouse_x <= (c.offsetLeft + c.offsetWidth) &&
-					mouse_y >= c.offsetTop && mouse_y <= (c.offsetTop + c.offsetHeight))) {
+				var is_off = false;
+				if(IE) {
+					var pos = IEfindPos(c);
+					var left = pos[0] - window.document.documentElement.scrollLeft;
+					var top = pos[1] - window.document.documentElement.scrollTop;
+					var right = left + c.offsetWidth;
+					var bottom = top + c.offsetHeight;
+					is_off = !(mouse_x >= left && mouse_x <= right &&
+							mouse_y >= top && mouse_y <= bottom);
+				} else {
+					var left = c.offsetLeft;
+					var right = c.offsetLeft + c.offsetWidth;
+					var top = c.offsetTop;
+					var bottom = c.offsetTop + c.offsetHeight;
+					is_off = !(mouse_x >= left && mouse_x <= right &&
+							mouse_y >= top && mouse_y <= bottom);
+				}
+				
+				// Generate new star images if we are not on the set
+				if(is_off) {
 					var newHTML = star_off;
 					var count = parseInt($(id_rects[i]).value);
 					for(j=0; j<count; j++) {
@@ -41,14 +60,14 @@
 			}
 		}
 
-		container = $('container');
+		var container = $('container');
 		container.onmousemove = function(e) {
 			var tempX = 0;
 			var tempY = 0;
-			if (IE) { // grab the x-y pos.s if browser is IE
+			if (IE) { // get the x and y for IE
 				tempX = event.clientX + document.body.scrollLeft;
 				tempY = event.clientY + document.body.scrollTop;
-			} else {  // grab the x-y pos.s if browser is NS
+			} else {  // get the x and y for standard based browsers
 				tempX = e.pageX;
 				tempY = e.pageY;
 			}
@@ -81,19 +100,37 @@
 			value.value = on_count;
 		}
 
+		function IEfindPos(obj) {
+			var posX = obj.offsetLeft;
+			var posY = obj.offsetTop;
+			while(obj.offsetParent) {
+				posX += obj.offsetParent.offsetLeft;
+				posY += obj.offsetParent.offsetTop;
+				if(obj == document.getElementsByTagName('body')[0]) {
+					break
+				} else {
+					obj=obj.offsetParent;
+				}
+			}
+			return [posX, posY];
+		}
+
 		$('title_rating_<%=genre%>_info').onmousemove = function(e) {
 			var control = $('title_rating_<%=genre%>_info');
 			var tempX = 0;
 			var tempY = 0;
-			if (IE) { // grab the x-y pos.s if browser is IE
+			if (IE) { // get the x and y for IE
 				tempX = event.clientX + document.body.scrollLeft;
 				tempY = event.clientY + document.body.scrollTop;
-			} else {  // grab the x-y pos.s if browser is NS
+				var pos = IEfindPos(control);
+				tempX -= (pos[0] + 5);
+				tempY -= (pos[1] - 20);
+			} else {  // get the x and y for standard based browsers
 				tempX = e.pageX;
 				tempY = e.pageY;
+				tempX -= control.offsetLeft;
+				tempY -= control.offsetTop;
 			}
-			tempX -= control.offsetLeft;
-			tempY -= control.offsetTop;
 
 			var star_count = parseInt(tempX / image_width);
 			if(star_count > star_max) star_count = 0;
@@ -138,15 +175,18 @@
 			var control = $('title_rating_<%=attribute%>_info');
 			var tempX = 0;
 			var tempY = 0;
-			if (IE) { // grab the x-y pos.s if browser is IE
+			if (IE) { // get the x and y for IE
 				tempX = event.clientX + document.body.scrollLeft;
 				tempY = event.clientY + document.body.scrollTop;
-			} else {  // grab the x-y pos.s if browser is NS
+				var pos = IEfindPos(control);
+				tempX -= (pos[0] + 5);
+				tempY -= (pos[1] - 20);
+			} else {  // get the x and y for standard based browsers
 				tempX = e.pageX;
 				tempY = e.pageY;
+				tempX -= control.offsetLeft;
+				tempY -= control.offsetTop;
 			}
-			tempX -= control.offsetLeft;
-			tempY -= control.offsetTop;
 
 			var star_count = parseInt(tempX / image_width);
 			if(star_count > star_max) star_count = 0;
