@@ -75,6 +75,21 @@
 			mouse_x = tempX;
 			mouse_y = tempY;
 		}
+		
+		function IEfindPos(obj) {
+			var posX = obj.offsetLeft;
+			var posY = obj.offsetTop;
+			while(obj.offsetParent) {
+				posX += obj.offsetParent.offsetLeft;
+				posY += obj.offsetParent.offsetTop;
+				if(obj == document.getElementsByTagName('body')[0]) {
+					break
+				} else {
+					obj=obj.offsetParent;
+				}
+			}
+			return [posX, posY];
+		}
 		/* ]]> */
 	</script>
 
@@ -98,21 +113,6 @@
 			var control = $('title_rating_<%=genre%>_info');
 			var on_count = control.innerHTML.split('on').length-1;
 			value.value = on_count;
-		}
-
-		function IEfindPos(obj) {
-			var posX = obj.offsetLeft;
-			var posY = obj.offsetTop;
-			while(obj.offsetParent) {
-				posX += obj.offsetParent.offsetLeft;
-				posY += obj.offsetParent.offsetTop;
-				if(obj == document.getElementsByTagName('body')[0]) {
-					break
-				} else {
-					obj=obj.offsetParent;
-				}
-			}
-			return [posX, posY];
 		}
 
 		$('title_rating_<%=genre%>_info').onmousemove = function(e) {
