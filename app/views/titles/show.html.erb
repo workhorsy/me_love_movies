@@ -33,12 +33,11 @@
 	<div style="float: left;">
 		<h3>Genre:</h3>
 		<% for genre in Title::genres %>
-		<% n = Title::genres.index(genre) %>
 		<div class="title_rating_attribute">
-			<span id="genre_<%=n%>">
+			<span>
 				<% count = @title.send("avg_#{genre}") || 0 %>
 				<%= 
-					("<img src=\"/images/heart_on.jpg\" />" * count) + ("<img src=\"/images/heart_off.jpg\" />" * (5 - count))
+					("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * count) + ("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - count))
 				-%>
 			</span>
 			<b><%= genre.gsub('_', ' ').capitalize %></b>
@@ -46,33 +45,40 @@
 		<% end %>
 	</div>
 
+	<br style="clear: both;" />
+
 	<h3>Attributes:</h3>
 	<div style="float: left;">
 		<% for attribute in Title::attributes %>
-		<% n = Title::genres.index(genre) %>
 		<div class="title_rating_attribute">
-			<span id="attribute_<%=n%>">
+			<span>
 				<% count = @title.send("avg_#{attribute}") || 0 %>
 				<%= 
-					("<img src=\"/images/heart_on.jpg\" />" * count) + ("<img src=\"/images/heart_off.jpg\" />" * (5 - count))
+					("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * count) + ("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - count))
 				-%>
 			</span>
 			<b><%=h attribute.gsub('_', ' ').capitalize %></b>
 		</div>
 		<% end %>
 	</div>
+	
+	<br style="clear: both;" />
+	
 	<%= link_to 'Rate this film', :controller => 'title_ratings', :action => 'new', :title_id => @title.id %>
 </div>
 
+<br style="clear: both;" />
+
 <div id="reviews" style="border: 3px solid purple; padding: 7px;">
 	<script type="text/javascript" language="JavaScript">
+		/* <![CDATA[ */
 		var IE = document.all ? true : false;
 		var mouse_x = 0;
 		var mouse_y = 0;
 		var prev_mouse_x = -1;
 		var prev_mouse_y = -1;
-		var star_on = "<img src=\"/images/heart_on.jpg\" />";
-		var star_off = "<img src=\"/images/heart_off.jpg\" />";
+		var star_on = "<img src=\"/images/heart_on.jpg\" alt=\"\" />";
+		var star_off = "<img src=\"/images/heart_off.jpg\" alt=\"\" />";
 		var star_max = 5;
 		var image_width = 20;
 
@@ -109,8 +115,8 @@
 			var tempX = 0;
 			var tempY = 0;
 			if (IE) { // grab the x-y pos.s if browser is IE
-				tempX = e.clientX + document.body.scrollLeft;
-				tempY = e.clientY + document.body.scrollTop;
+				tempX = event.clientX + document.body.scrollLeft;
+				tempY = event.clientY + document.body.scrollTop;
 			} else {  // grab the x-y pos.s if browser is NS
 				tempX = e.pageX;
 				tempY = e.pageY;
@@ -119,6 +125,7 @@
 			mouse_x = tempX;
 			mouse_y = tempY;
 		}
+		/* ]]> */
 	</script>
 
 	<h2>Reviews</h2>
@@ -152,13 +159,14 @@
 				How you rate this review: 
 				<span id="rating_<%=id%>_info">
 					<%=
-						("<img src=\"/images/heart_on.jpg\" />" * user_rating) +
-						("<img src=\"/images/heart_off.jpg\" />" * (5 - user_rating))
+						("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * user_rating) +
+						("<img src=\"/images/heart_off.jpg\"  alt=\"\" />" * (5 - user_rating))
 					%>
 				</span>
 			</div>
 
 			<script type="text/javascript" language="JavaScript">
+				/* <![CDATA[ */
 				id_rects.push('rating_<%=id%>');
 
 				$('rating_<%=id%>_info').onclick = function() {
@@ -196,6 +204,7 @@
 					}
 					control.innerHTML = content;
 				}
+				/* ]]> */
 			</script>
 
 			<% avg_rating = review.avg_user_rating || 0 %>
@@ -204,8 +213,8 @@
 				How others rated this review: 
 				<span id="average_<%=id%>_info">
 					<%=
-						("<img src=\"/images/heart_on.jpg\" />" * avg_rating) +
-						("<img src=\"/images/heart_off.jpg\" />" * (5 - avg_rating))
+						("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * avg_rating) +
+						("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - avg_rating))
 					%>
 				</span>
 			</div>

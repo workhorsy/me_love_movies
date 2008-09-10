@@ -4,13 +4,14 @@
 	<div id="container">
 
 		<script type="text/javascript" language="JavaScript">
+			/* <![CDATA[ */
 			var IE = document.all ? true : false;
 			var mouse_x = 0;
 			var mouse_y = 0;
 			var prev_mouse_x = -1;
 			var prev_mouse_y = -1;
-			var star_on = "<img src=\"/images/heart_on.jpg\" />";
-			var star_off = "<img src=\"/images/heart_off.jpg\" />";
+			var star_on = "<img src=\"/images/heart_on.jpg\" alt=\"\" />";
+			var star_off = "<img src=\"/images/heart_off.jpg\" alt=\"\" />";
 			var star_max = 5;
 			var image_width = 20;
 
@@ -47,8 +48,8 @@
 				var tempX = 0;
 				var tempY = 0;
 				if (IE) { // grab the x-y pos.s if browser is IE
-					tempX = e.clientX + document.body.scrollLeft;
-					tempY = e.clientY + document.body.scrollTop;
+					tempX = event.clientX + document.body.scrollLeft;
+					tempY = event.clientY + document.body.scrollTop;
 				} else {  // grab the x-y pos.s if browser is NS
 					tempX = e.pageX;
 					tempY = e.pageY;
@@ -57,6 +58,7 @@
 				mouse_x = tempX;
 				mouse_y = tempY;
 			}
+			/* ]]> */
 		</script>
 
 		<fieldset>
@@ -66,11 +68,12 @@
 					class="title_rating_attribute">
 				<input id="title_rating_<%=genre%>" name="title_rating[<%=genre%>]" type="hidden" value="<%= @title_rating.send(genre) || 0 %>" />
 				<span id="title_rating_<%=genre%>_info">
-					<%= image_tag('heart_off.jpg') * 6 %>
+					<%= image_tag('heart_off.jpg', :alt => '') * 6 %>
 				</span>
 				<b><%= genre.gsub('_', ' ').capitalize %></b>
 			</div>
 			<script type="text/javascript" language="JavaScript">
+			/* <![CDATA[ */
 			id_rects.push('title_rating_<%=genre%>');
 
 			$('title_rating_<%=genre%>_info').onclick = function() {
@@ -85,8 +88,8 @@
 				var tempX = 0;
 				var tempY = 0;
 				if (IE) { // grab the x-y pos.s if browser is IE
-					tempX = e.clientX + document.body.scrollLeft;
-					tempY = e.clientY + document.body.scrollTop;
+					tempX = event.clientX + document.body.scrollLeft;
+					tempY = event.clientY + document.body.scrollTop;
 				} else {  // grab the x-y pos.s if browser is NS
 					tempX = e.pageX;
 					tempY = e.pageY;
@@ -106,6 +109,7 @@
 				}
 				control.innerHTML = content;
 			}
+			/* ]]> */
 			</script>
 			<% end %>
 		</fieldset>
@@ -117,11 +121,12 @@
 					class="title_rating_attribute">
 				<input id="title_rating_<%=attribute%>" name="title_rating[<%=attribute%>]" type="hidden" value="<%= @title_rating.send(attribute) || 0 %>" />
 				<span id="title_rating_<%=attribute%>_info">
-					<%= image_tag('heart_off.jpg') * 6 %>
+					<%= image_tag('heart_off.jpg', :alt => '') * 6 %>
 				</span>
 				<b><%= attribute.gsub('_', ' ').capitalize %></b>
 			</div>
 			<script type="text/javascript" language="JavaScript">
+			/* <![CDATA[ */
 			id_rects.push('title_rating_<%=attribute%>');
 
 			$('title_rating_<%=attribute%>_info').onclick = function() {
@@ -157,6 +162,7 @@
 				}
 				control.innerHTML = content;
 			}
+			/* ]]> */
 			</script>
 			<% end %>
 		</fieldset>
@@ -171,7 +177,9 @@
 <a name="results"><h2>Search Results</h2></a>
 <div style="padding-bottom: 200px;">
 	<script type="text/javascript" language="JavaScript">
+		/* <![CDATA[ */
 		document.location = "#results";
+		/* ]]> */
 	</script>
 	<% for title in @titles %>
 	<%= link_to title.name, :controller => 'titles', :action => 'show', :id => title.id %><br />

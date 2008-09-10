@@ -19,7 +19,7 @@
 			<span id="genre_<%=n%>">
 				<% count = @title_rating.title.send("avg_#{genre}") || 0 %>
 				<%= 
-					("<img src=\"/images/heart_on.jpg\" />" * count) + ("<img src=\"/images/heart_off.jpg\" />" * (5 - count))
+					("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * count) + ("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - count))
 				-%>
 			</span>
 			<b><%=h genre.gsub('_', ' ').capitalize %></b>
@@ -27,6 +27,9 @@
 		<% end %>
 	</div>
 
+	
+	<br style="clear: both;" />
+	
 	<h3>Attributes:</h3>
 	<div style="float: left;">
 		<% for attribute in Title::attributes %>
@@ -35,7 +38,7 @@
 			<span id="attribute_<%=n%>">
 				<% count = @title_rating.title.send("avg_#{attribute}") || 0 %>
 				<%= 
-					("<img src=\"/images/heart_on.jpg\" />" * count) + ("<img src=\"/images/heart_off.jpg\" />" * (5 - count))
+					("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * count) + ("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - count))
 				-%>
 			</span>
 			<b><%=h attribute.gsub('_', ' ').capitalize %></b>
@@ -43,6 +46,8 @@
 		<% end %>
 	</div>
 </div>
+
+<br style="clear: both;" />
 
 <%= link_to 'Edit this rating', edit_title_rating_path(@title_rating) %> <br />
 <%= link_to "Back to '#{@title_rating.title.name}'", :controller => 'titles', :action => 'show', :id => @title_rating.title.id %>
