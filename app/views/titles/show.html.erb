@@ -25,7 +25,7 @@
 	<b>Premise:</b>
 	<%=h @title.premise %><br />
 
-	<%= link_to 'Edit title information', edit_title_path(@title) %>
+	<%= link_to 'Edit title information', edit_title_path(@title), :id => 'lnk_edit_title' %>
 </div>
 
 <div style="float: left; border: 3px solid green; padding: 7px;">
@@ -64,7 +64,7 @@
 	
 	<br style="clear: both;" />
 	
-	<%= link_to 'Rate this film', :controller => 'title_ratings', :action => 'new', :title_id => @title.id %>
+	<%= link_to 'Rate this film', {:controller => 'title_ratings', :action => 'new', :title_id => @title.id }, {:id => 'lnk_edit_rating'} %>
 </div>
 
 <br style="clear: both;" />
@@ -164,14 +164,15 @@
 
 	<h2>Reviews</h2>
 
+	<%= link_to 'Review this film', {:controller => 'title_reviews', :action => 'new', :title_id => @title.id}, {:id => 'lnk_edit_review'} %>
+
+	<br />
 	<%= link_to_function 'Users', "Element.show('user_container'); Element.hide('moderator_container'); Element.hide('critic_container')" %>
 	<%= link_to_function 'Moderators', "Element.show('moderator_container'); Element.hide('user_container'); Element.hide('critic_container')" %>
 	<%= link_to_function 'Critics', "Element.show('critic_container'); Element.hide('moderator_container'); Element.hide('user_container')" %>
 
 	<% for user_type in %w{user moderator critic} %>
 	<div id="<%=user_type%>_container" style="<%= user_type!='user' ? 'display: none; ' : '' %>border: 3px solid blue; padding: 7px;">
-		<%= link_to 'Review this film', :controller => 'title_reviews', :action => 'new', :title_id => @title.id %>
-
 		<% if @title_reviews[user_type].length == 0 %>
 			<p>There are no reviews.</p>
 		<% end %>
@@ -260,4 +261,12 @@
 	</div>
 	<% end %>
 </div>
+
+<script type="text/javascript">
+	// <!CDATA[
+	tags_visible_to_moderator_only('a', 'lnk_edit_title');
+	tags_visible_to_user_only('a', 'lnk_edit_rating');
+	tags_visible_to_user_only('a', 'lnk_edit_review');
+	// ]]>
+</script>
 

@@ -49,7 +49,13 @@
 
 <br style="clear: both;" />
 
-<%= link_to 'Edit this rating', edit_title_rating_path(@title_rating) %> <br />
+<%= link_to 'Edit this rating', edit_title_rating_path(@title_rating), :id => 'lnk_edit_rating' %> <br />
 <%= link_to "Back to '#{@title_rating.title.name}'", :controller => 'titles', :action => 'show', :id => @title_rating.title.id %>
+
+<script type="text/javascript">
+	// <!CDATA[
+	tags_visible_to_originating_user_only('a', 'lnk_edit_rating', <%= h @title_rating.user.id %>);
+	// ]]>
+</script>
 
 

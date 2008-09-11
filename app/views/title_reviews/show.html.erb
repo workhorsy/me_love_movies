@@ -15,5 +15,11 @@
 </p>
 
 
-<%= link_to 'Edit this review', edit_title_review_path(@title_review) %> <br />
+<%= link_to 'Edit this review', edit_title_review_path(@title_review), { :id => 'lnk_edit_review' } %> <br />
 <%= link_to "Back to '#{@title_review.title.name}'", :controller => 'titles', :action => 'show', :id => @title_review.title.id %>
+
+<script type="text/javascript">
+	// <!CDATA[
+	tags_visible_to_originating_user_only('a', 'lnk_edit_review', <%= h @title_review.user.id %>);
+	// ]]>
+</script>

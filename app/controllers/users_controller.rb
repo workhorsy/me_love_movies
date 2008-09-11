@@ -94,12 +94,18 @@ class UsersController < ApplicationController
 	# GET /users/login.xml
 	def login
 		session[:user_id] = nil
+		cookies[:user_name] = nil
+		cookies[:user_type] = nil
+		cookies[:user_id] = nil
 		return unless request.post?
 
 		user = User.authenticate(params[:user_name], params[:password])
 		if user
 			session[:user_id] = user.id
-			flash[:notice] = "Successfully loged in."
+			cookies[:user_name] = { :value => user.name }
+			cookies[:user_type] = { :value => user.user_type }
+			cookies[:user_id] = { :value => user.id.to_s }
+ 			flash[:notice] = "Successfully loged in."
 			redirect_to(:controller => 'home', :action => :index)
 		else
 			flash[:notice] = "Login failed. Try again."
