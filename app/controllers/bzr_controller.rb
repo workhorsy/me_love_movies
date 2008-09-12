@@ -1,6 +1,6 @@
 
 class BzrController < ApplicationController
-	layout nil
+	layout false
 
 	# FIXME: Change this so it does not allow access if you are not an admin or there is no bazaar
 	def log

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	layout 'default'
-	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'destroy']
+	before_filter :authorize_admins_only, :only => ['destroy']
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update']
 
 	# GET /users
 	# GET /users.xml
@@ -76,7 +77,6 @@ class UsersController < ApplicationController
 		end
 	end
 
-=begin
 	# DELETE /users/1
 	# DELETE /users/1.xml
 	def destroy
@@ -88,7 +88,6 @@ class UsersController < ApplicationController
 			format.xml	{ head :ok }
 		end
 	end
-=end
 
 	# GET /users/login
 	# GET /users/login.xml
@@ -143,11 +142,9 @@ class UsersController < ApplicationController
 		end
 	end
 
-	private
+	private 
 
-	def authorize_originating_user_only
-		if params[:id].to_i != session[:user_id]
-			render :layout => 'default', :text => "<p id=\"flash_notice\">You don't have permission to access this page.</p>"
-		end
+	def get_originating_user_id
+		params[:id].to_i
 	end
 end

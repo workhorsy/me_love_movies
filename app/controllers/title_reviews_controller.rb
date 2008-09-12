@@ -1,5 +1,8 @@
 class TitleReviewsController < ApplicationController
 	layout 'default'
+	before_filter :authorize_admins_only, :only => ['destroy']
+	before_filter :authorize_users_only, :only => ['new', 'create']
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update']
 
 	# GET /title_reviews
 	# GET /title_reviews.xml
@@ -148,6 +151,13 @@ class TitleReviewsController < ApplicationController
 		else
 			render :layout => false, :text => "Error saving the title review rating." 
 		end
+	end
+
+	private
+
+	def get_originating_user_id
+		review = TitleReview.find_by_id(params[:id])
+		review.user.id
 	end
 end
 

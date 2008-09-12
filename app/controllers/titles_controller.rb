@@ -1,5 +1,7 @@
 class TitlesController < ApplicationController
 	layout 'default'
+	before_filter :authorize_admins_only, :only => ['create', 'new', 'destroy']
+	before_filter :authorize_moderators_only, :only => ['edit', 'update']
 
 	# GET /titles
 	# GET /titles.xml

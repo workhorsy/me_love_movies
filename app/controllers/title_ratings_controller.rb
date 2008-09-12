@@ -1,5 +1,8 @@
 class TitleRatingsController < ApplicationController
 	layout 'default'
+	before_filter :authorize_admins_only, :only => ['destroy']
+	before_filter :authorize_users_only, :only => ['new', 'create']
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update']
 
 	# GET /title_ratings
 	# GET /title_ratings.xml
@@ -120,6 +123,13 @@ class TitleRatingsController < ApplicationController
 			format.html { redirect_to(title_ratings_url) }
 			format.xml	{ head :ok }
 		end
+	end
+
+	private
+
+	def get_originating_user_id
+		rating = TitleRating.find_by_id(params[:id])
+		rating.user.id
 	end
 end
 
