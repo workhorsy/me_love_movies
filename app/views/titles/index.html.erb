@@ -1,3 +1,11 @@
+
+<script type="text/javascript">
+	// <!CDATA[
+	// Hide the page, while we hide elements that the user is not supposed to see
+	document.body.hide();
+	// ]]>
+</script>
+
 <h1>Listing titles</h1>
 
 
@@ -24,9 +32,11 @@
 
 <script type="text/javascript">
 	// <!CDATA[
+	// Hide all the elements the user is not supposed to see. Then show the page.
 	tags_visible_to_moderator_only('a', /^link_edit_\d*$/);
 	tags_visible_to_admin_only('a', /^link_delete_\d*$/);
 	tags_visible_to_admin_only('a', 'lnk_new_title');
+	document.body.show();
 	// ]]>
 </script>
 

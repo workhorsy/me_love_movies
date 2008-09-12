@@ -1,4 +1,11 @@
 
+<script type="text/javascript">
+	// <!CDATA[
+	// Hide the page, while we hide elements that the user is not supposed to see
+	document.body.hide();
+	// ]]>
+</script>
+
 <h1><%=h @title.name %></h1>
 
 <div style="border: 3px solid red; padding: 7px;">
@@ -264,9 +271,11 @@
 
 <script type="text/javascript">
 	// <!CDATA[
+	// Hide all the elements the user is not supposed to see. Then show the page.
 	tags_visible_to_moderator_only('a', 'lnk_edit_title');
 	tags_visible_to_user_only('a', 'lnk_edit_rating');
 	tags_visible_to_user_only('a', 'lnk_edit_review');
+	document.body.show();
 	// ]]>
 </script>
 

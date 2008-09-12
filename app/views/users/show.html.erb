@@ -1,4 +1,10 @@
 
+<script type="text/javascript">
+	// <!CDATA[
+	// Hide the page, while we hide elements that the user is not supposed to see
+	document.body.hide();
+	// ]]>
+</script>
 
 <div>
 	<%= image_tag @user.avatar_file_or_default, :size => "100x100" %>
@@ -57,6 +63,8 @@
 
 <script type="text/javascript">
 	// <!CDATA[
+	// Hide all the elements the user is not supposed to see. Then show the page.
 	tags_visible_to_user_only('a', 'lnk_edit_user');
+	document.body.show();
 	// ]]>
 </script>

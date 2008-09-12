@@ -1,4 +1,11 @@
 
+<script type="text/javascript">
+	// <!CDATA[
+	// Hide the page, while we hide elements that the user is not supposed to see
+	document.body.hide();
+	// ]]>
+</script>
+
 <p>
   <b>Title:</b>
   <%=h @title_review.title.name %>
@@ -20,6 +27,8 @@
 
 <script type="text/javascript">
 	// <!CDATA[
+	// Hide all the elements the user is not supposed to see. Then show the page.
 	tags_visible_to_originating_user_only('a', 'lnk_edit_review', <%= h @title_review.user.id %>);
+	document.body.show();
 	// ]]>
 </script>
