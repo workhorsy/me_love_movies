@@ -1,5 +1,14 @@
 <h1>Title Search</h1>
 
+<% form_tag do -%>
+	Search by Title: <%= text_field_tag :name, params[:name] %>
+	Director: <%= text_field_tag :director, params[:director] %>
+	Actor: <%= text_field_tag :actor, params[:actor] %>
+
+	<%= hidden_field_tag :type, 'by_name' %>
+	<%= submit_tag 'Search' %>
+<% end -%>
+
 <% form_for @title_rating, :url => {:action => 'search'} do |f| %>
 	<div id="container">
 
@@ -208,6 +217,7 @@
 		</fieldset>
 
 		<p>
+			<%= hidden_field_tag :type, 'by_rating' %>
 			<%= f.submit 'Search' %>
 		</p>
 	</div>
