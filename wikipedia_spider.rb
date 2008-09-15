@@ -11,7 +11,7 @@ require 'net/http'
 $mode = ARGV.first
 
 # Print the usage if there are no args
-if ARGV.length == 0 || %w{ dl-pages-from-wikipedia scrape-pages-into-db }.include?($mode) == false
+if ARGV.length == 0 || %w{ download scrape }.include?($mode) == false
 	puts "wikipedia_spider"
 	puts "Usage: wikipedia_spider COMMAND"
 	puts "\n"
@@ -218,6 +218,9 @@ def dl_pages_from_wikipedia
 		"/wiki/List_of_films:_#{n}"
 	end
 
+	# Make the wiki directory if it does not exist
+	Dir.mkdir('wiki') unless File.directory?('wiki')
+
 	contents.each do |contents_page_url|
 		urls = get_movies_from_contents(contents_page_url)
 		urls.each do |page_url|
@@ -256,7 +259,13 @@ def scrape_pages_into_db
 		require "app/models/#{file}.rb"
 	end
 
+	# Make the wiki directory if it does not exist
+	Dir.mkdir('wiki') unless File.directory?('wiki')
+
 	files = (Dir.entries('wiki') - ['.', '..']).sort
+
+	# If there are no files, print a message
+	puts "There are not files to scrape." and return unless files.length > 0
 
 	files.each do |file_name|
 		# Skip any files that have the name (series) in them
@@ -331,14 +340,20 @@ def scrape_pages_into_db
 	end
 end
 
-puts "Started at #{DateTime.now.to_s}"
+time_start = Time.now
+puts "Started at #{time_start.to_s}"
+
 case $mode
 	when 'download':
 		dl_pages_from_wikipedia
 	when 'scrape':
 		scrape_pages_into_db
 end
+
 puts "Done"
-puts "Finished at #{DateTime.now.to_s}"
+time_end = Time.now
+puts "Finished at #{time_end.to_s}"
+puts "Total time #{(time_end - time_start).to_s}"
+
 
 
