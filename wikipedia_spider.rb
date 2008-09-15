@@ -12,10 +12,13 @@ $mode = ARGV.first
 
 # Print the usage if there are no args
 if ARGV.length == 0 || %w{ dl-pages-from-wikipedia scrape-pages-into-db }.include?($mode) == false
-	puts "get_movies_from_wikipedia"
-	puts "Usage: get_movies_from_wikipedia dl-pages-from-wikipedia"
-	puts "       get_movies_from_wikipedia scrape-pages-into-db"
+	puts "wikipedia_spider"
+	puts "Usage: wikipedia_spider COMMAND"
 	puts "\n"
+	puts "List of Commands:\n"
+	puts "download    Downloads the pages from wikipedia and stores them in "
+	puts "            the 'wiki' directory."
+	puts "scrape      Scrapes the pages located in the 'wiki' directory."
 	exit
 end
 
@@ -330,9 +333,9 @@ end
 
 puts "Started at #{DateTime.now.to_s}"
 case $mode
-	when 'dl-pages-from-wikipedia':
+	when 'download':
 		dl_pages_from_wikipedia
-	when 'scrape-pages-into-db':
+	when 'scrape':
 		scrape_pages_into_db
 end
 puts "Done"
