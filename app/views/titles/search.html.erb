@@ -1,13 +1,60 @@
-<h1>Title Search</h1>
 
-<% form_tag do -%>
-	Search by Title: <%= text_field_tag :name, params[:name] %>
-	Director: <%= text_field_tag :director, params[:director] %>
-	Actor: <%= text_field_tag :actor, params[:actor] %>
 
-	<%= hidden_field_tag :type, 'by_name' %>
-	<%= submit_tag 'Search' %>
-<% end -%>
+
+<div style="width:960px;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+Search by Name
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
+
+<div id="search_page" style="padding-left:20px;">
+	<% form_tag do -%>
+		<b>Search by Title: </b><%= text_field_tag :name, params[:name] %>
+		<b>Director: </b><%= text_field_tag :director, params[:director] %>
+		<b>Actor: </b><%= text_field_tag :actor, params[:actor] %>
+
+		<%= hidden_field_tag :type, 'by_name' %>
+		<%= submit_tag 'Search', :class => 'submitbutton' %>
+	<% end -%>
+</div>
+
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
+</div>
+
+
+
+
+<div style="width:960px; padding-top:15px;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+Search by Ratings
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
 
 <% form_for @title_rating, :url => {:action => 'search'} do |f| %>
 	<div id="container">
@@ -48,10 +95,11 @@
 						is_off = !(mouse_x >= left && mouse_x <= right &&
 								mouse_y >= top && mouse_y <= bottom);
 					} else {
-						var left = c.offsetLeft;
-						var right = c.offsetLeft + c.offsetWidth;
-						var top = c.offsetTop;
-						var bottom = c.offsetTop + c.offsetHeight;
+						var pos = IEfindPos(c);
+						var left = pos[0];
+						var top = pos[1];
+						var right = left + c.offsetWidth;
+						var bottom = top + c.offsetHeight;
 						is_off = !(mouse_x >= left && mouse_x <= right &&
 								mouse_y >= top && mouse_y <= bottom);
 					}
@@ -104,8 +152,7 @@
 			/* ]]> */
 		</script>
 
-		<fieldset>
-			<legend>Genre</legend>
+		<h2>Genre</h2>
 			<% for genre in Title::genres %>
 			<div id="title_rating_<%=genre%>_container"
 					class="title_rating_attribute">
@@ -139,8 +186,9 @@
 				} else {  // get the x and y for standard based browsers
 					tempX = e.pageX;
 					tempY = e.pageY;
-					tempX -= control.offsetLeft;
-					tempY -= control.offsetTop;
+					var pos = IEfindPos(control);
+					tempX -= (pos[0] + 5);
+					tempY -= (pos[1] - 20);
 				}
 
 				var star_count = parseInt(tempX / image_width);
@@ -158,10 +206,10 @@
 			/* ]]> */
 			</script>
 			<% end %>
-		</fieldset>
 
-		<fieldset>
-			<legend>Attributes</legend>
+		<br style="clear:both"/>
+
+		<h2>Attributes</h2>
 			<% for attribute in Title::attributes %>
 			<div id="title_rating_<%=attribute%>_container"
 					class="title_rating_attribute">
@@ -195,8 +243,9 @@
 				} else {  // get the x and y for standard based browsers
 					tempX = e.pageX;
 					tempY = e.pageY;
-					tempX -= control.offsetLeft;
-					tempY -= control.offsetTop;
+					var pos = IEfindPos(control);
+					tempX -= (pos[0] + 5);
+					tempY -= (pos[1] - 20);
 				}
 
 				var star_count = parseInt(tempX / image_width);
@@ -214,14 +263,22 @@
 			/* ]]> */
 			</script>
 			<% end %>
-		</fieldset>
 
-		<p>
-			<%= hidden_field_tag :type, 'by_rating' %>
-			<%= f.submit 'Search' %>
-		</p>
+		<br style="clear:both"/>
+
+		<%= hidden_field_tag :type, 'by_rating' %>
+		<%= f.submit 'Search', :class => 'submitbutton' %>
 	</div>
 <% end %>
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
+</div>
+
 
 <% if @titles %>
 <a name="results"><h2>Search Results</h2></a>

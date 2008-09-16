@@ -74,3 +74,13 @@ function tags_visible_to_user_type_only(tag_type, name_pattern, is_user_type) {
 	}
 }
 
+function has_default_text(tag_id) {
+	$(tag_id).onfocus = function() {
+		if (this.value == this.defaultValue) this.value = '';
+	};
+	$(tag_id).onblur = function() {
+		if (this.value == '') this.value = (this.defaultValue ? this.defaultValue : '');
+	};
+}
+
+
