@@ -149,6 +149,17 @@ def get_movie_name(doc)
 end
 
 def format_name(value)
+	# If there are even number of quotes, remove them
+	if value.count('"') % 2 == 0
+		value = value.gsub('"', '')
+	end
+	if value.count("'") % 2 == 0
+		value = value.gsub("'", '')
+	end
+	if value.count('“”') % 2 == 0
+		value = value.gsub('“', '').gsub('”', '')
+	end
+
 	# Move 'the' to the end
 	if value.downcase.index('the ') == 0
 		return value[3..-1].strip + ', The'
@@ -224,6 +235,9 @@ def dl_pages_from_wikipedia
 	contents.each do |contents_page_url|
 		urls = get_movies_from_contents(contents_page_url)
 		urls.each do |page_url|
+			# Run garbage collection in case ruby decides not to when things gets heavy
+			GC.start
+
 			Net::HTTP.start($url_prefix.gsub('http://', '')) do |http|
 				begin
 					resp = http.get(page_url)
@@ -268,6 +282,9 @@ def scrape_pages_into_db
 	puts "There are not files to scrape." and return unless files.length > 0
 
 	files.each do |file_name|
+		# Run garbage collection in case ruby decides not to when things gets heavy
+		GC.start
+
 		# Skip any files that have the name (series) in them
 		if file_name.include? '(series)'
 			puts "Skipped: '#{file_name}' is a series summary"
