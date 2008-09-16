@@ -6,40 +6,131 @@
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title>Me Love Movies </title>
   <%= stylesheet_link_tag 'scaffold' %>
-  <%= stylesheet_link_tag 'default' %>
+  <%= stylesheet_link_tag 'style' %>
   <%= javascript_include_tag :defaults %>
 </head>
 <body>
 
-<h1>Me Love Movies</h1> <%= user = get_user_from_session(); 'Howdy ' + (user ? user.name : 'Stranger') %>
+<!-- ================================================= HEADER ================================================ -->
+<div id="header">
+<div id="logo"><a href="/"><img src="/images/me_love_movies_logo.png" /></a></div>
+<%= user = get_user_from_session(); 'Howdy ' + (user ? user.name : 'Stranger') %>
 
-<div id="navigation">
+<!-- Header Section -->
+<div id="main_nav">
 	<ul>
-		<li><%= link_to 'Home', :controller => 'home', :action => 'index' %></li>
-		<li><%= link_to 'Search', :controller => 'titles', :action => 'search' %></li>
-		<% if session[:user_id] %>
-		<li>
-			<%= link_to 'My Account', :controller => 'users', :action => 'show', :id => session[:user_id] %>
-			\ <%= link_to 'Logout', :controller => 'users', :action => 'login' %>
+		<li id="nav_home"><%= link_to 'Home', :controller => 'home', :action => 'index' %></li>
+		<li id="nav_search"><%= link_to 'Search', :controller => 'titles', :action => 'search' %></li>
+		<li id="nav_user">
+			<% if session[:user_id] %>
+			<%= link_to 'My Account', :controller => 'users', :action => 'show', :id => session[:user_id] -%>
+			<% else %>
+			<%= link_to 'Sign Up', :controller => 'users', :action => 'new' -%>
+			<% end %>
 		</li>
-		<% else %>
-		<li>
-			<%= link_to 'Login', :controller => 'users', :action => 'login' %>
-			\ <%= link_to 'Signup', :controller => 'users', :action => 'new' %>
-		</li>
-		<% end %>
 	</ul>
-</div>
-<hr />
 
+	<script type="text/javascript" language="JavaScript">
+		// <![CDATA[
+		var controller = "<%= self.request.path_parameters['controller'] %>";
+		if(controller == 'home') {
+			$('nav_home').className = "selected";
+		} else if(controller == 'titles') {
+			$('nav_search').className = "selected";
+		} else if(controller == 'users') {
+			$('nav_user').className = "selected";
+		}
+		// ]]>
+	</script>
+</div>
+</div>
+
+
+
+
+
+<!-- Content Top Section -->
+<div id="nav2">
+
+<div id="login">
+	<% form_tag :controller => 'users', :action => 'login' do %>
+		<%= text_field_tag :user_name, params[:user_name], :value => 'Username', :onfocus => '' %>
+		<%= text_field_tag :password, params[:password], :value => 'Password' %>
+		<%= submit_tag "Login", :id => 'submitbutton' %>
+	<% end %>
+
+<script type="text/javascript" language="JavaScript">
+	// <![CDATA[
+	// FIXME: This whole concept does not work with a password field
+	$('user_name').onfocus = function() {
+		if (this.value == this.defaultValue) this.value = '';
+	};
+	$('user_name').onblur = function() {
+		if (this.value == '') this.value = (this.defaultValue ? this.defaultValue : '');
+	};
+	$('password').onfocus = function() {
+		if (this.value == this.defaultValue) this.value = '';
+	};
+	$('password').onblur = function() {
+		if (this.value == '') this.value = (this.defaultValue ? this.defaultValue : '');
+	};
+	// ]]>
+</script>
+
+</div>
+
+<!-- Search Movie by Title -->
+<div id="search">
+    <form>
+        <table cellpadding="0" cellspacing="0"><tr>
+        <td><input type="text" name="emailaddress" value="Search by Title" />&nbsp;</td>
+        <td><input type="submit" name="submitbutton" id="submitbutton" value="Search" /></td>
+        </tr></table>
+    </form>
+</div>
+</div>
+
+
+
+<!-- ================================================= MAIN CONTENT ================================================ -->
+<div id="content">
 <p id="flash_notice"><%= flash[:notice] %></p>
+<script type="text/javascript" language="JavaScript">
+	// <![CDATA[
+	if($('flash_notice').innerHTML == '') {
+		$('flash_notice').hide();
+	}
+	// ]]>
+</script>
 
 <%= yield %>
 
-<hr />
+<br style="clear:both"/> 
+</div>
+
+
+
+
+
+
+
+<!-- ================================================= FOOTER ================================================ -->
 <div id="footer">
-	Copyright &copy; 2008 Me Love Movies
-	| Rails v<%= RAILS_GEM_VERSION %> in <%= RAILS_ENV %> mode
+
+<ul>
+    <li><a href="">Terms of Service</a></li>
+    <li><a href="">Privacy Policy</a></li>
+    <li><a href="">How This Works</a></li>
+    <li><a href="">About</a></li>
+    <li><a href="">Advertise with Us</a></li>
+    <li><a href="">Contact</a></li>
+</ul>
+
+</div>
+
+<div id="footer2"><br />
+	Border7 Group. Copyright &copy; 2008 MeLoveMovies.com. Designed by <a href="http://www.border7.com">Border7 Studios.</a>
+	<br /> Rails v<%= RAILS_GEM_VERSION %> in <%= RAILS_ENV %> mode
 	<% if CodeBase.is_available -%>
 		| Bazaar:  
 		<%= link_to_remote "log", :update => "bazaar_log",
