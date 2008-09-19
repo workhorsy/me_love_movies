@@ -14,7 +14,8 @@ function get_cookie(name) {
 }
 
 function is_logged_in() {
-	return (get_cookie('user_name') != null);
+	value = get_cookie('user_name');
+	return (value != null && value != "");
 }
 
 function is_user_admin() {

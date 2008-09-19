@@ -14,7 +14,6 @@
 <!-- ================================================= HEADER ================================================ -->
 <div id="header">
 <div id="logo"><a href="/"><img src="/images/me_love_movies_logo.png" /></a></div>
-<%= user = get_user_from_session(); 'Howdy ' + (user ? user.name : 'Stranger') %>
 
 <!-- Header Section -->
 <div id="main_nav">
@@ -52,21 +51,35 @@
 <!-- Content Top Section -->
 <div id="nav2">
 
-<div id="login">
+<div id="login" class="login">
 	<% form_tag :controller => 'users', :action => 'login' do %>
 		<%= text_field_tag :user_name, params[:user_name], :value => 'Username' -%>
 		<%= text_field_tag :password, params[:password], :value => 'Password' -%>
 		<%= submit_tag "Login", :id => 'submitbutton' -%>
 	<% end %>
 
-<script type="text/javascript" language="JavaScript">
-	// <![CDATA[
-	// FIXME: This whole concept does not work with a password field
-	has_default_text('user_name');
-	has_default_text('password');
-	// ]]>
-</script>
+	<script type="text/javascript" language="JavaScript">
+		// <![CDATA[
+		// FIXME: This whole concept does not work with a password field
+		has_default_text('user_name');
+		has_default_text('password');
+		if(is_logged_in()) {
+			$('login').hide();
+		}
+		// ]]>
+	</script>
+</div>
 
+<div id="logout" class="login">
+	<%= user = get_user_from_session(); 'Howdy ' + (user ? user.name : 'Stranger') %>
+	<%= link_to 'logout', :controller => 'users', :action => 'logout' %>
+	<script type="text/javascript" language="JavaScript">
+		// <![CDATA[
+		if(is_logged_in() == false) {
+			$('logout').hide();
+		}
+		// ]]>
+	</script>
 </div>
 
 <!-- Search Movie by Title -->

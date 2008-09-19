@@ -111,6 +111,17 @@ class UsersController < ApplicationController
 		end
 	end
 
+	# GET /users/logout
+	# GET /users/logout.xml
+	def logout
+		session[:user_id] = nil
+		cookies[:user_name] = nil
+		cookies[:user_type] = nil
+		cookies[:user_id] = nil
+
+		redirect_to(:controller => 'home', :action => 'index')
+	end
+
 	# GET /users/set_user_type
 	# GET /users/set_user_type.xml
 	def set_user_type
