@@ -1,8 +1,225 @@
 
 
-<ul>
-	<li>FIXME: Add new movies</li>
-	<li>FIXME: Add most popular</li>
-	<li>FIXME: Add top movies in category</li>
-	<li><%= link_to 'List all titles', :controller => 'titles', :action => 'index' %></li>
-</ul>
+
+<% for category in @random_categories %>
+<div style="width:645px; float:left; margin-top:15px;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+Best <%= category.humanize %>
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
+<table class="content" width="100%" align="center">
+<tr valign="top">
+<% for title in @titles[category] %>
+<!-- Start Entry Block -->
+<td align="center"><div class="image_holder1">Poster</div>
+<h2 style="padding:0"><%=link_to(title.name, {:controller => 'titles', :action => 'show', :id => title.id}, :class => 'black')%></h2>
+<span class="orange"><%= category.humanize %>: </span><span class="green"><%=h title.send("avg_#{category}") %></span>
+</td>
+<!-- End Block -->
+<% end %>
+<% if @titles[category].length == 0 %>
+<td align="center">There are no ratings for this category yet.</td>
+<% end %>
+
+</tr>
+</table>
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
+</div>
+<% end %>
+
+
+
+
+<div style="width:300px; float:right;  clear: right;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+Box Office Love
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
+<table width="100%" cellpadding="0" cellspacing="0">
+<!-- Box Office Entry Block -->
+<tr valign="bottom">
+<td><h2><a href="to_movie_profile" class="black">The Dark Knight</a></h2></td>
+    <td class="money">378.5 MIL</td></tr>
+<tr><td colspan="2" class="rating">
+    <span class="orange">Action: </span><span class="green">4.9</span> | 
+    <span class="orange">Comedy: </span><span class="green">4.7</span> | 
+    <span class="orange">Suspence: </span><span class="green">4.8</span><br /><br />
+</td></tr>
+<!-- Eng Entry Block -->
+
+<tr valign="bottom">
+<td><h2><a href="to_movie_profile" class="black">Tropic Thunder</a></h2></td>
+    <td class="money">68.3 MIL</td></tr>
+<tr><td colspan="2" class="rating">
+    <span class="orange">Action: </span><span class="green">3.9</span> | 
+    <span class="orange">Comedy: </span><span class="green">4.3</span> | 
+    <span class="orange">Pace: </span><span class="green">3.6</span><br /><br />
+</td></tr>
+
+<tr valign="bottom">
+<td><h2><a href="to_movie_profile" class="black">Death Race</a></h2></td>
+    <td class="money">18.5 MIL</td></tr>
+<tr><td colspan="2" class="rating">
+    <span class="orange">Action: </span><span class="green">4.3</span> | 
+    <span class="orange">SFX: </span><span class="green">3.2</span> | 
+    <span class="orange">Comedy: </span><span class="green">3.4</span><br /><br />
+</td></tr>
+
+<tr valign="bottom">
+<td><h2><a href="to_movie_profile" class="black">Tropic Thunder</a></h2></td>
+    <td class="money">68.3 MIL</td></tr>
+<tr><td colspan="2" class="rating">
+    <span class="orange">Action: </span><span class="green">3.9</span> | 
+    <span class="orange">Comedy: </span><span class="green">4.3</span> | 
+    <span class="orange">Pace: </span><span class="green">3.6</span><br /><br />
+</td></tr>
+
+<tr valign="bottom">
+<td><h2><a href="to_movie_profile" class="black">Sukasaki Western Django</a></h2></td>
+    <td class="money">18.5 MIL</td></tr>
+<tr><td colspan="2" class="rating">
+    <span class="orange">Action: </span><span class="green">4.3</span> | 
+    <span class="orange">SFX: </span><span class="green">3.2</span> | 
+    <span class="orange">Comedy: </span><span class="green">3.4</span><br /><br />
+</td></tr>
+</table>
+
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
+</div>
+
+
+
+
+
+
+<div style="width:300px; float:right; margin-top:15px; clear: right;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+Opening Soon
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
+<!-- Box Office Entry Block -->
+<h2><a href="to_movie_profile" class="black">Death Race</a></h2>
+<span class="money">Opening September 24th</span><br /><br />
+<!-- Eng Entry Block -->
+
+<h2><a href="to_movie_profile" class="black">Sukasaki Western Django</a></h2>
+<span class="money">Opening December 12th</span><br /><br />
+
+<h2><a href="to_movie_profile" class="black">Burn after Reading</a></h2>
+<span class="money">Opening July 1st</span><br /><br />
+
+<h2><a href="to_movie_profile" class="black">Lakeview Terrace</a></h2>
+<span class="money">Opening December 12th</span><br /><br />
+
+<h2><a href="to_movie_profile" class="black">Ghost Town</a></h2>
+<span class="money">Opening July 1st</span><br /><br />
+
+<h2><a href="to_movie_profile" class="black">My Best Freinds Girl</a></h2>
+<span class="money">Opening December 30th</span><br /><br />
+
+<h2><a href="to_movie_profile" class="black">Towelhead</a></h2>
+<span class="money">Opening October 7st</span><br /><br />
+
+<h2><a href="to_movie_profile" class="black">Righteous Kill</a></h2>
+<span class="money">Opening January 17th</span><br /><br />
+
+<h2><a href="to_movie_profile" class="black">The Women</a></h2>
+<span class="money">Opening November 21st</span><br /><br />
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
+</div>
+
+
+
+
+<div style="width:300px; float:right; margin-top:15px; clear: right;"> 
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+Top Reviews
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
+<% for review in @top_reviews %>
+<!-- Start Entry Block -->
+<div>
+<h2><%=link_to(h(review.title.name), {:controller => 'titles', :action => 'show', :id => review.title.id}, :class => 'black')%></h2>
+<h3 class="green">"Where the hell does this quote come from!"</h3>
+<div class="rating"><%=link_to('read full review', {:controller => 'titles', :action => 'show', :id => review.title.id})%> by <%=link_to(h(review.user.name), :controller => 'users', :action => 'show', :id => review.user.id)%></div>
+<p><%=h(truncate(review.body, 80)) %>
+</p>
+</div>
+<!-- End Block -->
+<% end %>
+<% if @top_reviews.length == 0 %>
+There are no top reviews yet.
+<% end %>
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
+</div>
+
+
+
+<br style="clear:both"/>
+
+<%= link_to 'Browse titles', :controller => 'titles', :action => 'index' %>
+
