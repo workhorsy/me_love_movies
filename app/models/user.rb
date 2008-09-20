@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
 	end
 
 	def avatar_file_or_default
-		self.avatar_file || "/images/default_avatar.png"
+		self.avatar_file || "/images/noimage.jpg"
 	end
 
 	private

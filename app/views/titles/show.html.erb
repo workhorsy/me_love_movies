@@ -187,7 +187,7 @@
 		<% for review in @title_reviews[user_type] %>
 		<% id = review.id %>
 		<div style="border: 3px solid black; margin: 10px;">
-			<%= image_tag review.user.avatar_file_or_default, :size => "100x100" %><br />
+			<%= image_tag review.user.avatar_file_or_default %><br />
 			<b><%= link_to(
 				h(review.user.name), 
 				:controller => 'users', 
