@@ -6,77 +6,157 @@
 	// ]]>
 </script>
 
-<h1><%=h @title.name %></h1>
 
-<div style="border: 3px solid red; padding: 7px;">
-	<h2>Information</h2>
 
-	<b>Release Date:</b>
-	<%=h @title.release_date %><br />
+<div style="width:600px; float:left;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
 
-	<b>Source:</b>
-	<%=h @title.source %><br />
+<%=h @title.name %>
 
-	<b>Director:</b>
-	<%=h @title.director %><br />
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
 
-	<b>Cast:</b>
-	<%=h @title.cast %><br />
+<table width="100%">
 
-	<b>Runtime:</b>
-	<%=h @title.runtime %><br />
+<!-- Start Entry Block -->
+<tr valign="top"><td><div class="image_holder1">Poster</div></td><td>
 
-	<b>Rating:</b>
-	<%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %><br />
+<p>
 
-	<b>Premise:</b>
-	<%=h @title.premise %><br />
+Release Date: <%=h @title.release_date %><br />
+Source: <%=h @title.source %><br />
+Director: <%=h @title.director %><br />
+Cast: <%=h @title.cast %><br />
+Runtime: <%=h @title.runtime %><br />
+Rating: <%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %><br />
+Premise: <%=h @title.premise %><br />
 
-	<%= link_to 'Edit title information', edit_title_path(@title), :id => 'lnk_edit_title' %>
+<%= link_to 'Edit title information', edit_title_path(@title), :id => 'lnk_edit_title' %>
+</td></tr>
+<!-- End Block -->
+</table>
+
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
 </div>
 
-<div style="float: left; border: 3px solid green; padding: 7px;">
-	<h2>Ratings</h2>
-	<div style="float: left;">
-		<h3>Genre:</h3>
-		<% for genre in Title::genres %>
-		<div class="title_rating_attribute">
-			<span>
-				<% count = @title.send("avg_#{genre}") || 0 %>
-				<%= 
-					("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * count) + ("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - count))
-				-%>
-			</span>
-			<b><%= genre.gsub('_', ' ').capitalize %></b>
-		</div>
-		<% end %>
-	</div>
 
-	<br style="clear: both;" />
 
-	<h3>Attributes:</h3>
-	<div style="float: left;">
-		<% for attribute in Title::attributes %>
-		<div class="title_rating_attribute">
-			<span>
-				<% count = @title.send("avg_#{attribute}") || 0 %>
-				<%= 
-					("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * count) + ("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - count))
-				-%>
-			</span>
-			<b><%=h attribute.gsub('_', ' ').capitalize %></b>
-		</div>
-		<% end %>
-	</div>
-	
-	<br style="clear: both;" />
-	
-	<%= link_to 'Rate this film', {:controller => 'title_ratings', :action => 'new', :title_id => @title.id }, {:id => 'lnk_edit_rating'} %>
+
+
+
+<div style="width:340px; float:right;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+Sponsor
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
+stuff
+
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
 </div>
+
+
+
+
+
+
+
+<div style="width:960px; float:left; padding-top:15px;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+Ratings
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
+<table width="100%" border="0">
+<tr><td colspan="4"><h2>Genre</h2></td></tr>
+	<% count = 0; incr = 4 %>
+	<% while count < Title::genres.length %>
+	<tr>
+		<% for genre in Title::genres.slice(count, incr) %>
+		<td>
+			<span>
+				<%= star_images(@title.send("avg_#{genre}")) %>
+			</span>
+			<b><%= genre.humanize[0, 13] %></b>
+		</td>
+		<% end %>
+		<% count += incr %>
+	</tr>
+	<% end %>
+</td></tr>
+
+<tr><td colspan="4"><hr /></td></tr>
+
+<tr><td colspan="4"><h2>Attributes</h2></td></tr>
+	<% count = 0; incr = 4 %>
+	<% while count < Title::attributes.length %>
+	<tr>
+		<% for attribute in Title::attributes.slice(count, incr) %>
+		<td>
+			<span>
+				<%= star_images(@title.send("avg_#{attribute}")) %>
+			</span>
+			<b><%= attribute.humanize[0, 13] %></b>
+		</td>
+		<% end %>
+		<% count += incr %>
+	</tr>
+	<% end %>
+</td></tr>
+</table>
+
+<%= link_to 'Rate this film', {:controller => 'title_ratings', :action => 'new', :title_id => @title.id }, {:id => 'lnk_edit_rating'} %>
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
+</div>
+
+
+
 
 <br style="clear: both;" />
 
-<div id="reviews" style="border: 3px solid purple; padding: 7px;">
+<div id="reviews">
 	<script type="text/javascript" language="JavaScript">
 		/* <![CDATA[ */
 		var IE = document.all ? true : false;
@@ -113,10 +193,11 @@
 					is_off = !(mouse_x >= left && mouse_x <= right &&
 							mouse_y >= top && mouse_y <= bottom);
 				} else {
-					var left = c.offsetLeft;
-					var right = c.offsetLeft + c.offsetWidth;
-					var top = c.offsetTop;
-					var bottom = c.offsetTop + c.offsetHeight;
+					var pos = IEfindPos(c);
+					var left = pos[0];
+					var top = pos[1];
+					var right = left + c.offsetWidth;
+					var bottom = top + c.offsetHeight;
 					is_off = !(mouse_x >= left && mouse_x <= right &&
 							mouse_y >= top && mouse_y <= bottom);
 				}
@@ -140,10 +221,10 @@
 		container.onmousemove = function(e) {
 			var tempX = 0;
 			var tempY = 0;
-			if (IE) { // grab the x-y pos.s if browser is IE
+			if (IE) { // get the x and y for IE
 				tempX = event.clientX + document.body.scrollLeft;
 				tempY = event.clientY + document.body.scrollTop;
-			} else {  // grab the x-y pos.s if browser is NS
+			} else { // get the x and y for standard based browsers
 				tempX = e.pageX;
 				tempY = e.pageY;
 			}
@@ -174,31 +255,44 @@
 	<%= link_to 'Review this film', {:controller => 'title_reviews', :action => 'new', :title_id => @title.id}, {:id => 'lnk_edit_review'} %>
 
 	<br />
-	<%= link_to_function 'Users', "Element.show('user_container'); Element.hide('moderator_container'); Element.hide('critic_container')" %>
-	<%= link_to_function 'Moderators', "Element.show('moderator_container'); Element.hide('user_container'); Element.hide('critic_container')" %>
-	<%= link_to_function 'Critics', "Element.show('critic_container'); Element.hide('moderator_container'); Element.hide('user_container')" %>
 
 	<% for user_type in %w{user moderator critic} %>
-	<div id="<%=user_type%>_container" style="<%= user_type!='user' ? 'display: none; ' : '' %>border: 3px solid blue; padding: 7px;">
+	<div style="width:300px; float:left; padding-top:15px; margin-right:20px">
+	<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+	<table cellpadding="0" cellspacing="0" width="100%" border="0">
+	<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+	<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+	<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+	<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+	Best Review
+
+	</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+	</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+	<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+	<!-- =================================================================================== END CENTER STUFF ======= -->
+	<div id="<%=user_type%>_container">
 		<% if @title_reviews[user_type].length == 0 %>
 			<p>There are no reviews.</p>
 		<% end %>
 
 		<% for review in @title_reviews[user_type] %>
 		<% id = review.id %>
-		<div style="border: 3px solid black; margin: 10px;">
-			<%= image_tag review.user.avatar_file_or_default %><br />
-			<b><%= link_to(
+		<div class="image_holder1" style="float:left; margin:10px;">
+			<%= image_tag review.user.avatar_file_or_default, :size=>"100x125" %>
+		</div>
+
+		<div>
+			&quot;<%=h review.body %>&quot;
+			by <%= link_to(
 				h(review.user.name), 
 				:controller => 'users', 
 				:action => 'show', 
-				:id => review.user.id) %></b><br />
-
-			<%=h review.body %>
-			<% user_rating = review.get_user_rating(session[:user_id]) %>
+				:id => review.user.id) %><br />
+			<% user_rating = review.get_user_rating(session[:user_id]) || 0 %>
 			<div id="rating_<%=id%>_container">
 				<input id="rating_<%=id%>" type="hidden" value="<%=user_rating%>" />
-				How you rate this review: 
+				How you rate this review:<br />
 				<span id="rating_<%=id%>_info">
 					<%=
 						("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * user_rating) +
@@ -233,8 +327,9 @@
 					} else {  // get the x and y for standard based browsers
 						tempX = e.pageX;
 						tempY = e.pageY;
-						tempX -= control.offsetLeft;
-						tempY -= control.offsetTop;
+						var pos = IEfindPos(control);
+						tempX -= (pos[0] + 5);
+						tempY -= (pos[1] - 20);
 					}
 
 					var star_count = parseInt(tempX / image_width);
@@ -255,7 +350,7 @@
 			<% avg_rating = review.avg_user_rating || 0 %>
 			<div id="average_<%=id%>_container">
 				<input id="average_<%=id%>" type="hidden" value="<%=avg_rating%>" />
-				How others rated this review: 
+				How others rated this review:<br />
 				<span id="average_<%=id%>_info">
 					<%=
 						("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * avg_rating) +
@@ -265,6 +360,15 @@
 			</div>
 		</div>
 		<% end %>
+	</div>
+
+
+	<!-- =================================================================================== START END TABLE ======== -->
+	</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+	<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+	<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+	<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+	</tr></table><!-- ====================================================================== END TABLE ============== -->
 	</div>
 	<% end %>
 </div>

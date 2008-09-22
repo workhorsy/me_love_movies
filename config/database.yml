@@ -20,8 +20,8 @@ development:
   database: me_love_movies_development
   username: root
   password: letmein
-#  socket: /var/run/mysqld/mysqld.sock # debian/ubuntu
-  socket: /var/lib/mysql/mysql.sock    # fedora
+  socket: /var/run/mysqld/mysqld.sock # debian/ubuntu
+#  socket: /var/lib/mysql/mysql.sock    # fedora
 
 # Warning: The database defined as 'test' will be erased and
 # re-generated from your development database when you run 'rake'.
@@ -32,8 +32,8 @@ test:
   database: me_love_movies_test
   username: root
   password: letmein
-#  socket: /var/run/mysqld/mysqld.sock # debian/ubuntu
-  socket: /var/lib/mysql/mysql.sock    # fedora
+  socket: /var/run/mysqld/mysqld.sock # debian/ubuntu
+#  socket: /var/lib/mysql/mysql.sock    # fedora
 
 production:
   adapter: mysql
@@ -41,6 +41,6 @@ production:
   database: me_love_movies_production
   username: root
   password: letmein
-#  socket: /var/run/mysqld/mysqld.sock # debian/ubuntu
-  socket: /var/lib/mysql/mysql.sock    # fedora
+  socket: /var/run/mysqld/mysqld.sock # debian/ubuntu
+#  socket: /var/lib/mysql/mysql.sock    # fedora
 

@@ -37,10 +37,11 @@
 					is_off = !(mouse_x >= left && mouse_x <= right &&
 							mouse_y >= top && mouse_y <= bottom);
 				} else {
-					var left = c.offsetLeft;
-					var right = c.offsetLeft + c.offsetWidth;
-					var top = c.offsetTop;
-					var bottom = c.offsetTop + c.offsetHeight;
+					var pos = IEfindPos(c);
+					var left = pos[0];
+					var top = pos[1];
+					var right = left + c.offsetWidth;
+					var bottom = top + c.offsetHeight;
 					is_off = !(mouse_x >= left && mouse_x <= right &&
 							mouse_y >= top && mouse_y <= bottom);
 				}
@@ -128,8 +129,9 @@
 			} else {  // get the x and y for standard based browsers
 				tempX = e.pageX;
 				tempY = e.pageY;
-				tempX -= control.offsetLeft;
-				tempY -= control.offsetTop;
+				var pos = IEfindPos(control);
+				tempX -= (pos[0] + 5);
+				tempY -= (pos[1] - 20);
 			}
 
 			var star_count = parseInt(tempX / image_width);
@@ -184,8 +186,9 @@
 			} else {  // get the x and y for standard based browsers
 				tempX = e.pageX;
 				tempY = e.pageY;
-				tempX -= control.offsetLeft;
-				tempY -= control.offsetTop;
+				var pos = IEfindPos(control);
+				tempX -= (pos[0] + 5);
+				tempY -= (pos[1] - 20);
 			}
 
 			var star_count = parseInt(tempX / image_width);

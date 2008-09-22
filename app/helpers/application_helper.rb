@@ -15,4 +15,11 @@ module ApplicationHelper
 			[m, i]
 		end
 	end
+
+	def star_images(value)
+		count = value || 0
+		
+		("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * count) + 
+		("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - count))
+	end
 end
