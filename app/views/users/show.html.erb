@@ -1,15 +1,4 @@
 
-<script type="text/javascript">
-	// <!CDATA[
-	// Hide the page, while we hide elements that the user is not supposed to see
-	document.body.hide();
-	// ]]>
-</script>
-
-
-
-
-
 
 <div style="width: 300px; height: 100%; float: left; margin:5px;">
 <!-- ====================================================================================TABLE BLOCK STARTS HERE -->
@@ -61,7 +50,7 @@ User Details
 		<%=h UserType::NAMES_ABBREVIATIONS.select { |k, v| v == @user.user_type }.first.first %>
 	</p>
 
-	<%= link_to 'Edit user information', edit_user_path(@user), :id => 'lnk_edit_user' %>
+	<%= link_to 'Edit user information', edit_user_path(@user), :id => 'lnk_edit_user', :style => 'display: none;' %>
 </td>
 </tr>
 </table>
@@ -172,8 +161,7 @@ Ratings by this user
 
 <script type="text/javascript">
 	// <!CDATA[
-	// Hide all the elements the user is not supposed to see. Then show the page.
-	tags_visible_to_user_only('a', 'lnk_edit_user');
-	document.body.show();
+	// Show all the elements the user is allowed to see.
+	show_tags_to_user_only('a', 'lnk_edit_user');
 	// ]]>
 </script>

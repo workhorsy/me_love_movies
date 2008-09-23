@@ -1,11 +1,4 @@
 
-<script type="text/javascript">
-	// <!CDATA[
-	// Hide the page, while we hide elements that the user is not supposed to see
-	document.body.hide();
-	// ]]>
-</script>
-
 <h1>Listing titles</h1>
 
 
@@ -17,8 +10,8 @@
 <% n = @titles.index(title) %>
 	<tr>
 		<td><%= link_to(h(title.name), title) %></td>
-		<td><%= link_to 'Edit', edit_title_path(title), :id => "link_edit_#{n}" %></td>
-		<td><%= link_to 'Destroy', title, :id => "link_delete_#{n}", :confirm => 'Are you sure?', :method => :delete %></td>
+		<td><%= link_to 'Edit', edit_title_path(title), :id => "link_edit_#{n}", :style => 'display: none;' %></td>
+		<td><%= link_to 'Destroy', title, :id => "link_delete_#{n}", :style => 'display: none;', :confirm => 'Are you sure?', :method => :delete %></td>
 	</tr>
 <% end -%>
 </table>
@@ -28,15 +21,14 @@
 <br />
 
 
-<%= link_to 'New title', new_title_path, :id => 'lnk_new_title' %>
+<%= link_to 'New title', new_title_path, :id => 'lnk_new_title', :style => 'display: none;' %>
 
 <script type="text/javascript">
 	// <!CDATA[
-	// Hide all the elements the user is not supposed to see. Then show the page.
-	tags_visible_to_moderator_only('a', /^link_edit_\d*$/);
-	tags_visible_to_admin_only('a', /^link_delete_\d*$/);
-	tags_visible_to_admin_only('a', 'lnk_new_title');
-	document.body.show();
+	// Show all the elements the user is allowed to see.
+	show_tags_to_moderator_only('a', /^link_edit_\d*$/);
+	show_tags_to_admin_only('a', /^link_delete_\d*$/);
+	show_tags_to_admin_only('a', 'lnk_new_title');
 	// ]]>
 </script>
 

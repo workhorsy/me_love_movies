@@ -1,12 +1,4 @@
 
-<script type="text/javascript">
-	// <!CDATA[
-	// Hide the page, while we hide elements that the user is not supposed to see
-	document.body.hide();
-	// ]]>
-</script>
-
-
 
 <div style="width:600px; float:left;">
 <!-- ====================================================================================TABLE BLOCK STARTS HERE -->
@@ -38,7 +30,7 @@ Runtime: <%=h @title.runtime %><br />
 Rating: <%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %><br />
 Premise: <%=h @title.premise %><br />
 
-<%= link_to 'Edit title information', edit_title_path(@title), :id => 'lnk_edit_title' %>
+<%= link_to 'Edit title information', edit_title_path(@title), :id => 'lnk_edit_title', :style => 'display: none;' %>
 </td></tr>
 <!-- End Block -->
 </table>
@@ -142,7 +134,7 @@ Ratings
 </td></tr>
 </table>
 
-<%= link_to 'Rate this film', {:controller => 'title_ratings', :action => 'new', :title_id => @title.id }, {:id => 'lnk_edit_rating'} %>
+<%= link_to 'Rate this film', {:controller => 'title_ratings', :action => 'new', :title_id => @title.id }, {:id => 'lnk_edit_rating', :style => 'display: none;'} %>
 <!-- =================================================================================== START END TABLE ======== -->
 </td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
 <td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
@@ -252,7 +244,7 @@ Ratings
 
 	<h2>Reviews</h2>
 
-	<%= link_to 'Review this film', {:controller => 'title_reviews', :action => 'new', :title_id => @title.id}, {:id => 'lnk_edit_review'} %>
+	<%= link_to 'Review this film', {:controller => 'title_reviews', :action => 'new', :title_id => @title.id}, {:id => 'lnk_edit_review', :style => 'display: none;'} %>
 
 	<br />
 
@@ -375,11 +367,10 @@ Ratings
 
 <script type="text/javascript">
 	// <!CDATA[
-	// Hide all the elements the user is not supposed to see. Then show the page.
-	tags_visible_to_moderator_only('a', 'lnk_edit_title');
-	tags_visible_to_user_only('a', 'lnk_edit_rating');
-	tags_visible_to_user_only('a', 'lnk_edit_review');
-	document.body.show();
+	// Show all the elements the user is allowed to see.
+	show_tags_to_moderator_only('a', 'lnk_edit_title');
+	show_tags_to_user_only('a', 'lnk_edit_rating');
+	show_tags_to_user_only('a', 'lnk_edit_review');
 	// ]]>
 </script>
 

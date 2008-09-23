@@ -38,31 +38,31 @@ function is_originating_user(user_id) {
 	return (get_cookie('user_id') == user_id);
 }
 
-function tags_visible_to_user_only(tag_type, name_pattern) {
-	tags_visible_to_user_type_only(tag_type, name_pattern, is_user_user());
+function show_tags_to_user_only(tag_type, name_pattern) {
+	show_tags_to_user_type(tag_type, name_pattern, is_user_user());
 }
 
-function tags_visible_to_critic_only(tag_type, name_pattern) {
-	tags_visible_to_user_type_only(tag_type, name_pattern, is_user_critic());
+function show_tags_to_critic_only(tag_type, name_pattern) {
+	show_tags_to_user_type(tag_type, name_pattern, is_user_critic());
 }
 
-function tags_visible_to_moderator_only(tag_type, name_pattern) {
-	tags_visible_to_user_type_only(tag_type, name_pattern, is_user_moderator());
+function show_tags_to_moderator_only(tag_type, name_pattern) {
+	show_tags_to_user_type(tag_type, name_pattern, is_user_moderator());
 }
 
-function tags_visible_to_admin_only(tag_type, name_pattern) {
-	tags_visible_to_user_type_only(tag_type, name_pattern, is_user_admin());
+function show_tags_to_admin_only(tag_type, name_pattern) {
+	show_tags_to_user_type(tag_type, name_pattern, is_user_admin());
 }
 
-function tags_visible_to_originating_user_only(tag_type, name_pattern, user_id) {
-	tags_visible_to_user_type_only(tag_type, name_pattern, is_originating_user(user_id.toString()));
+function show_tags_to_originating_user_only(tag_type, name_pattern, user_id) {
+	show_tags_to_user_type(tag_type, name_pattern, is_originating_user(user_id.toString()));
 }
 
 //private
 
-function tags_visible_to_user_type_only(tag_type, name_pattern, is_user_type) {
-	// Just return if they have the correct user type
-	if(is_user_type) return;
+function show_tags_to_user_type(tag_type, name_pattern, is_user_type) {
+	// Just return if the user type is wrong
+	if(is_user_type == false) return;
 
 	// If they are not, hide all the tags that match the pattern
 	var is_pattern_string = (typeof(name_pattern) == 'string');
@@ -70,7 +70,7 @@ function tags_visible_to_user_type_only(tag_type, name_pattern, is_user_type) {
 	for(i=0; i< tags.length; i++) {
 		if(is_pattern_string == true && name_pattern == tags[i].id ||
 			is_pattern_string == false && name_pattern(tags[i].id)) {
-			tags[i].hide();
+			tags[i].show();
 		}
 	}
 }
