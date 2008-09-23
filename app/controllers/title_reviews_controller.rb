@@ -80,7 +80,7 @@ class TitleReviewsController < ApplicationController
 				end
 			end
 			if was_saved
-				flash[:notice] = 'TitleReview was successfully created.'
+				flash[:notice] = 'The Title Review was successfully created.'
 				format.html { redirect_to(@title_review) }
 				format.xml	{ render :xml => @title_review, :status => :created, :location => @title_review }
 			else
@@ -97,7 +97,7 @@ class TitleReviewsController < ApplicationController
 
 		respond_to do |format|
 			if @title_review.update_attributes(params[:title_review])
-				flash[:notice] = 'TitleReview was successfully updated.'
+				flash[:notice] = 'The Title Review was successfully updated.'
 				format.html { redirect_to(@title_review) }
 				format.xml	{ head :ok }
 			else
