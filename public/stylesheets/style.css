@@ -14,6 +14,13 @@ img{
 	border:0;
 }
 
+textarea, input, select {
+	margin:0; padding:0;
+	font-size:12px;
+	border:1px solid #99cc33;
+	color: #99cc33;
+}
+
 #header{
 	margin: 0 auto;
 	padding: 0;
@@ -184,7 +191,7 @@ img{
 	float: left;
 }
 
-#search input, textarea{
+#search input{
 	margin:0; padding:0;
 	width: 280px;
 	font-size:12px;
@@ -211,7 +218,7 @@ img{
 	text-align: right;
 }
 
-.login input, textarea{
+.login input{
 	margin:0; padding:0;
 	width: 120px;
 	font-size:12px;
@@ -243,7 +250,7 @@ img{
 	margin:0; padding:0; padding-left:20px;
 }
 
-#search_page input, textarea{
+#search_page input{
 	margin:0; padding:0;
 	width: 150px;
 	font-size:12px;
