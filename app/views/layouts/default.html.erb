@@ -52,6 +52,23 @@
 <!-- Content Top Section -->
 <div id="nav2">
 
+<!-- Search Movie by Title -->
+<div id="search">
+	<% form_tag :controller => 'titles', :action => 'search', :method => 'post' do %>
+		<%= text_field_tag :name, params[:name], :id => 'search_title', :value => 'Search by Title' -%>
+		<%= hidden_field_tag :actor, '' -%>
+		<%= hidden_field_tag :director, '' -%>
+		<%= hidden_field_tag :type, 'by_name' -%>
+		<%= submit_tag 'Search', :id => 'submitbutton' -%>
+	<% end -%>
+
+	<script type="text/javascript" language="JavaScript">
+		// <![CDATA[
+		has_default_text('search_title');
+		// ]]>
+	</script>
+</div>
+
 <div id="login" class="login">
 	<% form_tag :controller => 'users', :action => 'login' do %>
 		<%= text_field_tag :user_name, params[:user_name], :value => 'Username' -%>
@@ -72,7 +89,7 @@
 </div>
 
 <div id="logout" class="login">
-	<%= user = get_user_from_session(); 'Howdy ' + (user ? user.name : 'Stranger') %>
+	<%= user = get_user_from_session(); 'Howdy ' + (user ? user.name : 'Stranger') %><br />
 	<%= link_to 'logout', :controller => 'users', :action => 'logout' %>
 	<script type="text/javascript" language="JavaScript">
 		// <![CDATA[
@@ -80,23 +97,6 @@
 		if(is_logged_in() == false) {
 			$('logout').hide();
 		}
-		// ]]>
-	</script>
-</div>
-
-<!-- Search Movie by Title -->
-<div id="search">
-	<% form_tag :controller => 'titles', :action => 'search', :method => 'post' do %>
-		<%= text_field_tag :name, params[:name], :id => 'search_title', :value => 'Search by Title' -%>
-		<%= hidden_field_tag :actor, '' -%>
-		<%= hidden_field_tag :director, '' -%>
-		<%= hidden_field_tag :type, 'by_name' -%>
-		<%= submit_tag 'Search', :id => 'submitbutton' -%>
-	<% end -%>
-
-	<script type="text/javascript" language="JavaScript">
-		// <![CDATA[
-		has_default_text('search_title');
 		// ]]>
 	</script>
 </div>

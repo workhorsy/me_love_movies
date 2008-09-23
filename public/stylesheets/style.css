@@ -181,7 +181,7 @@ img{
 
 #search{
 	margin:0; padding:0;
-	float:right;
+	float: left;
 }
 
 #search input, textarea{
@@ -207,7 +207,8 @@ img{
 
 .login{
 	margin:0; padding:0;
-	float:left;
+	float: right;
+	text-align: right;
 }
 
 .login input, textarea{
