@@ -31,6 +31,7 @@
 
 	<script type="text/javascript" language="JavaScript">
 		// <![CDATA[
+		// Select the tab that best reflects the page we are on.
 		var controller = "<%= self.request.path_parameters['controller'] %>";
 		if(controller == 'home') {
 			$('nav_home').className = "selected";
@@ -54,13 +55,13 @@
 <div id="login" class="login">
 	<% form_tag :controller => 'users', :action => 'login' do %>
 		<%= text_field_tag :user_name, params[:user_name], :value => 'Username' -%>
-		<%= text_field_tag :password, params[:password], :value => 'Password' -%>
+		<%= password_field_tag :password, params[:password], :value => 'Password' -%>
 		<%= submit_tag "Login", :id => 'submitbutton' -%>
 	<% end %>
 
 	<script type="text/javascript" language="JavaScript">
 		// <![CDATA[
-		// FIXME: This whole concept does not work with a password field
+		// Hide the log in box if the user is logged in
 		has_default_text('user_name');
 		has_default_text('password');
 		if(is_logged_in()) {
@@ -75,6 +76,7 @@
 	<%= link_to 'logout', :controller => 'users', :action => 'logout' %>
 	<script type="text/javascript" language="JavaScript">
 		// <![CDATA[
+		// Hide the log out box if the user is logged out
 		if(is_logged_in() == false) {
 			$('logout').hide();
 		}

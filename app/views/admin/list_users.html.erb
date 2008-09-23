@@ -14,7 +14,11 @@
 		<td>
 		<% for name in %w{User Critic Moderator Administrator} %>
 			<% is_checked = (name[0..0] == user.user_type) %>
-			<%= radio_button("user", "user_type[#{user.id}]", name, :checked => is_checked, :onclick => "$('status_#{user.id}').value='#{name}'") + name %>
+			<%= radio_button("user", 
+				"user_type[#{user.id}]", 
+				name, 
+				:checked => is_checked, 
+				:onclick => "$('status_#{user.id}').value='#{name}'") + name %>
 		<% end %>
 		<input type="hidden" id="status_<%=user.id%>" value="">
 			<%= observe_field "status_#{user.id}",
@@ -22,7 +26,8 @@
 								:frequency => 0.25,
 								:on => "changed",
 								:update => 'flash_notice',
-								:with => "'user_type=' + value" %>
+								:with => "'user_type=' + value",
+								:after => "$('flash_notice').show()" %>
 		</td>
 		<td><%= link_to 'Show', user %></td>
 		<td><%= link_to 'Edit', edit_user_path(user) %></td>
