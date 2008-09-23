@@ -10,6 +10,14 @@ class ApplicationController < ActionController::Base
 
 private
 
+	def authorize_title_is_released
+		# If that title is not released yet, show a message
+		title = Title.find(params[:title_id])
+		if title && title.release_date > DateTime.now
+			render :layout => 'default', :text => "<p id=\"flash_notice\">That title is not released until #{title.release_date}</p>"
+		end
+	end
+
 	def authorize_admins_only
 		user = User.find_by_id(session[:user_id])
 		unless user && user.user_type == 'A'

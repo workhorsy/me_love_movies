@@ -3,6 +3,7 @@ class TitleRatingsController < ApplicationController
 	before_filter :authorize_admins_only, :only => ['destroy']
 	before_filter :authorize_users_only, :only => ['new', 'create']
 	before_filter :authorize_originating_user_only, :only => ['edit', 'update']
+	before_filter :authorize_title_is_released, :only => ['new']
 
 	# GET /title_ratings
 	# GET /title_ratings.xml
