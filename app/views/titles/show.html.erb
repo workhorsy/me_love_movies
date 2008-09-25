@@ -28,6 +28,7 @@ Director: <%=h @title.director %><br />
 Cast: <%=h @title.cast %><br />
 Runtime: <%=h @title.runtime %><br />
 Rating: <%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %><br />
+Data Source: <%= urls_to_hrefs(@title.data_source) || 'Unspecified' %><br />
 Premise: <%=h @title.premise %><br />
 
 <%= link_to 'Edit title information', edit_title_path(@title), :id => 'lnk_edit_title', :style => 'display: none;' %>

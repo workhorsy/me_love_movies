@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 14) do
+ActiveRecord::Schema.define(:version => 15) do
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.float    "avg_pace"
     t.float    "avg_character_development"
     t.float    "avg_cinematography"
+    t.text     "data_source"
   end
 
   add_index "titles", ["id"], :name => "index_titles_on_id"

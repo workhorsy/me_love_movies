@@ -314,6 +314,7 @@ def scrape_pages_into_db
 		title.director = director
 		title.cast = cast
 		title.runtime = runtime.to_i
+		title.data_source = $url_prefix + '/wiki/' + file_name.gsub('.html', '')
 		#title.premise = premise
 
 		# Skip anything that is a play
