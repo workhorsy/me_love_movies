@@ -10,8 +10,8 @@
 <% n = @titles.index(title) %>
 	<tr>
 		<td><%= link_to(h(title.name), title) %></td>
-		<td><%= link_to 'Edit', edit_title_path(title), :id => "link_edit_#{n}", :style => 'display: none;' %></td>
-		<td><%= link_to 'Destroy', title, :id => "link_delete_#{n}", :style => 'display: none;', :confirm => 'Are you sure?', :method => :delete %></td>
+		<td><%= link_to 'Edit', edit_title_path(title), :id => "lnk_edit_#{n}", :style => 'display: none;' %></td>
+		<td><%= link_to 'Destroy', title, :id => "lnk_delete_#{n}", :style => 'display: none;', :confirm => 'Are you sure?', :method => :delete %></td>
 	</tr>
 <% end -%>
 </table>
@@ -26,8 +26,8 @@
 <script type="text/javascript">
 	// <!CDATA[
 	// Show all the elements the user is allowed to see.
-	show_tags_to_moderator_only('a', /^link_edit_\d*$/);
-	show_tags_to_admin_only('a', /^link_delete_\d*$/);
+	show_tags_to_moderator_only('a', /^lnk_edit_\d*$/);
+	show_tags_to_admin_only('a', /^lnk_delete_\d*$/);
 	show_tags_to_admin_only('a', 'lnk_new_title');
 	// ]]>
 </script>

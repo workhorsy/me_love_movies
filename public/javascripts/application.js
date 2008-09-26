@@ -68,8 +68,9 @@ function show_tags_to_user_type(tag_type, name_pattern, is_user_type) {
 	var is_pattern_string = (typeof(name_pattern) == 'string');
 	var tags = document.getElementsByTagName(tag_type);
 	for(i=0; i< tags.length; i++) {
+		if(tags[i].id.toString() == "") continue;
 		if(is_pattern_string == true && name_pattern == tags[i].id ||
-			is_pattern_string == false && name_pattern(tags[i].id)) {
+			is_pattern_string == false && name_pattern.match(tags[i].id)) {
 			tags[i].show();
 		}
 	}
