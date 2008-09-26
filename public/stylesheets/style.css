@@ -163,32 +163,18 @@ textarea, input, select {
 
 #nav2{
 	margin:0 auto; padding:0;
-	width:730px;
-	height:30px;
+	width: 860px;
+	height: 40px;
 	font-size:12px;
-	padding-left:250px;
+	padding-top: 5px;
+	padding-left:120px;
 	padding-right:20px;
 	background: #fff;
 }
-#nav2 ul{
-	float:left;
-	margin:0;	
-	padding:0;
-	width:350px;
-}
-#nav2 ul li{
-	display: inline;
-	list-style:none;
-	margin-left:15px;
-}
-#nav2 ul a{
-	color:#99cc33; 
-	text-decoration:none;
-}
 
 #search{
-	margin:0; padding:0;
 	float: left;
+	padding-left: 50px;
 }
 
 #search input{
@@ -197,7 +183,6 @@ textarea, input, select {
 	font-size:12px;
 	border:1px solid #99cc33;
 	color: #99cc33;
-	height:18px;
 }
 
 #search #submitbutton{
@@ -213,9 +198,7 @@ textarea, input, select {
 }
 
 .login{
-	margin:0; padding:0;
 	float: right;
-	text-align: right;
 }
 
 .login input{

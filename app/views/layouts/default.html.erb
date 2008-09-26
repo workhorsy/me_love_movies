@@ -55,11 +55,15 @@
 <!-- Search Movie by Title -->
 <div id="search">
 	<% form_tag :controller => 'titles', :action => 'search', :method => 'post' do %>
-		<%= text_field_tag :name, params[:name], :id => 'search_title', :value => 'Search by Title' -%>
-		<%= hidden_field_tag :actor, '' -%>
-		<%= hidden_field_tag :director, '' -%>
-		<%= hidden_field_tag :type, 'by_name' -%>
-		<%= submit_tag 'Search', :id => 'submitbutton' -%>
+		<table style="padding: 0px; margin: 0px;">
+			<tr>
+				<td><%= text_field_tag :name, params[:name], :id => 'search_title', :value => 'Search by Title' -%></td>
+				<td><%= hidden_field_tag :actor, '' -%></td>
+				<td><%= hidden_field_tag :director, '' -%></td>
+				<td><%= hidden_field_tag :type, 'by_name' -%></td>
+				<td><%= submit_tag 'Search', :id => 'submitbutton' -%></td>
+			</tr>
+		</table>
 	<% end -%>
 
 	<script type="text/javascript" language="JavaScript">
@@ -71,9 +75,13 @@
 
 <div id="login" class="login">
 	<% form_tag :controller => 'users', :action => 'login' do %>
-		<%= text_field_tag :user_name, params[:user_name], :value => 'Username' -%>
-		<%= password_field_tag :password, params[:password], :value => 'Password' -%>
-		<%= submit_tag "Login", :id => 'submitbutton' -%>
+		<table style="padding: 0px; margin: 0px;">
+			<tr>
+				<td><%= text_field_tag :user_name, params[:user_name], :value => 'Username' -%></td>
+				<td><%= password_field_tag :password, params[:password], :value => 'Password' -%></td>
+				<td><%= submit_tag "Login", :id => 'submitbutton' -%></td>
+			</tr>
+		</table>
 	<% end %>
 
 	<script type="text/javascript" language="JavaScript">
@@ -89,8 +97,14 @@
 </div>
 
 <div id="logout" class="login">
-	<%= user = get_user_from_session(); 'Howdy ' + (user ? user.name : 'Stranger') %><br />
-	<%= link_to 'logout', :controller => 'users', :action => 'logout' %>
+	<table style="padding: 0px; margin: 0px;">
+		<tr>
+			<td><%= user = get_user_from_session(); 'Howdy ' + (user ? user.name : 'Stranger') %></td>
+		</tr>
+		<tr>
+			<td><%= link_to 'logout', :controller => 'users', :action => 'logout' %></td>
+		</tr>
+	</table>
 	<script type="text/javascript" language="JavaScript">
 		// <![CDATA[
 		// Hide the log out box if the user is logged out
