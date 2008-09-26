@@ -14,7 +14,7 @@
 	</p>
 	<p>
 		<b>Release Date</b><br />
-		<%= f.select :release_date_year, (1800..Time.now.year).to_a.reverse, :selected => title.release_date_year, :include_blank => true %> year
+		<%= f.select :release_date_year, (1800..Time.now.year+4).to_a.reverse, :selected => title.release_date_year, :include_blank => true %> year
 		<%= f.select :release_date_month, get_months_hash, :include_blank => true %> month
 		<%= f.select :release_date_day , (1..31).to_a, :include_blank => true %> day
 	</p>
