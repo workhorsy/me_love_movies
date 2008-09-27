@@ -94,119 +94,162 @@
 		/* ]]> */
 	</script>
 
-	<fieldset>
-		<legend>Genre</legend>
-		<% for genre in Title::genres %>
-		<div id="title_rating_<%=genre%>_container"
-				class="title_rating_attribute">
+
+
+
+<div id="ratings" style="width:960px; float:left; padding-top:15px;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+Ratings
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
+<table width="100%" border="0">
+<tr><td colspan="4"><h2>Genre</h2></td></tr>
+	<% count = 0; incr = 4 %>
+	<% while count < Title::genres.length %>
+	<tr>
+		<% for genre in Title::genres.slice(count, incr) %>
+		<td>
 			<input id="title_rating_<%=genre%>" name="title_rating[<%=genre%>]" type="hidden" value="<%= @title_rating.send(genre) || 0 %>" />
 			<span id="title_rating_<%=genre%>_info">
 				<%= image_tag('heart_off.jpg', :alt => '') * 6 %>
 			</span>
-			<b><%= genre.gsub('_', ' ').capitalize %></b>
-		</div>
-		<script type="text/javascript" language="JavaScript">
-		/* <![CDATA[ */
-		id_rects.push('title_rating_<%=genre%>');
+			<b><%= genre.humanize[0, 13] %></b>
+			<script type="text/javascript" language="JavaScript">
+			/* <![CDATA[ */
+			id_rects.push('title_rating_<%=genre%>');
 
-		$('title_rating_<%=genre%>_info').onclick = function() {
-			var value = $('title_rating_<%=genre%>');
-			var control = $('title_rating_<%=genre%>_info');
-			var on_count = control.innerHTML.split('on').length-1;
-			value.value = on_count;
-		}
-
-		$('title_rating_<%=genre%>_info').onmousemove = function(e) {
-			var control = $('title_rating_<%=genre%>_info');
-			var tempX = 0;
-			var tempY = 0;
-			if (IE) { // get the x and y for IE
-				tempX = event.clientX + document.body.scrollLeft;
-				tempY = event.clientY + document.body.scrollTop;
-				var pos = IEfindPos(control);
-				tempX -= (pos[0] + 5);
-				tempY -= (pos[1] - 20);
-			} else {  // get the x and y for standard based browsers
-				tempX = e.pageX;
-				tempY = e.pageY;
-				var pos = IEfindPos(control);
-				tempX -= (pos[0] + 5);
-				tempY -= (pos[1] - 20);
+			$('title_rating_<%=genre%>_info').onclick = function() {
+				var value = $('title_rating_<%=genre%>');
+				var control = $('title_rating_<%=genre%>_info');
+				var on_count = control.innerHTML.split('on').length-1;
+				value.value = on_count;
 			}
 
-			var star_count = parseInt(tempX / image_width);
-			if(star_count > star_max) star_count = 0;
+			$('title_rating_<%=genre%>_info').onmousemove = function(e) {
+				var control = $('title_rating_<%=genre%>_info');
+				var tempX = 0;
+				var tempY = 0;
+				if (IE) { // get the x and y for IE
+					tempX = event.clientX + document.body.scrollLeft;
+					tempY = event.clientY + document.body.scrollTop;
+					var pos = IEfindPos(control);
+					tempX -= (pos[0] + 5);
+					tempY -= (pos[1] - 20);
+				} else {  // get the x and y for standard based browsers
+					tempX = e.pageX;
+					tempY = e.pageY;
+					var pos = IEfindPos(control);
+					tempX -= (pos[0] + 5);
+					tempY -= (pos[1] - 20);
+				}
 
-			var content = star_off;
-			for(i=0; i<star_count; i++) {
-				content += star_on;
+				var star_count = parseInt(tempX / image_width);
+				if(star_count > star_max) star_count = 0;
+
+				var content = star_off;
+				for(i=0; i<star_count; i++) {
+					content += star_on;
+				}
+				for(i=0; i<star_max-star_count; i++) {
+					content += star_off;
+				}
+				control.innerHTML = content;
 			}
-			for(i=0; i<star_max-star_count; i++) {
-				content += star_off;
-			}
-			control.innerHTML = content;
-		}
-		/* ]]> */
-		</script>
+			/* ]]> */
+			</script>
+		</td>
 		<% end %>
-	</fieldset>
+		<% count += incr %>
+	</tr>
+	<% end %>
+</td></tr>
 
-	<fieldset>
-		<legend>Attributes</legend>
-		<% for attribute in Title::attributes %>
-		<div id="title_rating_<%=attribute%>_container"
-				class="title_rating_attribute">
+<tr><td colspan="4"><hr /></td></tr>
+
+<tr><td colspan="4"><h2>Attributes</h2></td></tr>
+	<% count = 0; incr = 4 %>
+	<% while count < Title::attributes.length %>
+	<tr>
+		<% for attribute in Title::attributes.slice(count, incr) %>
+		<td>
 			<input id="title_rating_<%=attribute%>" name="title_rating[<%=attribute%>]" type="hidden" value="<%= @title_rating.send(attribute) || 0 %>" />
 			<span id="title_rating_<%=attribute%>_info">
 				<%= image_tag('heart_off.jpg', :alt => '') * 6 %>
 			</span>
-			<b><%= attribute.gsub('_', ' ').capitalize %></b>
-		</div>
-		<script type="text/javascript" language="JavaScript">
-		/* <![CDATA[ */
-		id_rects.push('title_rating_<%=attribute%>');
+			<b><%= attribute.humanize[0, 13] %></b>
+			<script type="text/javascript" language="JavaScript">
+			/* <![CDATA[ */
+			id_rects.push('title_rating_<%=attribute%>');
 
-		$('title_rating_<%=attribute%>_info').onclick = function() {
-			var value = $('title_rating_<%=attribute%>');
-			var control = $('title_rating_<%=attribute%>_info');
-			var on_count = control.innerHTML.split('on').length-1;
-			value.value = on_count;
-		}
-
-		$('title_rating_<%=attribute%>_info').onmousemove = function(e) {
-			var control = $('title_rating_<%=attribute%>_info');
-			var tempX = 0;
-			var tempY = 0;
-			if (IE) { // get the x and y for IE
-				tempX = event.clientX + document.body.scrollLeft;
-				tempY = event.clientY + document.body.scrollTop;
-				var pos = IEfindPos(control);
-				tempX -= (pos[0] + 5);
-				tempY -= (pos[1] - 20);
-			} else {  // get the x and y for standard based browsers
-				tempX = e.pageX;
-				tempY = e.pageY;
-				var pos = IEfindPos(control);
-				tempX -= (pos[0] + 5);
-				tempY -= (pos[1] - 20);
+			$('title_rating_<%=attribute%>_info').onclick = function() {
+				var value = $('title_rating_<%=attribute%>');
+				var control = $('title_rating_<%=attribute%>_info');
+				var on_count = control.innerHTML.split('on').length-1;
+				value.value = on_count;
 			}
 
-			var star_count = parseInt(tempX / image_width);
-			if(star_count > star_max) star_count = 0;
+			$('title_rating_<%=attribute%>_info').onmousemove = function(e) {
+				var control = $('title_rating_<%=attribute%>_info');
+				var tempX = 0;
+				var tempY = 0;
+				if (IE) { // get the x and y for IE
+					tempX = event.clientX + document.body.scrollLeft;
+					tempY = event.clientY + document.body.scrollTop;
+					var pos = IEfindPos(control);
+					tempX -= (pos[0] + 5);
+					tempY -= (pos[1] - 20);
+				} else {  // get the x and y for standard based browsers
+					tempX = e.pageX;
+					tempY = e.pageY;
+					var pos = IEfindPos(control);
+					tempX -= (pos[0] + 5);
+					tempY -= (pos[1] - 20);
+				}
 
-			var content = star_off;
-			for(i=0; i<star_count; i++) {
-				content += star_on;
+				var star_count = parseInt(tempX / image_width);
+				if(star_count > star_max) star_count = 0;
+
+				var content = star_off;
+				for(i=0; i<star_count; i++) {
+					content += star_on;
+				}
+				for(i=0; i<star_max-star_count; i++) {
+					content += star_off;
+				}
+				control.innerHTML = content;
 			}
-			for(i=0; i<star_max-star_count; i++) {
-				content += star_off;
-			}
-			control.innerHTML = content;
-		}
-		/* ]]> */
-		</script>
+			/* ]]> */
+			</script>
+		</td>
 		<% end %>
-	</fieldset>
+		<% count += incr %>
+	</tr>
+	<% end %>
+	<tr>
+		<td>
+			<%= f.submit button_name %>
+		</td>
+	</tr>
+</td></tr>
+</table>
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
+</div>
 
 	<script type="text/javascript" language="JavaScript">
 		/* <![CDATA[ */
@@ -215,9 +258,5 @@
 	</script>
 
 	<%= f.hidden_field :title_id, :value => title_rating.title_id %>
-
-	<p>
-		<%= f.submit button_name %>
-	</p>
 <% end %>
 </div>

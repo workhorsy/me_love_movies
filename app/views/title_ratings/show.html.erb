@@ -1,52 +1,68 @@
 
 
-<p>
-	<b>Title:</b>
-	<%=h @title_rating.title.name %>
-</p>
+<h1>Rating For '<%= @title_rating.title.name %>' by <%=h @title_rating.user.name %></h1>
 
-<p>
-	<b>User:</b>
-	<%=h @title_rating.user.name %>
-</p>
+<div id="ratings" style="width:960px; float:left; padding-top:15px;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
 
-<div style="float: left;">
-	<h2>Ratings</h2>
-	<div style="float: left;">
-		<h3>Genre:</h3>
-		<% for genre in Title::genres %>
-		<% n = Title::genres.index(genre) %>
-		<div class="title_rating_attribute">
-			<span id="genre_<%=n%>">
-				<% count = @title_rating.title.send("avg_#{genre}") || 0 %>
-				<%= 
-					("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * count) + ("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - count))
-				-%>
+Ratings
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
+<table width="100%" border="0">
+<tr><td colspan="4"><h2>Genre</h2></td></tr>
+	<% count = 0; incr = 4 %>
+	<% while count < Title::genres.length %>
+	<tr>
+		<% for genre in Title::genres.slice(count, incr) %>
+		<td>
+			<span>
+				<%= star_images(@title_rating.title.send("avg_#{genre}")) %>
 			</span>
-			<b><%=h genre.gsub('_', ' ').capitalize %></b>
-		</div>
+			<b><%= genre.humanize[0, 13] %></b>
+		</td>
 		<% end %>
-	</div>
+		<% count += incr %>
+	</tr>
+	<% end %>
+</td></tr>
 
-	
-	<br style="clear: both;" />
-	
-	<h3>Attributes:</h3>
-	<div style="float: left;">
-		<% for attribute in Title::attributes %>
-		<% n = Title::attributes.index(attribute) %>
-		<div class="title_rating_attribute">
-			<span id="attribute_<%=n%>">
-				<% count = @title_rating.title.send("avg_#{attribute}") || 0 %>
-				<%= 
-					("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * count) + ("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - count))
-				-%>
+<tr><td colspan="4"><hr /></td></tr>
+
+<tr><td colspan="4"><h2>Attributes</h2></td></tr>
+	<% count = 0; incr = 4 %>
+	<% while count < Title::attributes.length %>
+	<tr>
+		<% for attribute in Title::attributes.slice(count, incr) %>
+		<td>
+			<span>
+				<%= star_images(@title_rating.title.send("avg_#{attribute}")) %>
 			</span>
-			<b><%=h attribute.gsub('_', ' ').capitalize %></b>
-		</div>
+			<b><%= attribute.humanize[0, 13] %></b>
+		</td>
 		<% end %>
-	</div>
+		<% count += incr %>
+	</tr>
+	<% end %>
+</td></tr>
+</table>
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
 </div>
+
 
 <br style="clear: both;" />
 
