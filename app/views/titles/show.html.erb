@@ -249,7 +249,7 @@ Ratings
 
 	<br />
 
-	<% for user_type in %w{user moderator critic} %>
+	<% for title, review in { 'New Review' => @new_review, 'Top Review' => @top_review, 'Critic' => @cirtic_review } %>
 	<div style="width:300px; float:left; padding-top:15px; margin-right:20px">
 	<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -258,19 +258,18 @@ Ratings
 	<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
 	<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
 
-	Best Review
+	<%= title %>
 
 	</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
 	</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
 	<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
 	<!-- =================================================================================== END CENTER STUFF ======= -->
-	<div id="<%=user_type%>_container">
-		<% if @title_reviews[user_type].length == 0 %>
-			<p>There are no reviews.</p>
-		<% end %>
-
-		<% for review in @title_reviews[user_type] %>
-		<% id = review.id %>
+	<% unless review %>
+	<div>
+		Nothing yet
+	</div>
+	<% else %>
+	<div>
 		<div class="image_holder1" style="float:left; margin:10px;">
 			<%= image_tag review.user.avatar_file_or_default, :size=>"100x125" %>
 		</div>
@@ -352,8 +351,8 @@ Ratings
 				</span>
 			</div>
 		</div>
-		<% end %>
 	</div>
+	<% end %>
 
 
 	<!-- =================================================================================== START END TABLE ======== -->

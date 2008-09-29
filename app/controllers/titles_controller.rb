@@ -27,7 +27,7 @@ class TitlesController < ApplicationController
 		else
 			@title = Title.find(params[:id])
 		end
-
+=begin
 		# Find all the reviews and sort them by user type
 		@title_reviews = { 'user' => [], 
 						'moderator' => [], 
@@ -41,6 +41,26 @@ class TitlesController < ApplicationController
 				when 'C': @title_reviews['critic'] << review
 			end
 		end
+=end
+		# Find a new review
+		@new_review = TitleReview.find(:all, 
+										:conditions => ["title_id=?", @title.id],
+										:order => "created_at desc",
+										:limit => 1).first
+
+		# Find a top review
+		@top_review = TitleReview.find(:all,
+										:conditions => ["title_id=?", @title.id],
+										:order => "avg_user_rating desc",
+										:limit => 1).first
+
+		# Find a random critic review
+		@cirtic_review = TitleReview.find(:all,
+											:conditions => ["title_id=?", @title.id],
+											:include => 'user').select do |tr|
+			tr.user.user_type == 'C'
+		end
+		@cirtic_review = @cirtic_review[rand(@cirtic_review.length)]
 
 		respond_to do |format|
 			format.html # show.html.erb
