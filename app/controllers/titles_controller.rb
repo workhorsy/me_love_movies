@@ -55,12 +55,17 @@ class TitlesController < ApplicationController
 										:limit => 1).first
 
 		# Find a random critic review
-		@cirtic_review = TitleReview.find(:all,
+		@critic_review = TitleReview.find(:all,
 											:conditions => ["title_id=?", @title.id],
 											:include => 'user').select do |tr|
 			tr.user.user_type == 'C'
 		end
-		@cirtic_review = @cirtic_review[rand(@cirtic_review.length)]
+		@critic_review = @critic_review[rand(@critic_review.length)]
+
+		# If any of the showcased reviews are the same, remove the duplicates
+		@top_review = nil if @critic_review && @top_review && @critic_review.id == @top_review.id
+		@new_review = nil if @critic_review && @new_review && @critic_review.id == @new_review.id
+		@new_review = nil if @new_review && @top_review && @new_review.id == @top_review.id
 
 		respond_to do |format|
 			format.html # show.html.erb
