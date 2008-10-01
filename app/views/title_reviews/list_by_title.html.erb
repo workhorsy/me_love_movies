@@ -1,6 +1,10 @@
 
 
 <div id="table_review_container">
+	<%= will_paginate @title_reviews, 
+					:renderer => 'RemoteLinkRenderer', 
+					:params => {:action => 'list_by_title', :id => @title_reviews.first.title.id}, 
+					:remote => {:update => 'external_title_reviews'} %>
 	<table>
 	<% for review in @title_reviews %>
 		<tr>

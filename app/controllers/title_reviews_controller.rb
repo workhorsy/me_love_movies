@@ -157,8 +157,12 @@ class TitleReviewsController < ApplicationController
 	# GET /list_by_title/1
 	# GET /list_by_title/1.xml
 	def list_by_title
-		@title_reviews = TitleReview.find(:all)
-											#:conditions => ["title_id=?", id])
+		id = params[:id]
+		@title_reviews = TitleReview.paginate(:conditions => ["title_id=?", id],
+											:page => params[:page], 
+											:per_page => 4, #Title::per_page, 
+											:order => 'created_at desc')
+
 		render :layout => false
 	end
 
