@@ -149,99 +149,6 @@ Ratings
 <br style="clear: both;" />
 
 <div id="reviews">
-	<script type="text/javascript" language="JavaScript">
-		/* <![CDATA[ */
-		var IE = document.all ? true : false;
-		var mouse_x = 0;
-		var mouse_y = 0;
-		var prev_mouse_x = -1;
-		var prev_mouse_y = -1;
-		var star_on = "<img src=\"/images/heart_on.jpg\" alt=\"\" />";
-		var star_off = "<img src=\"/images/heart_off.jpg\" alt=\"\" />";
-		var star_max = 5;
-		var image_width = 20;
-
-		setInterval(check_mouse_off, 125);
-
-		var id_rects = [];
-		function check_mouse_off() {
-			if(mouse_x == prev_mouse_x &&
-				mouse_y == prev_mouse_y) {
-				return;
-			}
-			prev_mouse_x = mouse_x;
-			prev_mouse_y = mouse_y;
-
-			for(i=0; i<id_rects.length; i++) {
-				// Determine if we are not on the star set
-				var c = $(id_rects[i] + '_info');
-				var is_off = false;
-				if(IE) {
-					var pos = IEfindPos(c);
-					var left = pos[0] - window.document.documentElement.scrollLeft;
-					var top = pos[1] - window.document.documentElement.scrollTop;
-					var right = left + c.offsetWidth;
-					var bottom = top + c.offsetHeight;
-					is_off = !(mouse_x >= left && mouse_x <= right &&
-							mouse_y >= top && mouse_y <= bottom);
-				} else {
-					var pos = IEfindPos(c);
-					var left = pos[0];
-					var top = pos[1];
-					var right = left + c.offsetWidth;
-					var bottom = top + c.offsetHeight;
-					is_off = !(mouse_x >= left && mouse_x <= right &&
-							mouse_y >= top && mouse_y <= bottom);
-				}
-				
-				// Generate new star images if we are not on the set
-				if(is_off) {
-					var newHTML = star_off;
-					var count = parseInt($(id_rects[i]).value);
-					for(j=0; j<count; j++) {
-						newHTML += star_on;
-					}
-					for(j=0; j<star_max-count; j++) {
-						newHTML += star_off;
-					}
-					c.innerHTML = newHTML;
-				}
-			}
-		}
-
-		container = $('reviews');
-		container.onmousemove = function(e) {
-			var tempX = 0;
-			var tempY = 0;
-			if (IE) { // get the x and y for IE
-				tempX = event.clientX + document.body.scrollLeft;
-				tempY = event.clientY + document.body.scrollTop;
-			} else { // get the x and y for standard based browsers
-				tempX = e.pageX;
-				tempY = e.pageY;
-			}
-
-			mouse_x = tempX;
-			mouse_y = tempY;
-		}
-		
-		function IEfindPos(obj) {
-			var posX = obj.offsetLeft;
-			var posY = obj.offsetTop;
-			while(obj.offsetParent) {
-				posX += obj.offsetParent.offsetLeft;
-				posY += obj.offsetParent.offsetTop;
-				if(obj == document.getElementsByTagName('body')[0]) {
-					break
-				} else {
-					obj=obj.offsetParent;
-				}
-			}
-			return [posX, posY];
-		}
-		/* ]]> */
-	</script>
-
 	<h2>Reviews</h2>
 
 	<%= link_to 'Review this film', {:controller => 'title_reviews', :action => 'new', :title_id => @title.id}, {:id => 'lnk_edit_review', :style => 'display: none;'} %>
@@ -282,62 +189,34 @@ Ratings
 				:action => 'show', 
 				:id => review.user.id) %><br />
 			<% user_rating = review.get_user_rating(session[:user_id]) || 0 %>
-			<div id="rating_<%=id%>_container">
-				<input id="rating_<%=id%>" type="hidden" value="<%=user_rating%>" />
+
+			<div id="rating_<%=id%>" class="rating_star">
 				How you rate this review:<br />
-				<span id="rating_<%=id%>_info">
-					<%=
-						("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * user_rating) +
-						("<img src=\"/images/heart_off.jpg\"  alt=\"\" />" * (5 - user_rating))
-					%>
-				</span>
+				<input id="title_rating_<%=id%>" name="title_rating[<%=id%>]" class="holder" type="hidden" value="<%= user_rating %>" />
+				<a title="Don't Rate" class="dont" onclick="star_click_rating(this); rate_review('title_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="ehh..."                  onclick="star_click_rating(this); rate_review('title_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="Not Bad"                 onclick="star_click_rating(this); rate_review('title_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 2)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="Pretty Good"             onclick="star_click_rating(this); rate_review('title_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 3)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="Great"                   onclick="star_click_rating(this); rate_review('title_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 4)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="Awesome!"                onclick="star_click_rating(this); rate_review('title_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 5)" onmouseout="star_mouse_off_rating(this)"></a>
 			</div>
-
 			<script type="text/javascript" language="JavaScript">
-				/* <![CDATA[ */
-				id_rects.push('rating_<%=id%>');
+				// <![CDATA[
+				// Set the initial value of the stars
+				star_mouse_off_rating($("rating_<%=id%>").getElementsByTagName('a')[0]);
 
-				$('rating_<%=id%>_info').onclick = function() {
-					var value = $('rating_<%=id%>');
-					var control = $('rating_<%=id%>_info');
-					var on_count = control.innerHTML.split('on').length-1;
-					value.value = on_count;
-					new Ajax.Updater("rating_<%=id%>", '/title_reviews/set_review_rating?rating=' + on_count + '&review_id=' + <%=id%>, {asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')});
-					return false;
+				function rate_review(star_value_id, review_id) {
+					var hidden = $(star_value_id);
+					var count = hidden.value;
+
+					new Ajax.Updater(hidden.id, 
+									'/title_reviews/set_review_rating?rating=' + count + '&review_id=' + review_id, 
+									{asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')});
 				}
-
-				$('rating_<%=id%>_info').onmousemove = function(e) {
-					var control = $('rating_<%=id%>_info');
-					var tempX = 0;
-					var tempY = 0;
-					if (IE) { // get the x and y for IE
-						tempX = event.clientX + document.body.scrollLeft;
-						tempY = event.clientY + document.body.scrollTop;
-						var pos = IEfindPos(control);
-						tempX -= (pos[0] + 5);
-						tempY -= (pos[1] - 20);
-					} else {  // get the x and y for standard based browsers
-						tempX = e.pageX;
-						tempY = e.pageY;
-						var pos = IEfindPos(control);
-						tempX -= (pos[0] + 5);
-						tempY -= (pos[1] - 20);
-					}
-
-					var star_count = parseInt(tempX / image_width);
-					if(star_count > star_max) star_count = 0;
-
-					var content = star_off;
-					for(i=0; i<star_count; i++) {
-						content += star_on;
-					}
-					for(i=0; i<star_max-star_count; i++) {
-						content += star_off;
-					}
-					control.innerHTML = content;
-				}
-				/* ]]> */
+				// ]]>
 			</script>
+
+
 
 			<% avg_rating = review.avg_user_rating || 0 %>
 			<div id="average_<%=id%>_container">
