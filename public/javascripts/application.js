@@ -13,8 +13,14 @@ function get_cookie(name) {
 	return value;
 }
 
+function get_user_greeting_from_cookie() {
+	var name = get_cookie('user_name').replace('+', ' ');
+	var greeting = get_cookie('user_greeting');
+	return greeting + " " + name;
+}
+
 function is_logged_in() {
-	value = get_cookie('user_name');
+	var value = get_cookie('user_name');
 	return (value != null && value != "");
 }
 

@@ -94,6 +94,7 @@ class UsersController < ApplicationController
 	def login
 		session[:user_id] = nil
 		cookies[:user_name] = nil
+		cookies[:user_greeting] = nil
 		cookies[:user_type] = nil
 		cookies[:user_id] = nil
 		return unless request.post?
@@ -102,6 +103,7 @@ class UsersController < ApplicationController
 		if user
 			session[:user_id] = user.id
 			cookies[:user_name] = { :value => user.name }
+			cookies[:user_greeting] = { :value => 'Howdy' }
 			cookies[:user_type] = { :value => user.user_type }
 			cookies[:user_id] = { :value => user.id.to_s }
  			flash[:notice] = "Successfully loged in."
