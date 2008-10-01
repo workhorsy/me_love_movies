@@ -330,3 +330,11 @@ textarea, input, select {
 	padding: 5px;
 }
 
+
+.rating_star { float:left; clear:both; width:100%; height:auto; padding:0px; margin:0px; }
+.rating_star li{ float:left;list-style:none; }
+.rating_star li a:hover,
+.rating_star .on{ background:url(/images/heart_on.jpg) no-repeat; }
+.rating_star .dont{ background:url(/images/heart_none.jpg) no-repeat; }
+.rating_star a{ background:url(/images/heart_off.jpg) no-repeat; float:left; width:20px; height:20px; }
+

@@ -86,3 +86,50 @@ function has_default_text(tag_id) {
 }
 
 
+function star_update_images(self, number) {
+	var stars = self.parentNode.getElementsByTagName('a');
+	var got_self = false;
+	for(i=0; i <= 5; i++) {
+		if(i != 0) {
+			stars[i].className = (got_self ? "off" : "on");
+		}
+		if(self == stars[i]) got_self = true;
+	}
+}
+
+function star_mouse_off_rating(self) {
+	var got_self = false;
+	var holder = null;
+	var inputs = self.parentNode.getElementsByTagName('input');
+	for(i=0; i<inputs.length; i++) {
+		if(inputs[i].type == "hidden") {
+			holder = inputs[i];
+		}
+	}
+
+	var stars = self.parentNode.getElementsByTagName('a');
+	for(i=0; i <= 5; i++) {
+		if(i != 0) {
+			stars[i].className = (got_self ? "off" : "on");
+		}
+		if(holder.value == i) got_self = true;
+	}
+}
+
+function star_click_rating(self) {
+	var holder = null;
+	var inputs = self.parentNode.getElementsByTagName('input');
+	for(i=0; i<inputs.length; i++) {
+		if(inputs[i].type == "hidden") {
+			holder = inputs[i];
+		}
+	}
+
+	var stars = self.parentNode.getElementsByTagName('a');
+	for(i=0; i <= 5; i++) {
+		if(self == stars[i])
+			holder.value = i;
+	}
+	star_update_images(self);
+}
+
