@@ -1,5 +1,4 @@
 
-
 <div style="width:600px; float:left;">
 <!-- ====================================================================================TABLE BLOCK STARTS HERE -->
 <table cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -365,6 +364,40 @@ Ratings
 	</div>
 	<% end %>
 </div>
+
+
+<div id="ratings" style="width:960px; float:left; padding-top:15px;">
+<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
+<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+Other Reviews
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+<!-- =================================================================================== END CENTER STUFF ======= -->
+
+<div id="external_title_reviews"></div>
+<script type="text/javascript">
+	// <!CDATA[
+	new Ajax.Updater("external_title_reviews", 
+					"/title_reviews/list_by_title/<%=@title.id%>", 
+					{asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')});
+	// ]]>
+</script>
+
+<!-- =================================================================================== START END TABLE ======== -->
+</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+</tr></table><!-- ====================================================================== END TABLE ============== -->
+</div>
+
 
 <script type="text/javascript">
 	// <!CDATA[

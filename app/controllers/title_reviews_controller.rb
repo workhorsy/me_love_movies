@@ -154,6 +154,14 @@ class TitleReviewsController < ApplicationController
 		end
 	end
 
+	# GET /list_by_title/1
+	# GET /list_by_title/1.xml
+	def list_by_title
+		@title_reviews = TitleReview.find(:all)
+											#:conditions => ["title_id=?", id])
+		render :layout => false
+	end
+
 	private
 
 	def get_originating_user_id
