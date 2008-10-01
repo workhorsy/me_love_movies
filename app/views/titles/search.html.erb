@@ -58,152 +58,25 @@ Search by Ratings
 
 <% form_for @title_rating, :url => {:action => 'search'} do |f| %>
 	<div id="container">
-
-		<script type="text/javascript" language="JavaScript">
-			/* <![CDATA[ */
-			var IE = document.all ? true : false;
-			var mouse_x = 0;
-			var mouse_y = 0;
-			var prev_mouse_x = -1;
-			var prev_mouse_y = -1;
-			var star_on = "<img src=\"/images/heart_on.jpg\" alt=\"\" />";
-			var star_off = "<img src=\"/images/heart_off.jpg\" alt=\"\" />";
-			var star_max = 5;
-			var image_width = 20;
-
-			setInterval(check_mouse_off, 125);
-
-			var id_rects = [];
-			function check_mouse_off() {
-				if(mouse_x == prev_mouse_x &&
-					mouse_y == prev_mouse_y) {
-					return;
-				}
-				prev_mouse_x = mouse_x;
-				prev_mouse_y = mouse_y;
-
-				for(i=0; i<id_rects.length; i++) {
-					// Determine if we are not on the star set
-					var c = $(id_rects[i] + '_info');
-					var is_off = false;
-					if(IE) {
-						var pos = IEfindPos(c);
-						var left = pos[0] - window.document.documentElement.scrollLeft;
-						var top = pos[1] - window.document.documentElement.scrollTop;
-						var right = left + c.offsetWidth;
-						var bottom = top + c.offsetHeight;
-						is_off = !(mouse_x >= left && mouse_x <= right &&
-								mouse_y >= top && mouse_y <= bottom);
-					} else {
-						var pos = IEfindPos(c);
-						var left = pos[0];
-						var top = pos[1];
-						var right = left + c.offsetWidth;
-						var bottom = top + c.offsetHeight;
-						is_off = !(mouse_x >= left && mouse_x <= right &&
-								mouse_y >= top && mouse_y <= bottom);
-					}
-					
-					// Generate new star images if we are not on the set
-					if(is_off) {
-						var newHTML = star_off;
-						var count = parseInt($(id_rects[i]).value);
-						for(j=0; j<count; j++) {
-							newHTML += star_on;
-						}
-						for(j=0; j<star_max-count; j++) {
-							newHTML += star_off;
-						}
-						c.innerHTML = newHTML;
-					}
-				}
-			}
-
-			var container = $('container');
-			container.onmousemove = function(e) {
-				var tempX = 0;
-				var tempY = 0;
-				if (IE) { // get the x and y for IE
-					tempX = event.clientX + document.body.scrollLeft;
-					tempY = event.clientY + document.body.scrollTop;
-				} else {  // get the x and y for standard based browsers
-					tempX = e.pageX;
-					tempY = e.pageY;
-				}
-
-				mouse_x = tempX;
-				mouse_y = tempY;
-			}
-			
-			function IEfindPos(obj) {
-				var posX = obj.offsetLeft;
-				var posY = obj.offsetTop;
-				while(obj.offsetParent) {
-					posX += obj.offsetParent.offsetLeft;
-					posY += obj.offsetParent.offsetTop;
-					if(obj == document.getElementsByTagName('body')[0]) {
-						break
-					} else {
-						obj=obj.offsetParent;
-					}
-				}
-				return [posX, posY];
-			}
-			/* ]]> */
-		</script>
-
 		<h2>Genre</h2>
 			<% for genre in Title::genres %>
-			<div id="title_rating_<%=genre%>_container"
-					class="title_rating_attribute">
-				<input id="title_rating_<%=genre%>" name="title_rating[<%=genre%>]" type="hidden" value="<%= @title_rating.send(genre) || 0 %>" />
-				<span id="title_rating_<%=genre%>_info">
-					<%= image_tag('heart_off.jpg', :alt => '') * 6 %>
-				</span>
-				<b><%= genre.gsub('_', ' ').capitalize %></b>
+			<div class="title_rating_attribute">
+				<div id="ratings_<%=genre%>" class="rating_star">
+					<input id="title_rating_<%=genre%>" name="title_rating[<%=genre%>]" class="holder" type="hidden" value="<%= @title_rating.send(genre) || 0 %>" />
+					<a title="Don't Rate" class="dont" onclick="star_click_rating(this)" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
+					<a title="ehh..."                  onclick="star_click_rating(this)" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
+					<a title="Not Bad"                 onclick="star_click_rating(this)" onmouseover="star_update_images(this, 2)" onmouseout="star_mouse_off_rating(this)"></a>
+					<a title="Pretty Good"             onclick="star_click_rating(this)" onmouseover="star_update_images(this, 3)" onmouseout="star_mouse_off_rating(this)"></a>
+					<a title="Great"                   onclick="star_click_rating(this)" onmouseover="star_update_images(this, 4)" onmouseout="star_mouse_off_rating(this)"></a>
+					<a title="Awesome!"                onclick="star_click_rating(this)" onmouseover="star_update_images(this, 5)" onmouseout="star_mouse_off_rating(this)"></a>
+					<b><%= genre.humanize %></b>
+				</div>
 			</div>
 			<script type="text/javascript" language="JavaScript">
-			/* <![CDATA[ */
-			id_rects.push('title_rating_<%=genre%>');
-
-			$('title_rating_<%=genre%>_info').onclick = function() {
-				var value = $('title_rating_<%=genre%>');
-				var control = $('title_rating_<%=genre%>_info');
-				var on_count = control.innerHTML.split('on').length-1;
-				value.value = on_count;
-			}
-
-			$('title_rating_<%=genre%>_info').onmousemove = function(e) {
-				var control = $('title_rating_<%=genre%>_info');
-				var tempX = 0;
-				var tempY = 0;
-				if (IE) { // get the x and y for IE
-					tempX = event.clientX + document.body.scrollLeft;
-					tempY = event.clientY + document.body.scrollTop;
-					var pos = IEfindPos(control);
-					tempX -= (pos[0] + 5);
-					tempY -= (pos[1] - 20);
-				} else {  // get the x and y for standard based browsers
-					tempX = e.pageX;
-					tempY = e.pageY;
-					var pos = IEfindPos(control);
-					tempX -= (pos[0] + 5);
-					tempY -= (pos[1] - 20);
-				}
-
-				var star_count = parseInt(tempX / image_width);
-				if(star_count > star_max) star_count = 0;
-
-				var content = star_off;
-				for(i=0; i<star_count; i++) {
-					content += star_on;
-				}
-				for(i=0; i<star_max-star_count; i++) {
-					content += star_off;
-				}
-				control.innerHTML = content;
-			}
-			/* ]]> */
+				// <![CDATA[
+				// Set the initial value of the stars
+				star_mouse_off_rating($("ratings_<%=genre%>").getElementsByTagName('a')[0]);
+				// ]]>
 			</script>
 			<% end %>
 
@@ -211,56 +84,23 @@ Search by Ratings
 
 		<h2>Attributes</h2>
 			<% for attribute in Title::attributes %>
-			<div id="title_rating_<%=attribute%>_container"
-					class="title_rating_attribute">
-				<input id="title_rating_<%=attribute%>" name="title_rating[<%=attribute%>]" type="hidden" value="<%= @title_rating.send(attribute) || 0 %>" />
-				<span id="title_rating_<%=attribute%>_info">
-					<%= image_tag('heart_off.jpg', :alt => '') * 6 %>
-				</span>
-				<b><%= attribute.gsub('_', ' ').capitalize %></b>
+			<div class="title_rating_attribute">
+				<div id="ratings_<%=attribute%>" class="rating_star">
+					<input id="title_rating_<%=attribute%>" name="title_rating[<%=attribute%>]" class="holder" type="hidden" value="<%= @title_rating.send(attribute) || 0 %>" />
+					<a title="Don't Rate" class="dont" onclick="star_click_rating(this)" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
+					<a title="ehh..."                  onclick="star_click_rating(this)" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
+					<a title="Not Bad"                 onclick="star_click_rating(this)" onmouseover="star_update_images(this, 2)" onmouseout="star_mouse_off_rating(this)"></a>
+					<a title="Pretty Good"             onclick="star_click_rating(this)" onmouseover="star_update_images(this, 3)" onmouseout="star_mouse_off_rating(this)"></a>
+					<a title="Great"                   onclick="star_click_rating(this)" onmouseover="star_update_images(this, 4)" onmouseout="star_mouse_off_rating(this)"></a>
+					<a title="Awesome!"                onclick="star_click_rating(this)" onmouseover="star_update_images(this, 5)" onmouseout="star_mouse_off_rating(this)"></a>
+					<b><%= attribute.humanize %></b>
+				</div>
 			</div>
 			<script type="text/javascript" language="JavaScript">
-			/* <![CDATA[ */
-			id_rects.push('title_rating_<%=attribute%>');
-
-			$('title_rating_<%=attribute%>_info').onclick = function() {
-				var value = $('title_rating_<%=attribute%>');
-				var control = $('title_rating_<%=attribute%>_info');
-				var on_count = control.innerHTML.split('on').length-1;
-				value.value = on_count;
-			}
-
-			$('title_rating_<%=attribute%>_info').onmousemove = function(e) {
-				var control = $('title_rating_<%=attribute%>_info');
-				var tempX = 0;
-				var tempY = 0;
-				if (IE) { // get the x and y for IE
-					tempX = event.clientX + document.body.scrollLeft;
-					tempY = event.clientY + document.body.scrollTop;
-					var pos = IEfindPos(control);
-					tempX -= (pos[0] + 5);
-					tempY -= (pos[1] - 20);
-				} else {  // get the x and y for standard based browsers
-					tempX = e.pageX;
-					tempY = e.pageY;
-					var pos = IEfindPos(control);
-					tempX -= (pos[0] + 5);
-					tempY -= (pos[1] - 20);
-				}
-
-				var star_count = parseInt(tempX / image_width);
-				if(star_count > star_max) star_count = 0;
-
-				var content = star_off;
-				for(i=0; i<star_count; i++) {
-					content += star_on;
-				}
-				for(i=0; i<star_max-star_count; i++) {
-					content += star_off;
-				}
-				control.innerHTML = content;
-			}
-			/* ]]> */
+				// <![CDATA[
+				// Set the initial value of the stars
+				star_mouse_off_rating($("ratings_<%=attribute%>").getElementsByTagName('a')[0]);
+				// ]]>
 			</script>
 			<% end %>
 
