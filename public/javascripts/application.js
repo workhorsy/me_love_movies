@@ -14,9 +14,14 @@ function get_cookie(name) {
 }
 
 function get_user_greeting_from_cookie() {
-	var name = get_cookie('user_name').replace('+', ' ');
+	var name = get_cookie('user_name');
 	var greeting = get_cookie('user_greeting');
-	return greeting + " " + name;
+
+	if(name != null) {
+		return greeting + " " + name.replace('+', ' ');
+	} else {
+		return "Howdy Stranger";
+	}
 }
 
 function is_logged_in() {
