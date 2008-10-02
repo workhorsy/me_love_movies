@@ -14,12 +14,26 @@ img{
 	border:0;
 }
 
+/* Set some default styles for input */
 textarea, input, select {
-	margin:0; padding:0;
-	font-size:12px;
-	border:1px solid #99cc33;
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	border: 1px solid #99cc33;
 	color: #99cc33;
 }
+
+input[type=submit] {
+	font-size: 10px;
+	font-weight: bold;
+	width: 90px;
+	color: #FFF;
+	background-color: #99cc33;
+	border: 0;
+	height: 20px;
+	padding-bottom: 4px;
+}
+
 
 #header{
 	margin: 0 auto;
@@ -177,49 +191,18 @@ textarea, input, select {
 	padding-left: 50px;
 }
 
-#search input{
-	margin:0; padding:0;
+#search input[type=text]{
 	width: 280px;
-	font-size:12px;
-	border:1px solid #99cc33;
-	color: #99cc33;
 }
 
-#search #submitbutton{
-	margin:0; padding:0;
-	font-size:10px;
-	font-weight:bold;
-	width:90px;
-	color:#FFF;
-	border:0;
-	background-color:#99cc33;
-	height:20px;
-	padding-bottom:4px;
-}
 
 .login{
 	float: right;
 }
 
 .login input{
-	margin:0; padding:0;
 	width: 120px;
-	font-size:12px;
-	border:1px solid #99cc33;
-	color: #99cc33;
 	height:18px;
-}
-
-.login #submitbutton{
-	margin:0; padding:0;
-	font-size:10px;
-	font-weight:bold;
-	width:90px;
-	color:#FFF;
-	border:0;
-	background-color:#99cc33;
-	height:20px;
-	padding-bottom:4px;
 }
 
 .login h3{
@@ -234,25 +217,9 @@ textarea, input, select {
 }
 
 #search_page input{
-	margin:0; padding:0;
 	width: 150px;
-	font-size:12px;
-	border:1px solid #99cc33;
-	color: #99cc33;
 	height:18px;
 	margin-right:40px;
-}
-
-#search_page .submitbutton{
-	margin:0; padding:0;
-	font-size:10px;
-	font-weight:bold;
-	width:90px;
-	color:#FFF;
-	border:0;
-	background-color:#99cc33;
-	height:20px;
-	padding-bottom:4px;
 }
 
 

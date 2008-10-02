@@ -43,9 +43,18 @@ class UsersController < ApplicationController
 		@user = User.new(params[:user])
 		@user.user_type = UserType::NAMES_ABBREVIATIONS.select { |k, v| v == 'U' }.first.last
 
+		# Send the email
+		@server_domain = "http://" + request.env_table['HTTP_HOST']
+		Mailer.deliver_user_created(@server_domain, @user.user_name, @user.name, @user.email)
+
+		# FIXME: Remove this block, it is just for debugging
+		flash[:notice] = "Did da email go fu?"
+		redirect_to(:controller => 'home', :action => 'index')
+		return
+
 		respond_to do |format|
 			if @user.save
-				flash[:notice] = 'The User was successfully created.'
+				flash[:notice] = 'The User was created. Check your email for the activation link.'
 				format.html { redirect_to(@user) }
 				format.xml	{ render :xml => @user, :status => :created, :location => @user }
 			else
@@ -118,10 +127,35 @@ class UsersController < ApplicationController
 	def logout
 		session[:user_id] = nil
 		cookies[:user_name] = nil
+		cookies[:user_greeting] = nil
 		cookies[:user_type] = nil
 		cookies[:user_id] = nil
 
 		redirect_to(:controller => 'home', :action => 'index')
+	end
+
+	# GET /users/forgot_password
+	# GET /users/forgot_password.xml
+	def forgot_password
+		user_name = params['user_name']
+		email = params['email']
+
+		# Determine if that is a valid user
+		user = User.find(:first, :conditions => ["user_name=? and email=?", user_name, email])
+
+		if user
+			@server_domain = "http://" + request.env_table['HTTP_HOST']
+			Maler.forgetten_password(@server_domain, user.user_name, user.email, user.password)
+
+			flash[:notice] = "The password for '#{user_name}' has been sent to #{email}."
+			redirect_to :action => 'sending_password'
+		end
+	end
+
+	# GET /users/sending_password
+	# GET /users/sending_password.xml
+	def sending_password
+
 	end
 
 	# GET /users/set_user_type
