@@ -46,15 +46,31 @@ class UsersController < ApplicationController
 		@user = User.new(params[:user])
 		@user.user_type = UserType::NAMES_ABBREVIATIONS.select { |k, v| v == 'U' }.first.last
 
+		# FIXME: For now we are dissabling the user email activation. Instead we are logging in the user automatically
+		# FIXME: Remove this when the email activation is working
+		@user.is_email_activated = true
+
 		respond_to do |format|
 			if @user.save
 				@user = User.find(@user.id)
 
 				# Send the email
-				@server_domain = "http://" + request.env_table['HTTP_HOST']
-				Mailer.deliver_user_created(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
+				# FIXME: Uncomment this when the email activation is working
+#				@server_domain = "http://" + request.env_table['HTTP_HOST']
+#				Mailer.deliver_user_created(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
 
-				flash[:notice] = 'The User was created. Check your email for the activation link.'
+#				flash[:notice] = 'The User was created. Check your email for the activation link.'
+
+				# FIXME: Remove this when the email activation is working
+				session[:user_id] = @user.id
+				cookies[:user_name] = { :value => @user.name }
+				cookies[:user_greeting] = { :value => 'Howdy' }
+				cookies[:user_type] = { :value => @user.user_type }
+				cookies[:user_id] = { :value => @user.id.to_s }
+	 			flash[:notice] = 'The User was created. You are now logged in.'
+				redirect_to(:controller => 'home', :action => :index)
+				return
+
 				format.html { redirect_to(@user) }
 				format.xml	{ render :xml => @user, :status => :created, :location => @user }
 			else
