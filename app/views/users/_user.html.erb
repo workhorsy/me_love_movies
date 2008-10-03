@@ -128,7 +128,7 @@ I forgot my password
 If you have forgotten your password, submit this form to have the password sent to the email address from your account.
 You must remember your user name and email address to have the password sent.
 
-<% form_tag :controller => 'users', :action => 'forgot_password' do |f| %>
+<% form_tag(:controller => 'users', :action => 'forgot_password') do |f| %>
 	<p>
 		<label for="user_name"><span><b>User Name</b></span></label>
 		<%= text_field_tag :user_name %>

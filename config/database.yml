@@ -38,9 +38,8 @@ test:
 production:
   adapter: mysql
   encoding: utf8
-  database: me_love_movies_production
-  username: root
-  password: letmein
-  socket: /var/run/mysqld/mysqld.sock # debian/ubuntu
-#  socket: /var/lib/mysql/mysql.sock    # fedora
+  database: db49101_me_love_movies_production_r95
+  username: db49101
+  password: DeywKqFt
+  host: internal-db.s49101.gridserver.com
 
