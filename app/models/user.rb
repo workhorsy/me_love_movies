@@ -1,5 +1,6 @@
 
-require 'digest/sha1'
+require 'ezcrypto'
+require 'base64'
 
 class User < ActiveRecord::Base
 	has_many :title_ratings
@@ -21,7 +22,7 @@ class User < ActiveRecord::Base
 	def self.authenticate(name, password)
 		user = self.find_by_user_name(name)
 		if user
-			expected_password = encrypted_password(password, user.salt)
+			expected_password = User.encrypt_password(password, user.salt)
 			if user.hashed_password != expected_password
 				user = nil
 			end
@@ -37,7 +38,7 @@ class User < ActiveRecord::Base
 		@password = value
 		return if value.blank?
 		create_new_salt
-		self.hashed_password = User.encrypted_password(self.password, self.salt)
+		self.hashed_password = User.encrypt_password(self.password, self.salt)
 	end
 
 	def avatar_file_or_default
@@ -63,9 +64,14 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def self.encrypted_password(password, salt)
-		string_to_hash = password + "wibble" + salt
-		Digest::SHA1.hexdigest(string_to_hash)
+	def self.encrypt_password(password, salt)
+		Base64.encode64(Crypt.encrypt(password + salt))
+	end
+
+	def self.decrypt_password(hashed_password, salt)
+		len = salt.length
+		b = Base64.decode64(hashed_password)
+		Crypt.decrypt(b)[0..-(len+1)]
 	end
 
 	def create_new_salt

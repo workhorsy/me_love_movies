@@ -1,3 +1,5 @@
+require 'cgi'
+
 class UsersController < ApplicationController
 	layout 'default'
 	before_filter :authorize_admins_only, :only => ['destroy']
@@ -13,6 +15,7 @@ class UsersController < ApplicationController
 	# GET /users/1.xml
 	def show
 		@user = User.find(params[:id])
+
 		@title_reviews = TitleReview.find(:all, :conditions => ["user_id=?", @user.id])
 		# FIXME: Optimize this to be a single query!
 		@title_reviews = @title_reviews.sort {|x,y| Title.find_by_id(y.title_id).name <=> Title.find_by_id(x.title_id).name }.reverse
@@ -43,17 +46,14 @@ class UsersController < ApplicationController
 		@user = User.new(params[:user])
 		@user.user_type = UserType::NAMES_ABBREVIATIONS.select { |k, v| v == 'U' }.first.last
 
-		# Send the email
-		@server_domain = "http://" + request.env_table['HTTP_HOST']
-		Mailer.deliver_user_created(@server_domain, @user.user_name, @user.name, @user.email)
-
-		# FIXME: Remove this block, it is just for debugging
-		flash[:notice] = "Did da email go fu?"
-		redirect_to(:controller => 'home', :action => 'index')
-		return
-
 		respond_to do |format|
 			if @user.save
+				@user = User.find(@user.id)
+
+				# Send the email
+				@server_domain = "http://" + request.env_table['HTTP_HOST']
+				Mailer.deliver_user_created(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
+
 				flash[:notice] = 'The User was created. Check your email for the activation link.'
 				format.html { redirect_to(@user) }
 				format.xml	{ render :xml => @user, :status => :created, :location => @user }
@@ -108,8 +108,19 @@ class UsersController < ApplicationController
 		cookies[:user_id] = nil
 		return unless request.post?
 
+		# Get the user if the name and password are correct
 		user = User.authenticate(params[:user_name], params[:password])
-		if user
+
+		# Flash them a fail message if the user is nil
+		if user == nil
+			flash[:notice] = "Login failed. Try again."
+
+		# Make sure the user has been activated via email
+		elsif user && user.is_email_activated == false
+			flash[:notice] = "Before you can login, this user must be activated via the email message that was sent when the user was created."
+
+		# Log the user in and show a success message
+		elsif user && user.is_email_activated == true
 			session[:user_id] = user.id
 			cookies[:user_name] = { :value => user.name }
 			cookies[:user_greeting] = { :value => 'Howdy' }
@@ -117,8 +128,6 @@ class UsersController < ApplicationController
 			cookies[:user_id] = { :value => user.id.to_s }
  			flash[:notice] = "Successfully loged in."
 			redirect_to(:controller => 'home', :action => :index)
-		else
-			flash[:notice] = "Login failed. Try again."
 		end
 	end
 
@@ -145,10 +154,14 @@ class UsersController < ApplicationController
 
 		if user
 			@server_domain = "http://" + request.env_table['HTTP_HOST']
-			Maler.forgetten_password(@server_domain, user.user_name, user.email, user.password)
+			Mailer.deliver_forgot_password(@server_domain, user.user_name, user.email, user.password)
 
 			flash[:notice] = "The password for '#{user_name}' has been sent to #{email}."
 			redirect_to :action => 'sending_password'
+		else
+			@user = User.new
+			flash[:notice] = "There is no user with that name and email. Try again."
+			render :action => "new"
 		end
 	end
 
@@ -156,6 +169,30 @@ class UsersController < ApplicationController
 	# GET /users/sending_password.xml
 	def sending_password
 
+	end
+
+	# GET /users/set_is_email_activated
+	# GET /users/set_is_email_activated.xml
+	def set_is_email_activated
+		# Find the user based on the secret id
+		user = nil
+		begin
+			id = Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).to_i
+			user = User.find(id)
+		rescue
+		end
+
+		# Try updating the user, if not show a message
+		if user == nil
+			flash[:notice] = 'Failed to activate the user.'
+			render :layout => 'default', :text => ''
+		elsif user.update_attributes({ :is_email_activated => true})
+			flash[:notice] = 'The User was successfully activated.'
+			render :layout => 'default', :text => ''
+		else
+			flash[:notice] = 'There was an error when trying to activate the the user.'
+			render :layout => 'default', :text => ''
+		end
 	end
 
 	# GET /users/set_user_type
