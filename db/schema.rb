@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(:version => 16) do
     t.string   "user_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_email_activated"
+    t.boolean  "is_email_activated", :default => false, :null => false
   end
 
   add_index "users", ["id"], :name => "index_users_on_id"
