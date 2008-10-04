@@ -49,5 +49,13 @@ private
 			render :layout => 'default', :text => "<p id=\"flash_notice\">Only that user can access this page.</p>"
 		end
 	end
+
+	def get_server_url(request)
+		if ENV['RAILS_ENV'] == 'production'
+			"http://melovemovies.com"
+		else
+			"http://" + request.env_table['HTTP_HOST']
+		end
+	end
 end
 

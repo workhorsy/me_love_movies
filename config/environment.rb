@@ -71,9 +71,13 @@ config.action_mailer.smtp_settings = {
 	:port            => 25,
 	:domain          => "melovemovies.com",
 	:authentication  => :login,
-	:user_name       => "noreply",
+	:user_name       => "noreply@melovemovies.com",
 	:password        => "scybHabduck4"
 }
 end
 
+# This changes the error input fields to be spans instead of divs
+ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
+	"<span class=\"fieldWithErrors\">#{html_tag}</span>"
+end
 

@@ -46,30 +46,15 @@ class UsersController < ApplicationController
 		@user = User.new(params[:user])
 		@user.user_type = UserType::NAMES_ABBREVIATIONS.select { |k, v| v == 'U' }.first.last
 
-		# FIXME: For now we are dissabling the user email activation. Instead we are logging in the user automatically
-		# FIXME: Remove this when the email activation is working
-		@user.is_email_activated = true
-
 		respond_to do |format|
 			if @user.save
 				@user = User.find(@user.id)
 
 				# Send the email
-				# FIXME: Uncomment this when the email activation is working
-#				@server_domain = "http://" + request.env_table['HTTP_HOST']
-#				Mailer.deliver_user_created(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
+				@server_domain = get_server_url(request)
+				Mailer.deliver_user_created(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
 
-#				flash[:notice] = 'The User was created. Check your email for the activation link.'
-
-				# FIXME: Remove this when the email activation is working
-				session[:user_id] = @user.id
-				cookies[:user_name] = { :value => @user.name }
-				cookies[:user_greeting] = { :value => 'Howdy' }
-				cookies[:user_type] = { :value => @user.user_type }
-				cookies[:user_id] = { :value => @user.id.to_s }
-	 			flash[:notice] = 'The User was created. You are now logged in.'
-				redirect_to(:controller => 'home', :action => :index)
-				return
+				flash[:notice] = 'The User was created. Check your email for the activation link.'
 
 				format.html { redirect_to(@user) }
 				format.xml	{ render :xml => @user, :status => :created, :location => @user }
@@ -117,11 +102,7 @@ class UsersController < ApplicationController
 	# GET /users/login
 	# GET /users/login.xml
 	def login
-		session[:user_id] = nil
-		cookies[:user_name] = nil
-		cookies[:user_greeting] = nil
-		cookies[:user_type] = nil
-		cookies[:user_id] = nil
+		login_clear_sessions_and_cookies()
 		return unless request.post?
 
 		# Get the user if the name and password are correct
@@ -137,11 +118,8 @@ class UsersController < ApplicationController
 
 		# Log the user in and show a success message
 		elsif user && user.is_email_activated == true
-			session[:user_id] = user.id
-			cookies[:user_name] = { :value => user.name }
-			cookies[:user_greeting] = { :value => 'Howdy' }
-			cookies[:user_type] = { :value => user.user_type }
-			cookies[:user_id] = { :value => user.id.to_s }
+			login_set_sessions_and_cookies(user)
+
  			flash[:notice] = "Successfully loged in."
 			redirect_to(:controller => 'home', :action => :index)
 		end
@@ -150,11 +128,7 @@ class UsersController < ApplicationController
 	# GET /users/logout
 	# GET /users/logout.xml
 	def logout
-		session[:user_id] = nil
-		cookies[:user_name] = nil
-		cookies[:user_greeting] = nil
-		cookies[:user_type] = nil
-		cookies[:user_id] = nil
+		login_clear_sessions_and_cookies()
 
 		redirect_to(:controller => 'home', :action => 'index')
 	end
@@ -169,7 +143,7 @@ class UsersController < ApplicationController
 		user = User.find(:first, :conditions => ["user_name=? and email=?", user_name, email])
 
 		if user
-			@server_domain = "http://" + request.env_table['HTTP_HOST']
+			@server_domain = get_server_url(request)
 			Mailer.deliver_forgot_password(@server_domain, user.user_name, user.email, user.password)
 
 			flash[:notice] = "The password for '#{user_name}' has been sent to #{email}."
@@ -201,13 +175,14 @@ class UsersController < ApplicationController
 		# Try updating the user, if not show a message
 		if user == nil
 			flash[:notice] = 'Failed to activate the user.'
-			render :layout => 'default', :text => ''
+			redirect_to :controller => 'home', :action => 'index'
 		elsif user.update_attributes({ :is_email_activated => true})
-			flash[:notice] = 'The User was successfully activated.'
-			render :layout => 'default', :text => ''
+			login_set_sessions_and_cookies(user)
+			flash[:notice] = 'The User was successfully activated. You are now logged in.'
+			redirect_to :controller => 'users', :action => 'show', :id => user.id
 		else
 			flash[:notice] = 'There was an error when trying to activate the the user.'
-			render :layout => 'default', :text => ''
+			redirect_to :controller => 'users', :action => 'show', :id => user.id
 		end
 	end
 
@@ -243,6 +218,22 @@ class UsersController < ApplicationController
 	end
 
 	private 
+
+	def login_clear_sessions_and_cookies
+		session[:user_id] = nil
+		cookies[:user_name] = nil
+		cookies[:user_greeting] = nil
+		cookies[:user_type] = nil
+		cookies[:user_id] = nil
+	end
+
+	def login_set_sessions_and_cookies(user)
+		session[:user_id] = user.id
+		cookies[:user_name] = { :value => user.name }
+		cookies[:user_greeting] = { :value => 'Howdy' }
+		cookies[:user_type] = { :value => user.user_type }
+		cookies[:user_id] = { :value => user.id.to_s }
+	end
 
 	def get_originating_user_id
 		params[:id].to_i
