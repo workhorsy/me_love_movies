@@ -3,7 +3,7 @@ require 'cgi'
 class UsersController < ApplicationController
 	layout 'default'
 	before_filter :authorize_admins_only, :only => ['destroy']
-	before_filter :authorize_originating_user_only, :only => ['edit', 'update']
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'set_avatar_file']
 
 	# GET /users
 	# GET /users.xml
@@ -212,7 +212,48 @@ class UsersController < ApplicationController
 		end
 	end
 
-	private 
+	# GET /users/set_avatar_file
+	# GET /users/set_avatar_file.xml
+	def set_avatar_file
+		# Get the id and user
+		id = params[:id]
+		@user = User.find(id)
+
+		# Show an error if the file is blank
+		if params[:file] == ""
+			flash[:notice] = "No avatar file was selected"
+			redirect_to(@user)
+			return
+		end
+
+		# Delete the old file
+		File.delete("public#{@user.avatar_file}") if @user.avatar_file && File.exist?("public#{@user.avatar_file}")
+
+		# Make all the directories if they do not exist
+		FileUtils.mkdir('public/user_avatars') unless File.directory?('public/user_avatars')
+		FileUtils.mkdir("public/user_avatars/#{id}") unless File.directory?("public/user_avatars/#{id}")
+
+		# Save the file to disk
+		file = params[:file]
+		f = File.new("public/user_avatars/#{id}/#{file.original_filename}", "wb")
+		f.write(file.read)
+		f.close()
+		new_avatar_file = "/user_avatars/#{id}/#{file.original_filename}"
+
+		# Save the path to the file in the users
+		respond_to do |format|
+			if @user.update_attributes(:avatar_file => new_avatar_file)
+				flash[:notice] = "The User's avatar was successfully updated."
+				format.html { redirect_to(@user) }
+				#format.xml	{ head :ok }
+			else
+				format.html { render :action => "edit" }
+				#format.xml	{ render :xml => @user.errors, :status => :unprocessable_entity }
+			end
+		end
+	end
+
+	private
 
 	def login_clear_sessions_and_cookies
 		session[:user_id] = nil

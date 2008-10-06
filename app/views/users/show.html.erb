@@ -19,34 +19,55 @@ User Details
 <tr valign="top">
 <td>
 	<p>
-		<%= image_tag @user.avatar_file_or_default %>
-	</p>
-	<p>
-		<b>User Name:</b>
-		<%=h @user.user_name %>
-	</p>
-	<p>
-		<b>Name:</b>
-		<%=h @user.name %>
-	</p>
-	<p>
-		<b>Email:</b>
-		<%=h @user.email %>
-	</p>
-	<p>
-		<b>Year of birth:</b>
-		<%=h @user.year_of_birth %>
-	</p>
-	<p>
-		<b>Time Zone:</b>
-		<%=h @user.time_zone %>
-	</p>
-	<p>
-		<b>Gender:</b>
-		<%=h Sex::NAMES_ABBREVIATIONS.select { |k, v| v == @user.gender }.first.first %>
+		<%= image_tag @user.avatar_file_or_default, :size => "100x100" %>
 	</p>
 
-	<%= link_to 'Edit user information', edit_user_path(@user), :id => 'lnk_edit_user', :style => 'display: none;' %>
+	<p>
+		<div id="div_no_upload_avatar">
+			<%= link_to_function( 
+					"upload an avatar", 
+					"$('div_no_upload_avatar').hide(); $('user_info').hide(); Effect.Appear('div_upload_avatar', { duration: 0.3 });") %>
+		</div>
+		<div id="div_upload_avatar", style="display: none;">
+			<% form_tag({ :action => 'set_avatar_file' }, :multipart => true ) do %>
+				<%= file_field_tag :file %>
+				<%= hidden_field_tag :id, params[:id] %>
+
+				<%= submit_tag "Upload avatar" %> or
+				<%= link_to_function(
+						"don't upload an avatar", 
+						"$('div_upload_avatar').hide(); $('user_info').show(); Effect.Appear('div_no_upload_avatar',  { duration: 0.3 })") %>
+			<% end %>
+		</div>
+	</p>
+	<div id="user_info">
+		<p>
+			<b>User Name:</b>
+			<%=h @user.user_name %>
+		</p>
+		<p>
+			<b>Name:</b>
+			<%=h @user.name %>
+		</p>
+		<p>
+			<b>Email:</b>
+			<%=h @user.email %>
+		</p>
+		<p>
+			<b>Year of birth:</b>
+			<%=h @user.year_of_birth %>
+		</p>
+		<p>
+			<b>Time Zone:</b>
+			<%=h @user.time_zone %>
+		</p>
+		<p>
+			<b>Gender:</b>
+			<%=h Sex::NAMES_ABBREVIATIONS.select { |k, v| v == @user.gender }.first.first %>
+		</p>
+
+		<%= link_to 'Edit user information', edit_user_path(@user), :id => 'lnk_edit_user', :style => 'display: none;' %>
+	</div>
 </td>
 </tr>
 </table>
