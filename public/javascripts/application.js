@@ -82,7 +82,11 @@ function show_tags_to_user_type(tag_type, name_pattern, is_user_type) {
 		if(tags[i].id.toString() == "") continue;
 		if(is_pattern_string == true && name_pattern == tags[i].id ||
 			is_pattern_string == false && name_pattern.match(tags[i].id)) {
-			tags[i].show();
+			if(tags[i].show) {
+				tags[i].show();
+			} else {
+				tags[i].style.display = "";
+			}
 		}
 	}
 }
