@@ -15,6 +15,7 @@ Rails::Initializer.run do |config|
     :source => 'http://gems.github.com'
 
   config.gem 'ezcrypto'
+  config.gem 'mini_magick'
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true

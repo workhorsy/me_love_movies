@@ -235,9 +235,15 @@ class UsersController < ApplicationController
 
 		# Save the file to disk
 		file = params[:file]
-		f = File.new("public/user_avatars/#{id}/#{file.original_filename}", "wb")
-		f.write(file.read)
-		f.close()
+		File.open("public/user_avatars/#{id}/#{file.original_filename}", "wb") do |f|
+			f.write(file.read)
+		end
+
+		# Resize the file
+		image = MiniMagick::Image.from_file("#{RAILS_ROOT}/public/user_avatars/#{id}/#{file.original_filename}")
+		image.resize("100x100")
+		image.write("#{RAILS_ROOT}/public/user_avatars/#{id}/#{file.original_filename}")
+
 		new_avatar_file = "/user_avatars/#{id}/#{file.original_filename}"
 
 		# Save the path to the file in the users
