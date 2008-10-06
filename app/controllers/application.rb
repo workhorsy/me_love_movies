@@ -57,5 +57,9 @@ private
 			"http://" + request.env_table['HTTP_HOST']
 		end
 	end
+
+	def valid_image_mime_types
+		["image/gif", "image/jpg", "image/jpeg", "image/png"]
+	end
 end
 

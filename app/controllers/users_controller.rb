@@ -218,10 +218,19 @@ class UsersController < ApplicationController
 		# Get the id and user
 		id = params[:id]
 		@user = User.find(id)
+		file = params[:file]
 
 		# Show an error if the file is blank
-		if params[:file] == ""
+		if file == ""
 			flash[:notice] = "No avatar file was selected"
+			redirect_to(@user)
+			return
+		end
+
+		# Show an error if the mime type is unknown
+		mime_type = file.content_type.chomp.downcase
+		unless valid_image_mime_types.include? mime_type
+			flash[:notice] = "Only images can be used for avatars. This file of type '#{mime_type}' is unknown."
 			redirect_to(@user)
 			return
 		end
@@ -234,7 +243,6 @@ class UsersController < ApplicationController
 		FileUtils.mkdir("public/user_avatars/#{id}") unless File.directory?("public/user_avatars/#{id}")
 
 		# Save the file to disk
-		file = params[:file]
 		File.open("public/user_avatars/#{id}/#{file.original_filename}", "wb") do |f|
 			f.write(file.read)
 		end
