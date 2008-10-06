@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :users, :member => { :set_user_type => :post,
-									:set_review_rating => :post },
+									:set_review_rating => :post,
+									:set_avatar_file => :post },
 						:collection => { :login => :get, 
 										:logout => :get, 
 										:list => :get ,
