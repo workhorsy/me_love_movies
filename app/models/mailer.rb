@@ -18,7 +18,7 @@ class Mailer < ActionMailer::Base
 		body[:secret] = CGI.escape(Base64.encode64(Crypt.encrypt(user_id.to_s)))
 	end
 
-	def forgot_password(server_domain, user_name, email, password)
+	def forgot_password(server_domain, user_name, email, hashed_password, salt)
 		@subject       = "Me Love Movies password reminder"
 		@body          = {}
 		@recipients    = email
@@ -29,6 +29,7 @@ class Mailer < ActionMailer::Base
 
 		body[:user_name] = user_name
 		body[:email] = email
+		body[:password] = User.decrypt_password(hashed_password, salt)
 		body[:server_domain] = server_domain
 	end
 end

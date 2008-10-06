@@ -5,7 +5,6 @@ ActionController::Routing::Routes.draw do |map|
 										:logout => :get, 
 										:list => :get ,
 										:forgot_password => :get,
-										:sending_password => :get,
 										:set_is_email_activated => :get }
   map.resources :home, :collection => { :index => :get }
   map.resources :titles, :collection => { :search => :get }

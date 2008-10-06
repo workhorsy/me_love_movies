@@ -144,21 +144,16 @@ class UsersController < ApplicationController
 
 		if user
 			@server_domain = get_server_url(request)
-			Mailer.deliver_forgot_password(@server_domain, user.user_name, user.email, user.password)
+			Mailer.deliver_forgot_password(@server_domain, user.user_name, user.email, user.hashed_password, user.salt)
 
 			flash[:notice] = "The password for '#{user_name}' has been sent to #{email}."
-			redirect_to :action => 'sending_password'
+			redirect_to :action => 'show', :id => user.id
 		else
 			@user = User.new
+			# FIXME: Setting the flash and not refreshing, causes the error message to stick around for an extra refresh.
 			flash[:notice] = "There is no user with that name and email. Try again."
 			render :action => "new"
 		end
-	end
-
-	# GET /users/sending_password
-	# GET /users/sending_password.xml
-	def sending_password
-
 	end
 
 	# GET /users/set_is_email_activated
