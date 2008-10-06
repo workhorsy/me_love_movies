@@ -23,12 +23,12 @@ User Details
 	</p>
 
 	<p>
-		<div id="div_no_upload_avatar">
+		<div id="div_no_upload_avatar" style="display: none;">
 			<%= link_to_function( 
 					"upload an avatar", 
 					"$('div_no_upload_avatar').hide(); $('user_info').hide(); Effect.Appear('div_upload_avatar', { duration: 0.3 });") %>
 		</div>
-		<div id="div_upload_avatar", style="display: none;">
+		<div id="div_upload_avatar" style="display: none;">
 			<% form_tag({ :action => 'set_avatar_file' }, :multipart => true ) do %>
 				<%= file_field_tag :file %>
 				<%= hidden_field_tag :id, params[:id] %>
@@ -179,6 +179,7 @@ Ratings by this user
 <script type="text/javascript">
 	// <!CDATA[
 	// Show all the elements the user is allowed to see.
+	show_tags_to_user_only('div', 'div_no_upload_avatar');
 	show_tags_to_user_only('a', 'lnk_edit_user');
 	// ]]>
 </script>
