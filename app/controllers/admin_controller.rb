@@ -7,7 +7,7 @@ class AdminController < ApplicationController
 	def index
 		respond_to do |format|
 			format.html # index.html.erb
-			format.xml	{ render :xml => '' }
+			#format.xml	{ render :xml => '' }
 		end
 	end
 
@@ -18,7 +18,7 @@ class AdminController < ApplicationController
 
 		respond_to do |format|
 			format.html
-			format.xml	{ render :xml => @users }
+			#format.xml	{ render :xml => @users }
 		end
 	end	
 
@@ -29,7 +29,7 @@ class AdminController < ApplicationController
 
 		respond_to do |format|
 			format.html
-			format.xml	{ render :xml => @title_reviews }
+			#format.xml	{ render :xml => @title_reviews }
 		end
 	end
 
@@ -40,7 +40,7 @@ class AdminController < ApplicationController
 
 		respond_to do |format|
 			format.html
-			format.xml	{ render :xml => @title_ratings }
+			#format.xml	{ render :xml => @title_ratings }
 		end
 	end
 end

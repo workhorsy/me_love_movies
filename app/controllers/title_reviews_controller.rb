@@ -18,7 +18,7 @@ class TitleReviewsController < ApplicationController
 
 		respond_to do |format|
 			format.html # show.html.erb
-			format.xml	{ render :xml => @title_review }
+			#format.xml	{ render :xml => @title_review }
 		end
 	end
 
@@ -43,7 +43,7 @@ class TitleReviewsController < ApplicationController
 
 		respond_to do |format|
 			format.html # new.html.erb
-			format.xml	{ render :xml => @title_review }
+			#format.xml	{ render :xml => @title_review }
 		end
 	end
 
@@ -83,10 +83,10 @@ class TitleReviewsController < ApplicationController
 			if was_saved
 				flash[:notice] = 'The Title Review was successfully created.'
 				format.html { redirect_to(@title_review) }
-				format.xml	{ render :xml => @title_review, :status => :created, :location => @title_review }
+				#format.xml	{ render :xml => @title_review, :status => :created, :location => @title_review }
 			else
 				format.html { render :action => "new" }
-				format.xml	{ render :xml => @title_review.errors, :status => :unprocessable_entity }
+				#format.xml	{ render :xml => @title_review.errors, :status => :unprocessable_entity }
 			end
 		end
 	end
@@ -100,10 +100,10 @@ class TitleReviewsController < ApplicationController
 			if @title_review.update_attributes(params[:title_review])
 				flash[:notice] = 'The Title Review was successfully updated.'
 				format.html { redirect_to(@title_review) }
-				format.xml	{ head :ok }
+				#format.xml	{ head :ok }
 			else
 				format.html { render :action => "edit" }
-				format.xml	{ render :xml => @title_review.errors, :status => :unprocessable_entity }
+				#format.xml	{ render :xml => @title_review.errors, :status => :unprocessable_entity }
 			end
 		end
 	end
@@ -116,7 +116,7 @@ class TitleReviewsController < ApplicationController
 
 		respond_to do |format|
 			format.html { redirect_to(title_reviews_url) }
-			format.xml	{ head :ok }
+			#format.xml	{ head :ok }
 		end
 	end
 
