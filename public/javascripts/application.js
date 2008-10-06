@@ -75,7 +75,7 @@ function show_tags_to_user_type(tag_type, name_pattern, is_user_type) {
 	// Just return if the user type is wrong
 	if(is_user_type == false) return;
 
-	// If they are not, hide all the tags that match the pattern
+	// If it is, show all the tags that match the pattern
 	var is_pattern_string = (typeof(name_pattern) == 'string');
 	var tags = document.getElementsByTagName(tag_type);
 	for(i=0; i< tags.length; i++) {

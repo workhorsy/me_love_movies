@@ -28,7 +28,7 @@
 				&quot;<%=h review.body %>&quot;
 				<% user_rating = review.get_user_rating(session[:user_id]) || 0 %>
 
-				<div id="tr_rating_<%=id%>" class="rating_star">
+				<div id="tr_rating_<%=id%>" class="rating_star" style="display: none;">
 					How you rate this review:<br />
 					<input id="table_rating_<%=id%>" name="table_rating[<%=id%>]" class="holder" type="hidden" value="<%= user_rating %>" />
 					<a title="Don't Rate" class="dont" onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
@@ -75,4 +75,13 @@
 	</table>
 	<% end %>
 </div>
+
+<script type="text/javascript">
+	// <!CDATA[
+	// Show all the elements the user is allowed to see.
+	show_tags_to_user_only('div', /^tr_rating_\d*$/);
+	// ]]>
+</script>
+
+
 

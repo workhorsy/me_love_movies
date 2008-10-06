@@ -190,7 +190,7 @@ Ratings
 				:id => review.user.id) %><br />
 			<% user_rating = review.get_user_rating(session[:user_id]) || 0 %>
 
-			<div id="rating_<%=id%>" class="rating_star">
+			<div id="rating_<%=id%>" class="rating_star" style="display: none;">
 				How you rate this review:<br />
 				<input id="title_rating_<%=id%>" name="title_rating[<%=id%>]" class="holder" type="hidden" value="<%= user_rating %>" />
 				<a title="Don't Rate" class="dont" onclick="star_click_rating(this); rate_review('title_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
@@ -284,6 +284,7 @@ Other Reviews
 	show_tags_to_moderator_only('a', 'lnk_edit_title');
 	show_tags_to_user_only('a', 'lnk_edit_rating');
 	show_tags_to_user_only('a', 'lnk_edit_review');
+	show_tags_to_user_only('div', /^rating_\d*$/);
 
 	// Hide the reviews and ratings if this title is not out yet
 	var today = new Date();
