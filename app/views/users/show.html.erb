@@ -45,10 +45,6 @@ User Details
 		<b>Gender:</b>
 		<%=h Sex::NAMES_ABBREVIATIONS.select { |k, v| v == @user.gender }.first.first %>
 	</p>
-	<p>
-		<b>User Type:</b>
-		<%=h UserType::NAMES_ABBREVIATIONS.select { |k, v| v == @user.user_type }.first.first %>
-	</p>
 
 	<%= link_to 'Edit user information', edit_user_path(@user), :id => 'lnk_edit_user', :style => 'display: none;' %>
 </td>
