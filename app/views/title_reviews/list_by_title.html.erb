@@ -3,8 +3,11 @@
 <div id="table_review_container">
 	<%= will_paginate @title_reviews, 
 					:renderer => 'RemoteLinkRenderer', 
-					:params => {:action => 'list_by_title', :id => @title_reviews.first.title.id}, 
+					:params => {:action => 'list_by_title', :id => @title_id}, 
 					:remote => {:update => 'external_title_reviews'} %>
+	<% if @title_reviews.length == 0 %>
+		There are no reviews
+	<% else %>
 	<table>
 	<% for review in @title_reviews %>
 		<tr>
@@ -70,5 +73,6 @@
 		</tr>
 	<% end %>
 	</table>
+	<% end %>
 </div>
 
