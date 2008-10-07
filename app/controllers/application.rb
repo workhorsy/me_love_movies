@@ -61,5 +61,9 @@ private
 	def valid_image_mime_types
 		["image/gif", "image/jpg", "image/jpeg", "image/png"]
 	end
+
+	def flash_notice(value)
+		cookies[:flash_notice] = value
+	end
 end
 

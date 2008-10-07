@@ -122,14 +122,7 @@
 
 <!-- ================================================= MAIN CONTENT ================================================ -->
 <div id="content">
-<p id="flash_notice"><%= flash[:notice] %></p>
-<script type="text/javascript" language="JavaScript">
-	// <![CDATA[
-	if($('flash_notice').innerHTML == '') {
-		$('flash_notice').hide();
-	}
-	// ]]>
-</script>
+<p id="flash_notice" style="display: none;"></p>
 
 <%= yield %>
 
@@ -175,6 +168,12 @@
 		</div>
 	<% end %>
 </div>
+
+<script type="text/javascript">
+	// <!CDATA[
+	update_flash_notice();
+	// ]]>
+</script>
 
 </body>
 </html>

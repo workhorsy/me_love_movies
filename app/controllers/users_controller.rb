@@ -54,7 +54,7 @@ class UsersController < ApplicationController
 				@server_domain = get_server_url(request)
 				Mailer.deliver_user_created(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
 
-				flash[:notice] = 'The User was created. Check your email for the activation link.'
+				flash_notice 'The User was created. Check your email for the activation link.'
 
 				format.html { redirect_to(@user) }
 				#format.xml	{ render :xml => @user, :status => :created, :location => @user }
@@ -77,7 +77,7 @@ class UsersController < ApplicationController
 
 		respond_to do |format|
 			if @user.update_attributes(params[:user])
-				flash[:notice] = 'The User was successfully updated.'
+				flash_notice 'The User was successfully updated.'
 				format.html { redirect_to(@user) }
 				#format.xml	{ head :ok }
 			else
@@ -116,17 +116,17 @@ class UsersController < ApplicationController
 
 		# Flash them a fail message if the user is nil
 		if user == nil
-			flash[:notice] = "Login failed. Try again."
+			flash_notice "Login failed. Try again."
 
 		# Make sure the user has been activated via email
 		elsif user && user.is_email_activated == false
-			flash[:notice] = "Before you can login, this user must be activated via the email message that was sent when the user was created."
+			flash_notice "Before you can login, this user must be activated via the email message that was sent when the user was created."
 
 		# Log the user in and show a success message
 		elsif user && user.is_email_activated == true
 			login_set_sessions_and_cookies(user)
 
- 			flash[:notice] = "Successfully loged in."
+ 			flash_notice "You are now logged in."
 		end
 
 		# Go back to the page the user came from, or the homepage
@@ -142,6 +142,7 @@ class UsersController < ApplicationController
 	# GET /users/logout.xml
 	def logout
 		login_clear_sessions_and_cookies()
+		flash_notice "You are now logged out."
 
 		# Remove the sessions and cookies. Try to go to the previous page. If there is none, or it is from a different site, go home.
 		from_same_site = (request.env_table['HTTP_REFERER'] && request.env_table['HTTP_REFERER'].index(get_server_url(request)) == 0)
@@ -165,12 +166,12 @@ class UsersController < ApplicationController
 			@server_domain = get_server_url(request)
 			Mailer.deliver_forgot_password(@server_domain, user.user_name, user.email, user.hashed_password, user.salt)
 
-			flash[:notice] = "The password for '#{user_name}' has been sent to #{email}."
+			flash_notice "The password for '#{user_name}' has been sent to #{email}."
 			redirect_to :action => 'show', :id => user.id
 		else
 			@user = User.new
 			# FIXME: Setting the flash and not refreshing, causes the error message to stick around for an extra refresh.
-			flash[:notice] = "There is no user with that name and email. Try again."
+			flash_notice "There is no user with that name and email. Try again."
 			render :action => "new"
 		end
 	end
@@ -188,14 +189,14 @@ class UsersController < ApplicationController
 
 		# Try updating the user, if not show a message
 		if user == nil
-			flash[:notice] = 'Failed to activate the user.'
+			flash_notice 'Failed to activate the user.'
 			redirect_to :controller => 'home', :action => 'index'
 		elsif user.update_attributes({ :is_email_activated => true})
 			login_set_sessions_and_cookies(user)
-			flash[:notice] = 'The User was successfully activated. You are now logged in.'
+			flash_notice 'The User was successfully activated. You are now logged in.'
 			redirect_to :controller => 'users', :action => 'show', :id => user.id
 		else
-			flash[:notice] = 'There was an error when trying to activate the the user.'
+			flash_notice 'There was an error when trying to activate the the user.'
 			redirect_to :controller => 'users', :action => 'show', :id => user.id
 		end
 	end
@@ -241,7 +242,7 @@ class UsersController < ApplicationController
 
 		# Show an error if the file is blank
 		if file == ""
-			flash[:notice] = "No avatar file was selected"
+			flash_notice "No avatar file was selected"
 			redirect_to(@user)
 			return
 		end
@@ -249,7 +250,7 @@ class UsersController < ApplicationController
 		# Show an error if the mime type is unknown
 		mime_type = file.content_type.chomp.downcase
 		unless valid_image_mime_types.include? mime_type
-			flash[:notice] = "Only images can be used for avatars. This file of type '#{mime_type}' is unknown."
+			flash_notice "Only images can be used for avatars. This file of type '#{mime_type}' is unknown."
 			redirect_to(@user)
 			return
 		end
@@ -276,7 +277,7 @@ class UsersController < ApplicationController
 		# Save the path to the file in the users
 		respond_to do |format|
 			if @user.update_attributes(:avatar_file => new_avatar_file)
-				flash[:notice] = "The User's avatar was successfully updated."
+				flash_notice "The User's avatar was successfully updated."
 				format.html { redirect_to(@user) }
 				#format.xml	{ head :ok }
 			else

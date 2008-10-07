@@ -91,7 +91,7 @@ class TitlesController < ApplicationController
 
 		respond_to do |format|
 			if @title.save
-				flash[:notice] = 'The Title was successfully created.'
+				flash_notice 'The Title was successfully created.'
 				format.html { redirect_to(@title) }
 				#format.xml	{ render :xml => @title, :status => :created, :location => @title }
 			else
@@ -115,7 +115,7 @@ class TitlesController < ApplicationController
 
 		respond_to do |format|
 			if @title.update_attributes(params[:title])
-				flash[:notice] = 'The Title was successfully updated.'
+				flash_notice 'The Title was successfully updated.'
 				format.html { redirect_to(@title) }
 				#format.xml	{ head :ok }
 			else
@@ -153,13 +153,13 @@ class TitlesController < ApplicationController
 			s_director = params[:director].strip
 			if [s_name, s_actor, s_director].uniq == ['']
 				respond_to do |format|
-					flash[:notice] = "No search parameters were selected"
+					flash_notice "No search parameters were selected"
 					format.html { render :action => "search" }
 					#format.xml	{ render :xml => @title_rating.errors, :status => :unprocessable_entity }
 				end
 				return
 			else
-				flash[:notice] = nil
+				flash_notice nil
 			end
 
 			# Do the search by category
@@ -183,13 +183,13 @@ class TitlesController < ApplicationController
 			# Make sure something was selected
 			if params[:title_rating].values.uniq == ["0"]
 				respond_to do |format|
-					flash[:notice] = "No search parameters were selected"
+					flash_notice "No search parameters were selected"
 					format.html { render :action => "search" }
 					#format.xml	{ render :xml => @title_rating.errors, :status => :unprocessable_entity }
 				end
 				return
 			else
-				flash[:notice] = nil
+				flash_notice nil
 			end
 
 			# Generate a rating object from our search

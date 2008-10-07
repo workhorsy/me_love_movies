@@ -84,7 +84,7 @@ class TitleRatingsController < ApplicationController
 				end
 			end
 			if was_saved
-				flash[:notice] = 'The Title Rating was successfully created.'
+				flash_notice 'The Title Rating was successfully created.'
 				format.html { redirect_to(@title_rating) }
 				#format.xml	{ render :xml => @title_rating, :status => :created, :location => @title_rating }
 			else
@@ -104,7 +104,7 @@ class TitleRatingsController < ApplicationController
 
 		respond_to do |format|
 			if @title_rating.update_attributes(params[:title_rating])
-				flash[:notice] = 'The Title Rating was successfully updated.'
+				flash_notice 'The Title Rating was successfully updated.'
 				format.html { redirect_to(@title_rating) }
 				#format.xml	{ head :ok }
 			else

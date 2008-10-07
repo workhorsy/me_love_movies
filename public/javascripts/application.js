@@ -13,12 +13,21 @@ function get_cookie(name) {
 	return value;
 }
 
+function set_cookie(name, value) {
+	document.cookie = name + "=" + escape(value) + ";expires=;path=/;domain=;";
+}
+
+function delete_cookie(name) {
+	var d = new Date();
+	document.cookie = name + "=;expires=" + d.toGMTString() + ";path=/;domain=;";
+}
+
 function get_user_greeting_from_cookie() {
 	var name = get_cookie('user_name');
 	var greeting = get_cookie('user_greeting');
 
 	if(name != null) {
-		return greeting + " " + name.replace('+', ' ');
+		return greeting + " " + name.replace(/[+]/g, ' ');
 	} else {
 		return "Howdy Stranger";
 	}
@@ -146,5 +155,23 @@ function star_click_rating(self) {
 			holder.value = i;
 	}
 	star_update_images(self);
+}
+
+function update_flash_notice() {
+	// Get the message from the cookie
+	var message = get_cookie('flash_notice');
+	if(message == "") message = null;
+
+	// Add the message to the flash and make it visible if there is a message
+	if(message) {
+		$('flash_notice').innerHTML = message.replace(/[+]/g, ' ');
+		$('flash_notice').style.display = "";
+	} else {
+		$('flash_notice').innerHTML = "";
+		$('flash_notice').style.display = "none";
+	}
+
+	// Remove the value from the cookie
+	delete_cookie('flash_notice');
 }
 
