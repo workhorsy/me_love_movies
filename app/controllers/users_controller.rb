@@ -102,8 +102,14 @@ class UsersController < ApplicationController
 	# GET /users/login
 	# GET /users/login.xml
 	def login
+		# If the user tried to go directly to this page run the logout action
+		unless request.post?
+			self.logout
+			return
+		end
+
+		# Clear the sessions and cookies
 		login_clear_sessions_and_cookies()
-		return unless request.post?
 
 		# Get the user if the name and password are correct
 		user = User.authenticate(params[:user_name], params[:password])
@@ -121,7 +127,14 @@ class UsersController < ApplicationController
 			login_set_sessions_and_cookies(user)
 
  			flash[:notice] = "Successfully loged in."
-			redirect_to(:controller => 'home', :action => :index)
+		end
+
+		# Go back to the page the user came from, or the homepage
+		from_same_site = (request.env_table['HTTP_REFERER'] && request.env_table['HTTP_REFERER'].index(get_server_url(request)) == 0)
+		if from_same_site
+			redirect_to(request.env_table['HTTP_REFERER'])
+		else
+			redirect_to :controller => 'home', :action => 'index'
 		end
 	end
 
@@ -130,7 +143,13 @@ class UsersController < ApplicationController
 	def logout
 		login_clear_sessions_and_cookies()
 
-		redirect_to(:controller => 'home', :action => 'index')
+		# Remove the sessions and cookies. Try to go to the previous page. If there is none, or it is from a different site, go home.
+		from_same_site = (request.env_table['HTTP_REFERER'] && request.env_table['HTTP_REFERER'].index(get_server_url(request)) == 0)
+		if from_same_site
+			redirect_to(request.env_table['HTTP_REFERER'])
+		else
+			redirect_to :controller => 'home', :action => 'index'
+		end
 	end
 
 	# GET /users/forgot_password
