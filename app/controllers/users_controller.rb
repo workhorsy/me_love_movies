@@ -1,4 +1,4 @@
-require 'cgi'
+
 
 class UsersController < ApplicationController
 	layout 'default'
@@ -198,10 +198,9 @@ class UsersController < ApplicationController
 	# GET /users/set_is_email_activated.xml
 	def set_is_email_activated
 		# Find the user based on the secret id
-		#raise Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).inspect
 		user = nil
 		begin
-			id = Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).to_i
+			id = Crypt.decrypt(CGI.unescape(params[:secret])).to_i
 			user = User.find(id)
 		rescue
 		end
@@ -221,11 +220,10 @@ class UsersController < ApplicationController
 	end
 
 	def set_beta_activated
-		#raise Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).inspect
 		# Find the user based on the secret id
 		user = nil
 		begin
-			id = Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).to_i
+			id = Crypt.decrypt(CGI.unescape(params[:secret])).to_i
 			user = User.find(id)
 		rescue
 		end
@@ -235,35 +233,37 @@ class UsersController < ApplicationController
 			flash_notice 'Failed to activate the user for beta.'
 			redirect_to :controller => 'home', :action => 'index'
 		elsif user.update_attributes({ :is_email_activated => true})
-			Mailer.deliver_user_activated_beta(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
+			server_domain = get_server_url(request)
+			Mailer.deliver_user_activated_beta(user.id, server_domain, user.user_name, user.name, user.email, user.hashed_password, user.salt)
 			flash_notice 'The User was successfully activated for beta.'
 			redirect_to :controller => 'users', :action => 'show', :id => user.id
 		else
 			flash_notice 'There was an error when trying to activate the the user for beta.'
-			redirect_to :controller => 'users', :action => 'show', :id => user.id
+			redirect_to :controller => 'home', :action => 'index'
 		end
 	end
 
 	def set_beta_delete
 		# Find the user based on the secret id
 		user = nil
-		begin
-			id = Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).to_i
+		#begin
+			id = Crypt.decrypt(CGI.unescape(params[:secret])).to_i
 			user = User.find(id)
-		rescue
-		end
+		#rescue
+		#end
 
 		# Try delte the user, if not show a message
 		if user == nil
 			flash_notice 'Failed to delte the user for beta.'
 			redirect_to :controller => 'home', :action => 'index'
 		elsif user.destroy
-			Mailer.deliver_user_delete_beta(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
+			server_domain = get_server_url(request)
+			Mailer.deliver_user_delete_beta(user.id, server_domain, user.user_name, user.name, user.email)
 			flash_notice 'The User was successfully deleted for beta.'
-			redirect_to :controller => 'users', :action => 'show', :id => user.id
+			redirect_to :controller => 'home', :action => 'index'
 		else
 			flash_notice 'There was an error when trying to delete the the user for beta.'
-			redirect_to :controller => 'users', :action => 'show', :id => user.id
+			redirect_to :controller => 'home', :action => 'index'
 		end
 	end
 

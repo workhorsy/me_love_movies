@@ -27,7 +27,7 @@ function get_user_greeting_from_cookie() {
 	var greeting = get_cookie('user_greeting');
 
 	if(name != null) {
-		return greeting + " " + name.replace(/[+]/g, ' ');
+		return greeting + " " + unescape(name).replace(/[+]/g, ' ');
 	} else {
 		return "Howdy Stranger";
 	}
@@ -164,7 +164,7 @@ function update_flash_notice() {
 
 	// Add the message to the flash and make it visible if there is a message
 	if(message) {
-		$('flash_notice').innerHTML = message.replace(/[+]/g, ' ');
+		$('flash_notice').innerHTML = unescape(message).replace(/[+]/g, ' ');
 		$('flash_notice').style.display = "";
 	} else {
 		$('flash_notice').innerHTML = "";
