@@ -31,6 +31,14 @@ User Information
 <tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
 <!-- =================================================================================== END CENTER STUFF ======= -->
 
+<% if User.is_beta %>
+<h2 style="color: red;">
+	Signing up for the closed beta will require that your account is 
+	approved. You should receive an email in a few hours to tell you 
+	if you have been approved.
+</h2>
+<% end %>
+
 <% form_for(user) do |f| %>
 	<p>
 		<label for="name"><span><b>Name</b></span></label>

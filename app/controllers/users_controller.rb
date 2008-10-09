@@ -46,15 +46,29 @@ class UsersController < ApplicationController
 		@user = User.new(params[:user])
 		@user.user_type = UserType::NAMES_ABBREVIATIONS.select { |k, v| v == 'U' }.first.last
 
+		is_beta = User.is_beta
+
+		# Determine if we have reached the beta cap
+		if is_beta && User.count >= 100
+			flash_notice 'Sorry. The maximum number of users for the beta test has been reached.'
+			format.html { redirect_to(@user) }
+			return
+		end
+
+		# Or try creating the users
 		respond_to do |format|
 			if @user.save
 				@user = User.find(@user.id)
 
 				# Send the email
 				@server_domain = get_server_url(request)
-				Mailer.deliver_user_created(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
-
-				flash_notice 'The User was created. Check your email for the activation link.'
+				if is_beta
+					Mailer.deliver_user_created_beta(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
+					flash_notice 'You are now registered in the beta. Check your email in a few hours to see if your account has been activated.'
+				else
+					Mailer.deliver_user_created(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
+					flash_notice 'The User was created. Check your email for the activation link.'
+				end
 
 				format.html { redirect_to(@user) }
 				#format.xml	{ render :xml => @user, :status => :created, :location => @user }
@@ -120,7 +134,11 @@ class UsersController < ApplicationController
 
 		# Make sure the user has been activated via email
 		elsif user && user.is_email_activated == false
-			flash_notice "Before you can login, this user must be activated via the email message that was sent when the user was created."
+			if User.is_beta
+				flash_notice "Before you can login, this user must be activated via the email message that was sent when the user was created."
+			else
+				flash_notice "Your account is still waiting to be approved for the beta. You will receive an email when it is processed."
+			end
 
 		# Log the user in and show a success message
 		elsif user && user.is_email_activated == true
@@ -180,6 +198,7 @@ class UsersController < ApplicationController
 	# GET /users/set_is_email_activated.xml
 	def set_is_email_activated
 		# Find the user based on the secret id
+		#raise Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).inspect
 		user = nil
 		begin
 			id = Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).to_i
@@ -197,6 +216,53 @@ class UsersController < ApplicationController
 			redirect_to :controller => 'users', :action => 'show', :id => user.id
 		else
 			flash_notice 'There was an error when trying to activate the the user.'
+			redirect_to :controller => 'users', :action => 'show', :id => user.id
+		end
+	end
+
+	def set_beta_activated
+		#raise Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).inspect
+		# Find the user based on the secret id
+		user = nil
+		begin
+			id = Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).to_i
+			user = User.find(id)
+		rescue
+		end
+
+		# Try updating the user, if not show a message
+		if user == nil
+			flash_notice 'Failed to activate the user for beta.'
+			redirect_to :controller => 'home', :action => 'index'
+		elsif user.update_attributes({ :is_email_activated => true})
+			Mailer.deliver_user_activated_beta(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
+			flash_notice 'The User was successfully activated for beta.'
+			redirect_to :controller => 'users', :action => 'show', :id => user.id
+		else
+			flash_notice 'There was an error when trying to activate the the user for beta.'
+			redirect_to :controller => 'users', :action => 'show', :id => user.id
+		end
+	end
+
+	def set_beta_delete
+		# Find the user based on the secret id
+		user = nil
+		begin
+			id = Crypt.decrypt(Base64.decode64(CGI.unescape(params[:secret]))).to_i
+			user = User.find(id)
+		rescue
+		end
+
+		# Try delte the user, if not show a message
+		if user == nil
+			flash_notice 'Failed to delte the user for beta.'
+			redirect_to :controller => 'home', :action => 'index'
+		elsif user.destroy
+			Mailer.deliver_user_delete_beta(@user.id, @server_domain, @user.user_name, @user.name, @user.email)
+			flash_notice 'The User was successfully deleted for beta.'
+			redirect_to :controller => 'users', :action => 'show', :id => user.id
+		else
+			flash_notice 'There was an error when trying to delete the the user for beta.'
 			redirect_to :controller => 'users', :action => 'show', :id => user.id
 		end
 	end

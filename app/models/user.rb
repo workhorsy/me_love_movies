@@ -15,6 +15,14 @@ class User < ActiveRecord::Base
 	attr_accessor :password_confirmation
 	validate :password_is_valid
 
+	def self.is_beta
+		DateTime.now > Date.strptime("10/31/08", "%m/%d/%Y")
+	end
+
+	def self.beta_email_processor
+		"mattjones@workhorsy.org"
+	end
+
 	def self.per_page
 		20
 	end
