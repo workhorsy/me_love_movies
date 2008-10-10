@@ -267,6 +267,30 @@ class UsersController < ApplicationController
 		end
 	end
 
+	def toggle_is_email_activated
+		# Make sure the user making this request is an admin
+		unless User.find(session[:user_id]).user_type == 'A'
+			render :text => "You are not an Administrator"
+			return
+		end
+
+		# make sure the user exists
+		@user = User.find_by_id(params[:id])
+		unless @user
+			render :text => "There is no user with the id '#{params[:id]}'."
+			return
+		end
+
+		value = params['is_email_activated'] == "1" ? true : false
+
+		if @user.update_attributes({ :is_email_activated => value})
+			message = value ? 'activated' : 'deactivated'
+			render :text => "The user #{@user.name} is now #{message}."
+		else
+			render :text => "Error updating the user!"
+		end
+	end
+
 	# GET /users/set_user_type
 	# GET /users/set_user_type.xml
 	def set_user_type

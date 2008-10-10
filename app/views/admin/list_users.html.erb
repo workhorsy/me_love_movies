@@ -2,10 +2,11 @@
 
 <%= will_paginate @users %>
 
-<table>
+<table cellpadding="5">
 	<tr>
 		<th>Name</th>
 		<th>Permissions</th>
+		<th>Activated</th>
 	</tr>
 
 <% for user in @users -%>
@@ -18,15 +19,27 @@
 				"user_type[#{user.id}]", 
 				name, 
 				:checked => is_checked, 
-				:onclick => "$('status_#{user.id}').value='#{name}'") + name %>
+				:onclick => "$('status_user_type_#{user.id}').value='#{name}'") + name %>
 		<% end %>
-		<input type="hidden" id="status_<%=user.id%>" value="">
-			<%= observe_field "status_#{user.id}",
+		<input type="hidden" id="status_user_type_<%=user.id%>" value="">
+			<%= observe_field "status_user_type_#{user.id}",
 								:url => { :controller => 'users', :action => 'set_user_type', :id => user.id },
 								:frequency => 0.25,
 								:on => "changed",
 								:update => 'flash_notice',
 								:with => "'user_type=' + value",
+								:after => "$('flash_notice').show()" %>
+		</td>
+		<td>
+			<%= check_box("user", 
+				"is_email_activated[#{user.id}]", 
+				:checked => user.is_email_activated) %>
+			<%= observe_field "user_is_email_activated[#{user.id}]",
+								:url => { :controller => 'users', :action => 'toggle_is_email_activated', :id => user.id },
+								:frequency => 0.25,
+								:on => "changed",
+								:update => 'flash_notice',
+								:with => "'is_email_activated=' + value",
 								:after => "$('flash_notice').show()" %>
 		</td>
 		<td><%= link_to 'Show', user %></td>
