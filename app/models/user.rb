@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
 	end
 
 	def self.beta_email_processor
-		"mattjones@workhorsy.org"
+		"amy@border7.com"
 	end
 
 	def self.per_page
