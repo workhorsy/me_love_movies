@@ -14,28 +14,32 @@ private
 		# If that title is not released yet, show a message
 		title = Title.find(params[:title_id])
 		if title && title.release_date > DateTime.now
-			render :layout => 'default', :text => "<p id=\"flash_notice\">That title is not released until #{title.release_date}</p>"
+			flash_notice "That title is not released until #{title.release_date}"
+			render :layout => 'default', :text => ""
 		end
 	end
 
 	def authorize_admins_only
 		user = User.find_by_id(session[:user_id])
 		unless user && user.user_type == 'A'
-			render :layout => 'default', :text => "<p id=\"flash_notice\">Only administrators can access this page.</p>"
+			flash_notice "Only administrators can access this page."
+			render :layout => 'default', :text => ""
 		end
 	end
 
 	def authorize_moderators_only
 		user = User.find_by_id(session[:user_id])
 		unless user && user.user_type =~ /^(A|M)$/
-			render :layout => 'default', :text => "<p id=\"flash_notice\">Only moderators and administrators can access this page.</p>"
+			flash_notice "Only moderators and administrators can access this page."
+			render :layout => 'default', :text => ""
 		end
 	end
 
 	def authorize_users_only
 		user = User.find_by_id(session[:user_id])
 		unless user && user.user_type =~ /^(A|M|C|U)$/
-			render :layout => 'default', :text => "<p id=\"flash_notice\">Only logged in users can access this page.</p>"
+			flash_notice "Only logged in users can access this page."
+			render :layout => 'default', :text => ""
 		end
 	end
 
