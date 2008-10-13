@@ -35,6 +35,12 @@ class HomeController < ApplicationController
 									rating.title_review
 								end
 
+		# Get the total number of titles, users, reviews, and ratings.
+		@total_titles = Title.count
+		@total_users = User.count
+		@total_reviews = TitleReview.count
+		@total_ratings = TitleRating.count
+
 		respond_to do |format|
 			format.html # index.html.erb
 			#format.xml	{ render :xml => "" }
