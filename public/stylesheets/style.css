@@ -302,6 +302,9 @@ input[type="file"] {
 	padding: 5px;
 }
 
+.star_table tr td{
+	width: 200px;
+}
 
 .rating_star { float:left; clear:both; width:100%; height:auto; padding:0px; margin:0px; }
 .rating_star li{ float:left;list-style:none; }

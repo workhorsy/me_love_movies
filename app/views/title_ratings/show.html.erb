@@ -17,17 +17,19 @@ Ratings
 <tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
 <!-- =================================================================================== END CENTER STUFF ======= -->
 
-<table width="100%" border="0">
+<table width="100%" border="0" class="star_table">
 <tr><td colspan="4"><h2>Genre</h2></td></tr>
 	<% count = 0; incr = 4 %>
 	<% while count < Title::genres.length %>
 	<tr>
 		<% for genre in Title::genres.slice(count, incr) %>
 		<td>
+			<nobr>
 			<span>
 				<%= star_images(@title_rating.title.send("avg_#{genre}")) %>
 			</span>
-			<b><%= genre.humanize[0, 13] %></b>
+			&nbsp;<b><%= genre.humanize %></b>
+			</nobr>
 		</td>
 		<% end %>
 		<% count += incr %>
@@ -43,10 +45,12 @@ Ratings
 	<tr>
 		<% for attribute in Title::attributes.slice(count, incr) %>
 		<td>
+			<nobr>
 			<span>
 				<%= star_images(@title_rating.title.send("avg_#{attribute}")) %>
 			</span>
-			<b><%= attribute.humanize[0, 13] %></b>
+			&nbsp;<b><%= attribute.humanize %></b>
+			</nobr>
 		</td>
 		<% end %>
 		<% count += incr %>
