@@ -28,12 +28,12 @@ Ratings
 			<div id="ratings_<%=genre%>" class="rating_star">
 				<input id="title_rating_<%=genre%>" name="title_rating[<%=genre%>]" class="holder" type="hidden" value="<%= @title_rating.send(genre) || 0 %>" />
 				<a title="Don't Rate" class="dont" onclick="star_click_rating(this)" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
-				<a title="ehh..."                  onclick="star_click_rating(this)" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
-				<a title="Not Bad"                 onclick="star_click_rating(this)" onmouseover="star_update_images(this, 2)" onmouseout="star_mouse_off_rating(this)"></a>
-				<a title="Pretty Good"             onclick="star_click_rating(this)" onmouseover="star_update_images(this, 3)" onmouseout="star_mouse_off_rating(this)"></a>
-				<a title="Great"                   onclick="star_click_rating(this)" onmouseover="star_update_images(this, 4)" onmouseout="star_mouse_off_rating(this)"></a>
-				<a title="Awesome!"                onclick="star_click_rating(this)" onmouseover="star_update_images(this, 5)" onmouseout="star_mouse_off_rating(this)"></a>
-				<b><%= genre.humanize[0, 13] %></b>
+				<a title="1"   onclick="star_click_rating(this)" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="2"   onclick="star_click_rating(this)" onmouseover="star_update_images(this, 2)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="3"   onclick="star_click_rating(this)" onmouseover="star_update_images(this, 3)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="4"   onclick="star_click_rating(this)" onmouseover="star_update_images(this, 4)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="5"   onclick="star_click_rating(this)" onmouseover="star_update_images(this, 5)" onmouseout="star_mouse_off_rating(this)"></a>
+				<b><%= genre.humanize %></b>
 			</div>
 			<script type="text/javascript" language="JavaScript">
 				// <![CDATA[
@@ -59,12 +59,12 @@ Ratings
 			<div id="ratings_<%=attribute%>" class="rating_star">
 				<input id="title_rating_<%=attribute%>" name="title_rating[<%=attribute%>]" class="holder" type="hidden" value="<%= @title_rating.send(attribute) || 0 %>" />
 				<a title="Don't Rate" class="dont" onclick="star_click_rating(this)" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
-				<a title="ehh..."                  onclick="star_click_rating(this)" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
-				<a title="Not Bad"                 onclick="star_click_rating(this)" onmouseover="star_update_images(this, 2)" onmouseout="star_mouse_off_rating(this)"></a>
-				<a title="Pretty Good"             onclick="star_click_rating(this)" onmouseover="star_update_images(this, 3)" onmouseout="star_mouse_off_rating(this)"></a>
-				<a title="Great"                   onclick="star_click_rating(this)" onmouseover="star_update_images(this, 4)" onmouseout="star_mouse_off_rating(this)"></a>
-				<a title="Awesome!"                onclick="star_click_rating(this)" onmouseover="star_update_images(this, 5)" onmouseout="star_mouse_off_rating(this)"></a>
-				<b><%= attribute.humanize[0, 13] %></b>
+				<a title="1"    onclick="star_click_rating(this)" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="2"    onclick="star_click_rating(this)" onmouseover="star_update_images(this, 2)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="3"    onclick="star_click_rating(this)" onmouseover="star_update_images(this, 3)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="4"    onclick="star_click_rating(this)" onmouseover="star_update_images(this, 4)" onmouseout="star_mouse_off_rating(this)"></a>
+				<a title="5"    onclick="star_click_rating(this)" onmouseover="star_update_images(this, 5)" onmouseout="star_mouse_off_rating(this)"></a>
+				<b><%= attribute.humanize %></b>
 			</div>
 			<script type="text/javascript" language="JavaScript">
 				// <![CDATA[
