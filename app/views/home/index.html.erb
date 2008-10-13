@@ -253,7 +253,6 @@
 			<!-- Start Entry Block -->
 			<div>
 			<h2><%=link_to(h(review.title.name), {:controller => 'titles', :action => 'show', :id => review.title.id}, :class => 'black')%></h2>
-			<h3 class="green">"Where the hell does this quote come from!"</h3>
 			<div class="rating"><%=link_to('read full review', {:controller => 'titles', :action => 'show', :id => review.title.id})%> by <%=link_to(h(review.user.name), :controller => 'users', :action => 'show', :id => review.user.id)%></div>
 			<p><%=h(truncate(review.body, 80)) %>
 			</p>
