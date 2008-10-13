@@ -9,10 +9,14 @@ module ApplicationHelper
 	end
 
 	def star_images(value)
-		count = value || 0
-		
+		# Make the count zero if it is nil.
+		count = value || 0.0
+
+		# Round the count to the nearest floor or ceiling
+		count = count % 1 < 0.5 ? count.floor : count.ceil
+
 		("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * count) + 
-		("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - count))
+		("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5.0 - count))
 	end
 
 	def urls_to_hrefs(text, escape_char=';')
