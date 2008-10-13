@@ -20,20 +20,23 @@
 			<!-- =================================================================================== END CENTER STUFF ======= -->
 
 			<table class="content" width="100%" align="center">
-			<tr valign="top">
-			<% for title in @titles[category] %>
-			<!-- Start Entry Block -->
-			<td align="center"><div class="image_holder1">Poster</div>
-			<h2 style="padding:0"><%=link_to(title.name, {:controller => 'titles', :action => 'show', :id => title.id}, :class => 'black')%></h2>
-			<span class="orange"><%= category.humanize %>: </span><span class="green"><%=h title.send("avg_#{category}") %></span>
-			</td>
-			<!-- End Block -->
-			<% end %>
-			<% if @titles[category].length == 0 %>
-			<td align="center">There are no ratings for this category yet.</td>
-			<% end %>
-
-			</tr>
+				<tr valign="top">
+				<% for title in @titles[category] %>
+					<td align="center" width="100px"><div class="image_holder1">Poster</div>
+						<h2 style="padding:0"><%=link_to(title.name, {:controller => 'titles', :action => 'show', :id => title.id}, :class => 'black')%></h2>
+					</td>
+				<% end %>
+				</tr>
+				<tr>
+				<% for title in @titles[category] %>
+					<td align="center" width="100px">
+						<span class="orange"><%= category.humanize %>: </span><span class="green"><%=h title.send("avg_#{category}") %></span>
+					</td>
+				<% end %>
+				<% if @titles[category].length == 0 %>
+					<td align="center">There are no ratings for this category yet.</td>
+				<% end %>
+				</tr>
 			</table>
 
 			<!-- =================================================================================== START END TABLE ======== -->
@@ -44,6 +47,8 @@
 			</tr></table><!-- ====================================================================== END TABLE ============== -->
 			</div>
 			<% end %>
+
+
 
 
 
@@ -64,16 +69,24 @@
 			<!-- =================================================================================== END CENTER STUFF ======= -->
 
 			<table class="content" width="100%" align="center">
-			<tr valign="top">
 			<!-- Start Entry Block -->
-			<p><b>Total titles:</b>  <%= @total_titles %></p>
-			<p><b>Total users:</b>   <%= @total_users %></p>
-			<p><b>Total reviews:</b> <%= @total_reviews %></p>
-			<p><b>Total ratings:</b> <%= @total_ratings %></p>
-			</td>
-			<!-- End Block -->
-
+			<tr>
+				<td width="100px"><b>Total titles:</b></td>
+				<td><%= @total_titles %></td>
 			</tr>
+			<tr>
+				<td width="100px"><b>Total users:</b></td>
+				<td><%= @total_users %></td>
+			</tr>
+			<tr>
+				<td width="100px"><b>Total reviews:</b></td>
+				<td><%= @total_reviews %></td>
+			</tr>
+			<tr>
+				<td width="100px"><b>Total ratings:</b></td>
+				<td><%= @total_ratings %></td>
+			</tr>
+			<!-- End Block -->
 			</table>
 
 			<!-- =================================================================================== START END TABLE ======== -->
