@@ -26,7 +26,7 @@ Ratings
 		<td>
 			<nobr>
 			<span>
-				<%= star_images(@title_rating.title.send("avg_#{genre}")) %>
+				<%= star_images(@title_rating.send(genre)) %>
 			</span>
 			&nbsp;<b><%= genre.humanize %></b>
 			</nobr>
@@ -47,7 +47,7 @@ Ratings
 		<td>
 			<nobr>
 			<span>
-				<%= star_images(@title_rating.title.send("avg_#{attribute}")) %>
+				<%= star_images(@title_rating.send(attribute)) %>
 			</span>
 			&nbsp;<b><%= attribute.humanize %></b>
 			</nobr>
