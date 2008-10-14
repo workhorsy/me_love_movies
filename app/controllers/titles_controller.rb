@@ -27,21 +27,7 @@ class TitlesController < ApplicationController
 		else
 			@title = Title.find(params[:id])
 		end
-=begin
-		# Find all the reviews and sort them by user type
-		@title_reviews = { 'user' => [], 
-						'moderator' => [], 
-						'critic' => [] }
 
-		reviews = TitleReview.find(:all, :conditions => ["title_id=?", @title.id])
-		reviews.each do |review|
-			case review.user.user_type
-				when 'U': @title_reviews['user'] << review
-				when 'A', 'M': @title_reviews['moderator'] << review
-				when 'C': @title_reviews['critic'] << review
-			end
-		end
-=end
 		# Find a new review
 		@new_review = TitleReview.find(:all, 
 										:conditions => ["title_id=?", @title.id],
