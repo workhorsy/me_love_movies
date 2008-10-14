@@ -8,6 +8,17 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '455e48fedc601070a5a1eb98ddffca90'
 
+	before_filter :check_beta_login_requirements
+
+	def check_beta_login_requirements
+		return if self.controller_name == "users"
+
+		# If we are in beta, and the user is not logged in, take them to the beta page
+		if Settings.is_beta && session[:user_id] == nil
+			redirect_to :controller => 'users', :action => 'beta'
+		end
+	end
+
 private
 
 	def authorize_title_is_released

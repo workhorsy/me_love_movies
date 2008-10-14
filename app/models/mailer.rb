@@ -21,7 +21,7 @@ class Mailer < ActionMailer::Base
 	def user_created_beta(user_id, server_domain, user_name, human_name, email)
 		@subject       = "Me Love Movies Beta Request"
 		@body          = {}
-		@recipients    = User.beta_email_processor
+		@recipients    = Settings.beta_email_processor
 		@from          = "noreply@melovemovies.com"
 		@headers       = { "Reply-to" => "noreply@melovemovies.com" }
 		@sent_on       = Time.now

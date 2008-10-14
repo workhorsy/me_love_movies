@@ -46,7 +46,7 @@ class UsersController < ApplicationController
 		@user = User.new(params[:user])
 		@user.user_type = UserType::NAMES_ABBREVIATIONS.select { |k, v| v == 'U' }.first.last
 
-		is_beta = User.is_beta
+		is_beta = Settings.is_beta
 
 		# Determine if we have reached the beta cap
 		if is_beta && User.count >= 100
@@ -134,7 +134,7 @@ class UsersController < ApplicationController
 
 		# Make sure the user has been activated via email
 		elsif user && user.is_email_activated == false
-			if User.is_beta
+			if Settings.is_beta
 				flash_notice "Before you can login, this user must be activated via the email message that was sent when the user was created."
 			else
 				flash_notice "Your account is still waiting to be approved for the beta. You will receive an email when it is processed."
@@ -375,6 +375,11 @@ class UsersController < ApplicationController
 				#format.xml	{ render :xml => @user.errors, :status => :unprocessable_entity }
 			end
 		end
+	end
+
+	def beta
+		date = Settings.beta_end_date
+		@end_date = "#{date.month}/#{date.day}/#{date.year}"
 	end
 
 	private
