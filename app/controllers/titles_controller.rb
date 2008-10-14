@@ -53,6 +53,9 @@ class TitlesController < ApplicationController
 		@new_review = nil if @critic_review && @new_review && @critic_review.id == @new_review.id
 		@new_review = nil if @new_review && @top_review && @new_review.id == @top_review.id
 
+		# Get the number of ratings
+		@ratings_count = TitleRating.count(:conditions => ["title_id=?", @title.id])
+
 		respond_to do |format|
 			format.html # show.html.erb
 			#format.xml	{ render :xml => @title_reviews }

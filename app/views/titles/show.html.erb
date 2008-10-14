@@ -97,6 +97,7 @@ Ratings
 <!-- =================================================================================== END CENTER STUFF ======= -->
 
 <table width="100%" border="0" class="star_table">
+<tr><td colspan="4" style="text-align: right;">Averaged from <%= @ratings_count %> rating<%= @ratings_count == 1 ? "" : "s" %></td></tr>
 <tr><td colspan="4"><h2>Genre</h2></td></tr>
 	<% count = 0; incr = 4 %>
 	<% while count < Title::genres.length %>
