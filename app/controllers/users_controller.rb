@@ -150,7 +150,11 @@ class UsersController < ApplicationController
 		# Go back to the page the user came from, or the homepage
 		from_same_site = (request.env_table['HTTP_REFERER'] && request.env_table['HTTP_REFERER'].index(get_server_url(request)) == 0)
 		if from_same_site
-			redirect_to(request.env_table['HTTP_REFERER'])
+			if request.env_table['HTTP_REFERER'].index("/users/beta") != nil
+				redirect_to :controller => 'home', :action => 'index'
+			else
+				redirect_to(request.env_table['HTTP_REFERER'])
+			end
 		else
 			redirect_to :controller => 'home', :action => 'index'
 		end
