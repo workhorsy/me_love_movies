@@ -13,10 +13,9 @@
 		<tr>
 		<% id = review.id %>
 		<td>
-			<div class="image_holder1" style="float:left; margin:10px;">
-				<%= image_tag review.user.avatar_file_or_default, :size=>"100x125" %>
-				<br />
+			<div style="float:left; margin:10px;">
 				<%= link_to(
+					image_tag(review.user.avatar_file_or_default, :size=>"100x100", :style=>"text-decoration: none;") +
 					h(review.user.name), 
 					:controller => 'users', 
 					:action => 'show', 
