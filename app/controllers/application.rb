@@ -62,7 +62,8 @@ private
 		user = User.find_by_id(session[:user_id])
 
 		if user == nil || (get_originating_user_id != user.id && user.user_type != 'A')
-			render :layout => 'default', :text => "<p id=\"flash_notice\">Only that user can access this page.</p>"
+			flash_notice "Only that user can access this page."
+			render :layout => 'default', :text => ""
 		end
 	end
 
