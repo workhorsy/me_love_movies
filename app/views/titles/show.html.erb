@@ -293,11 +293,11 @@ Other Reviews
 
 	// Hide the reviews and ratings if this title is not out yet
 	var today = new Date();
-	<% if @title.release_date -%>
-	var release = new Date(<%=h @title.release_date.year %>, <%=h @title.release_date.month %>, <%=h @title.release_date.day %>);
-	<% else -%>
-	var release = 0;	
-	<% end -%>	
+	<% if @title.release_date %>
+	var release = new Date(<%=h @title.release_date.year %>, <%=h @title.release_date.month-1 %>, <%=h @title.release_date.day %>);
+	<% else %>
+	var release = 0;
+	<% end %>
 	if(release > today) {
 		$('ratings').hide();
 		$('reviews').hide();
