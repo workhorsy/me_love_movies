@@ -59,8 +59,9 @@ private
 	end
 
 	def authorize_originating_user_only
-		#raise [get_originating_user_id, session[:user_id]].inspect
-		if get_originating_user_id != session[:user_id]
+		user = User.find_by_id(session[:user_id])
+
+		if user == nil || (get_originating_user_id != user.id && user.user_type != 'A')
 			render :layout => 'default', :text => "<p id=\"flash_notice\">Only that user can access this page.</p>"
 		end
 	end
