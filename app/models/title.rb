@@ -25,6 +25,27 @@ class Title < ActiveRecord::Base
 				character_development cinematography}
 	end
 
+	def proper_name
+		value = self.name
+
+		# Move 'the' to the front
+		if value.downcase[-5, 5] == ", the"
+			return "The " + value[0 .. -6]
+		end
+
+		# Move 'A' to the front
+		if value.downcase[-3, 3] == ", a"
+			return "A " + value[0 .. -4]
+		end
+
+		# Move 'An' to the front
+		if value.downcase[-4, 4] == ", an"
+			return "An " + value[0 .. -5]
+		end
+
+		return value
+	end
+
 	def runtime_minutes
 		@runtime_minutes
 	end
