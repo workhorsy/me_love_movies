@@ -11,4 +11,8 @@ class Settings < ActiveRecord::Base
 	def self.beta_email_processor
 		"mattjones@workhorsy.org"
 	end
+
+	def self.affiliate_id
+		1250588224
+	end
 end
