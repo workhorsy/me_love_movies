@@ -41,12 +41,12 @@ def dl_poster_links
 		require "app/models/#{file}.rb"
 	end
 
-	# Create a browser
-	agent = WWW::Mechanize.new
-	agent.user_agent_alias = 'Ubuntu Firefox 3.0'
-
-	Title.find(:all).each do |title|
+	for title in Title.find(:all)
 		begin
+			# Create a browser
+			agent = WWW::Mechanize.new
+			agent.user_agent_alias = 'Ubuntu Firefox 3.0'
+
 			# Go to the search page
 			page = agent.get("http://www.allposters.com/gallery.asp?startat=%2Fsearchadvanced.asp")
 
@@ -106,6 +106,7 @@ def dl_poster_links
 		end
 
 		# Sleep for a bit as to not DOS allposters.com
+		GC.start
 		sleep(2)
 	end
 end
