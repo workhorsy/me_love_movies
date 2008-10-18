@@ -50,15 +50,15 @@ def dl_poster_links
 			# Go to the search page
 			page = agent.get("http://www.allposters.com/gallery.asp?startat=%2Fsearchadvanced.asp")
 
-			#form.fields.name("CategoryID").options.each do |option|
-			#	form.fields.name("CategoryID").value = "Movies" if option.value == "Movies"
-			#end
-
 			# Enter the title name, and select movies and posters
 			form = page.forms.with.name("form1").first
 			form.fields.name("Search").first.value = title.proper_name
-			form.fields.name("CategoryID").value = "Movies"
-			form.fields.name("ItemType").value = "Poster/Print"
+			form.fields.name("CategoryID").options.each do |option|
+				form.fields.name("CategoryID").value = option.value if option.text == "Movies"
+			end
+			form.fields.name("ItemType").options.each do |option|
+				form.fields.name("ItemType").value = option.value if option.text == "Poster/Print"
+			end
 			page = agent.submit(form)
 
 			# Get the url of the poster image
