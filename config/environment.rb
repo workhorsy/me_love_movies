@@ -82,3 +82,9 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
 	"<span class=\"fieldWithErrors\">#{html_tag}</span>"
 end
 
+class Float
+	def to_precision(precision)
+		self.to_s[0..self.to_s.index('.') + precision]
+	end
+end
+

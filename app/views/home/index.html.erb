@@ -30,7 +30,7 @@
 				<tr>
 				<% for title in @titles[category] %>
 					<td align="center" width="100px">
-						<span class="orange"><%= category.humanize %>: </span><span class="green"><%=h title.send("avg_#{category}") %></span>
+						<span class="orange"><%= category.humanize %>: </span><span class="green"><%=h title.send("avg_#{category}").to_precision(1) %></span>
 					</td>
 				<% end %>
 				<% if @titles[category].length == 0 %>
