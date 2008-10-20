@@ -38,7 +38,7 @@ class TitleReviewsController < ApplicationController
 		@title_review = TitleReview.new
 
 		# Make sure there is a title id
-		@title_name = Title.find(params[:title_id]).name
+		@title_name = Title.find(params[:title_id]).proper_name
 		@title_review.title_id = params[:title_id]
 
 		respond_to do |format|

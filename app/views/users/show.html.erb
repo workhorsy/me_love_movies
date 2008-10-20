@@ -111,7 +111,7 @@ Reviews by this user
 		This user has no reviews.
 	<% else %>
 		<% for review in @title_reviews %>
-		<%= link_to review.title.name, :controller => 'title_reviews', :action => 'show', :id => review.id %><br />
+		<%= link_to review.title.proper_name, :controller => 'title_reviews', :action => 'show', :id => review.id %><br />
 		<% end %>
 	<% end %>
 
@@ -155,7 +155,7 @@ Ratings by this user
 		This user has no ratings.
 	<% else %>
 		<% for ratings in @title_ratings %>
-		<%= link_to ratings.title.name, :controller => 'title_ratings', :action => 'show', :id => ratings.id %><br />
+		<%= link_to ratings.title.proper_name, :controller => 'title_ratings', :action => 'show', :id => ratings.id %><br />
 		<% end %>
 	<% end %>
 

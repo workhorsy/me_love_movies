@@ -23,7 +23,7 @@
 				<tr valign="top">
 				<% for title in @titles[category] %>
 					<td align="center" width="100px"><div class="image_holder1">Poster</div>
-						<h2 style="padding:0"><%=link_to(title.name, {:controller => 'titles', :action => 'show', :id => title.id}, :class => 'black')%></h2>
+						<h2 style="padding:0"><%=link_to(title.proper_name, {:controller => 'titles', :action => 'show', :id => title.id}, :class => 'black')%></h2>
 					</td>
 				<% end %>
 				</tr>
@@ -252,7 +252,7 @@
 			<% for review in @top_reviews %>
 			<!-- Start Entry Block -->
 			<div>
-			<h2><%=link_to(h(review.title.name), {:controller => 'titles', :action => 'show', :id => review.title.id}, :class => 'black')%></h2>
+			<h2><%=link_to(h(review.title.proper_name), {:controller => 'titles', :action => 'show', :id => review.title.id}, :class => 'black')%></h2>
 			<div class="rating"><%=link_to('read full review', {:controller => 'titles', :action => 'show', :id => review.title.id})%> by <%=link_to(h(review.user.user_name), :controller => 'users', :action => 'show', :id => review.user.id)%></div>
 			<p><%=h(truncate(review.body, 80)) %>
 			</p>

@@ -1,6 +1,6 @@
 
 
-<h1>Rating For '<%= @title_rating.title.name %>' by <%=h @title_rating.user.user_name %></h1>
+<h1>Rating For '<%= @title_rating.title.proper_name %>' by <%=h @title_rating.user.user_name %></h1>
 
 <div id="ratings" style="width:960px; float:left; padding-top:15px;">
 <!-- ====================================================================================TABLE BLOCK STARTS HERE -->
@@ -71,7 +71,7 @@ Ratings
 <br style="clear: both;" />
 
 <%= link_to 'Edit this rating', edit_title_rating_path(@title_rating), :id => 'lnk_edit_rating', :style => 'display: none;' %> <br />
-<%= link_to "Back to '#{@title_rating.title.name}'", :controller => 'titles', :action => 'show', :id => @title_rating.title.id %>
+<%= link_to "Back to '#{@title_rating.title.proper_name}'", :controller => 'titles', :action => 'show', :id => @title_rating.title.id %>
 
 <script type="text/javascript">
 	// <!CDATA[
