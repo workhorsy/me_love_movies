@@ -16,7 +16,7 @@
 			<div style="float:left; margin:10px;">
 				<%= link_to(
 					image_tag(review.user.avatar_file_or_default, :size=>"100x100", :style=>"text-decoration: none;") +
-					h(review.user.name), 
+					h(review.user.user_name), 
 					:controller => 'users', 
 					:action => 'show', 
 					:id => review.user.id) %>

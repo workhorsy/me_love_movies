@@ -4,6 +4,7 @@
 
 <table cellpadding="5">
 	<tr>
+		<th>User Name</th>
 		<th>Name</th>
 		<th>Permissions</th>
 		<th>Activated</th>
@@ -11,6 +12,7 @@
 
 <% for user in @users -%>
 	<tr>
+		<td><%=h user.user_name %></td>
 		<td><%=h user.name %></td>
 		<td>
 		<% for name in %w{User Critic Moderator Administrator} %>

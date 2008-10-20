@@ -289,7 +289,7 @@ class UsersController < ApplicationController
 
 		if @user.update_attributes({ :is_email_activated => value})
 			message = value ? 'activated' : 'deactivated'
-			render :text => "The user #{@user.name} is now #{message}."
+			render :text => "The user #{@user.user_name} is now #{message}."
 		else
 			render :text => "Error updating the user!"
 		end
@@ -320,7 +320,7 @@ class UsersController < ApplicationController
 		rescue
 		end
 		if @user.save
-			render :text => "The user #{@user.name} is now a " + name
+			render :text => "The user #{@user.user_name} is now a " + name
 		else
 			render :text => "Error updating the user!"
 		end
@@ -398,7 +398,7 @@ class UsersController < ApplicationController
 
 	def login_set_sessions_and_cookies(user)
 		session[:user_id] = user.id
-		cookies[:user_name] = { :value => user.name }
+		cookies[:user_name] = { :value => user.user_name }
 		cookies[:user_greeting] = { :value => 'Howdy' }
 		cookies[:user_type] = { :value => user.user_type }
 		cookies[:user_id] = { :value => user.id.to_s }

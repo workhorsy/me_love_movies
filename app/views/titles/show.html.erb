@@ -189,7 +189,7 @@ Ratings
 		<div>
 			&quot;<%=h review.body %>&quot;
 			by <%= link_to(
-				h(review.user.name), 
+				h(review.user.user_name), 
 				:controller => 'users', 
 				:action => 'show', 
 				:id => review.user.id) %><br />
