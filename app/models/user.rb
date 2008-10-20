@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
 	validate :password_is_valid
 
 	def self.per_page
-		20
+		10
 	end
 
 	def self.authenticate(name, password)
