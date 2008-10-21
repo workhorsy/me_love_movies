@@ -9,53 +9,73 @@
 <table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
 <td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
 
-Search by Name
+<%= link_to_function "Search by Title", "Effect.BlindDown('search_by_title', {duration: 0.3}); $('search_by_director').hide(); $('search_by_actor').hide(); $('search_by_ratings').hide(); $('search_results').hide()", :style => "color: #FFFFFF; text-decoration: none;" %>
 
-</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+<%= link_to_function "Search by Director", "Effect.BlindDown('search_by_director', {duration: 0.3}); $('search_by_title').hide(); $('search_by_actor').hide(); $('search_by_ratings').hide(); $('search_results').hide()", :style => "color: #FFFFFF; text-decoration: none;" %>
+
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+<%= link_to_function "Search by Actor", "Effect.BlindDown('search_by_actor', {duration: 0.3}); $('search_by_director').hide(); $('search_by_title').hide(); $('search_by_ratings').hide(); $('search_results').hide()", :style => "color: #FFFFFF; text-decoration: none;" %>
+
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+<%= link_to_function "Search by Ratings", "Effect.BlindDown('search_by_ratings', {duration: 0.3}); $('search_by_director').hide(); $('search_by_actor').hide(); $('search_by_title').hide(); $('search_results').hide()", :style => "color: #FFFFFF; text-decoration: none;" %>
+
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td><td><img src="/images/panel_oj_hleft.jpg" /></td>
+<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+<%= link_to_function "Results", "Effect.BlindDown('search_results', {duration: 0.3}); $('search_by_director').hide(); $('search_by_actor').hide(); $('search_by_title').hide(); $('search_by_ratings').hide();", :style => "color: #FFFFFF; text-decoration: none;" %>
+
+
+</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td>
+</tr></table><!-- ============== CENTER STUFF ======== -->
 </td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
 <tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
 <!-- =================================================================================== END CENTER STUFF ======= -->
 
 
-<div id="search_page" style="padding-left:20px;">
-	<% form_tag do -%>
-		<b>Search by Title: </b><%= text_field_tag :name, params[:name] %>
-		<b>Director: </b><%= text_field_tag :director, params[:director] %>
-		<b>Actor: </b><%= text_field_tag :actor, params[:actor] %>
+<div id="search_by_title" style="padding-left:20px; display: none;">
+	<% form_tag :action => 'search', :method => 'post' do -%>
+		<b>Search by Title: </b><%= text_field_tag :title, params[:title] %>
 
-		<%= hidden_field_tag :type, 'by_name' %>
+		<%= hidden_field_tag :type, 'by_title' %>
+		<br />
 		<%= submit_tag 'Search', :style => 'width: 80px;' %>
 	<% end -%>
 </div>
 
 
-<!-- =================================================================================== START END TABLE ======== -->
-</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
-<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
-<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
-<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
-</tr></table><!-- ====================================================================== END TABLE ============== -->
+<div id="search_by_director" style="padding-left:20px; display: none;">
+	<% form_tag :action => 'search', :method => 'post' do -%>
+		<b>Search by Director: </b><%= text_field_tag :director, params[:director] %>
+
+		<%= hidden_field_tag :type, 'by_director' %>
+		<br />
+		<%= submit_tag 'Search', :style => 'width: 80px;' %>
+	<% end -%>
 </div>
 
 
+<div id="search_by_actor" style="padding-left:20px; display: none;">
+	<% form_tag :action => 'search', :method => 'post' do -%>
+		<b>Search by Actor: </b><%= text_field_tag :actor, params[:actor] %>
+
+		<%= hidden_field_tag :type, 'by_actor' %>
+		<br />
+		<%= submit_tag 'Search', :style => 'width: 80px;' %>
+	<% end -%>
+</div>
 
 
-<div style="width:960px; padding-top:15px;">
-<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
-<table cellpadding="0" cellspacing="0" width="100%" border="0">
-<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
-<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
-<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
-<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
-
-Search by Ratings
-
-</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
-</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
-<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
-<!-- =================================================================================== END CENTER STUFF ======= -->
-
-
+<div id="search_by_ratings" style="padding-left:20px; display: none;">
 <% form_for @title_rating, :url => {:action => 'search'} do |f| %>
 	<div id="container">
 		<h2>Genre</h2>
@@ -110,6 +130,24 @@ Search by Ratings
 		<%= f.submit 'Search', :class => 'submitbutton' %>
 	</div>
 <% end %>
+</div>
+
+<div id="search_results" style="padding-left:20px;">
+<% if @titles %>
+<h1>Search Results</h1>
+<div style="padding-bottom: 200px;">
+	<% for title in @titles %>
+	<%= link_to title.proper_name, :controller => 'titles', :action => 'show', :id => title.id %><br />
+	<% end %>
+	<% if @titles.length == 0 %>
+		There were no results for your search
+	<% end %>
+</div>
+<% else %>
+	Click one of the tabs above to select the way you want to search.
+<% end %>
+</div>
+
 
 <!-- =================================================================================== START END TABLE ======== -->
 </td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
@@ -119,22 +157,5 @@ Search by Ratings
 </tr></table><!-- ====================================================================== END TABLE ============== -->
 </div>
 
-
-<% if @titles %>
-<a name="results"><h2>Search Results</h2></a>
-<div style="padding-bottom: 200px;">
-	<script type="text/javascript" language="JavaScript">
-		/* <![CDATA[ */
-		document.location = "#results";
-		/* ]]> */
-	</script>
-	<% for title in @titles %>
-	<%= link_to title.proper_name, :controller => 'titles', :action => 'show', :id => title.id %><br />
-	<% end %>
-	<% if @titles.length == 0 %>
-		There were no results for your search
-	<% end %>
-</div>
-<% end %>
 
 

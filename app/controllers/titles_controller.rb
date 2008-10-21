@@ -135,39 +135,54 @@ class TitlesController < ApplicationController
 		# Just return unless this is the post back from the search button
 		return unless request.post?
 
-		if params[:type] == 'by_name'
+		if params[:type] == 'by_title'
 			# Make sure something was selected
-			s_name = params[:name].strip
-			s_actor = params[:actor].strip
-			s_director = params[:director].strip
-			if [s_name, s_actor, s_director].uniq == ['']
-				respond_to do |format|
-					flash_notice "No search parameters were selected"
-					format.html { render :action => "search" }
-					#format.xml	{ render :xml => @title_rating.errors, :status => :unprocessable_entity }
-				end
+			s_title = params[:title].strip
+			if s_title == ''
+				flash_notice "No search parameters were specified."
 				return
-			else
-				flash_notice nil
 			end
 
-			# Do the search by category
-			db_field, search_params = nil, nil
-			if s_name != ''
-				db_field, search_params = 'name', s_name
-			elsif s_actor != ''
-				db_field, search_params = 'cast', s_actor
-			elsif s_director != ''
-				db_field, search_params = 'director', s_director
-			end
-
-			search_params = search_params.split(' ').collect { |n| n.strip }
+			# Find the titles that match
+			db_field = 'name'
+			search_params = s_title.split(' ').collect { |n| n.strip }
 
 			@titles = Title.find(:all, :conditions => [
 											search_params.collect { |n| "#{db_field} like ?"}.join(' and '),
 											*search_params.collect { |n| "%#{n}%"}],
 								 :order => :name)
+		elsif params[:type] == 'by_director'
+			# Make sure something was selected
+			s_title = params[:director].strip
+			if s_title == ''
+				flash_notice "No search parameters were specified."
+				return
+			end
 
+			# Find the titles that match
+			db_field = 'director'
+			search_params = s_title.split(' ').collect { |n| n.strip }
+
+			@titles = Title.find(:all, :conditions => [
+											search_params.collect { |n| "#{db_field} like ?"}.join(' and '),
+											*search_params.collect { |n| "%#{n}%"}],
+								 :order => :name)
+		elsif params[:type] == 'by_actor'
+			# Make sure something was selected
+			s_title = params[:actor].strip
+			if s_title == ''
+				flash_notice "No search parameters were specified."
+				return
+			end
+
+			# Find the titles that match
+			db_field = 'cast'
+			search_params = s_title.split(' ').collect { |n| n.strip }
+
+			@titles = Title.find(:all, :conditions => [
+											search_params.collect { |n| "#{db_field} like ?"}.join(' and '),
+											*search_params.collect { |n| "%#{n}%"}],
+								 :order => :name)
 		elsif params[:type] == 'by_rating'
 			# Make sure something was selected
 			if params[:title_rating].values.uniq == ["0"]

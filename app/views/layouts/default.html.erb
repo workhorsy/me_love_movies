@@ -57,10 +57,8 @@
 	<% form_tag :controller => 'titles', :action => 'search', :method => 'post' do %>
 		<table style="padding: 0px; margin: 0px;">
 			<tr>
-				<td><%= text_field_tag :name, params[:name], :id => 'search_title', :value => 'Search by Title' -%></td>
-				<td><%= hidden_field_tag :actor, '' -%></td>
-				<td><%= hidden_field_tag :director, '' -%></td>
-				<td><%= hidden_field_tag :type, 'by_name' -%></td>
+				<td><%= text_field_tag :title, params[:title], :id => 'search_title', :value => 'Search by Title' -%></td>
+				<td><%= hidden_field_tag :type, 'by_title' -%></td>
 				<td><%= submit_tag 'Search', :id => 'submitbutton' -%></td>
 			</tr>
 		</table>
