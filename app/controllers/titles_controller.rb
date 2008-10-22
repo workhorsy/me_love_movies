@@ -152,6 +152,7 @@ class TitlesController < ApplicationController
 											*search_params.collect { |n| "%#{n}%"}],
 								 :order => :name)
 		elsif params[:type] == 'by_director'
+			@person_type = "director"
 			# Make sure something was selected
 			s_title = params[:director].strip
 			if s_title == ''
@@ -167,7 +168,36 @@ class TitlesController < ApplicationController
 											search_params.collect { |n| "#{db_field} like ?"}.join(' and '),
 											*search_params.collect { |n| "%#{n}%"}],
 								 :order => :name)
+
+			# Get the directors that match the names
+			max_titles = 100
+			max_others = 20
+			@person_map = {} # {'Bobrick Bobberton' : title}
+			@other_persons = [] #['Fredrick Fredderson']
+			@titles.each do |title|
+				title.director.split(',').collect{|a| a.strip}.each do |person|
+					match_count = 0
+					# Find the number of matching words there are
+					search_params.each do |s_param|
+						match_count += 1 if person.downcase.include? s_param.downcase
+					end
+
+					if match_count == search_params.length && max_titles > 0
+						@person_map[person] ||= []
+						@person_map[person] << title
+						max_titles -= 1
+					elsif match_count > 0 && match_count < search_params.length && max_others > 0
+						unless @other_persons.include? person
+							@other_persons << person
+							max_others -= 1
+						end
+					end
+				end
+			end
+
+			@other_persons = @other_persons.sort
 		elsif params[:type] == 'by_actor'
+			@person_type = "actor"
 			# Make sure something was selected
 			s_title = params[:actor].strip
 			if s_title == ''
@@ -187,30 +217,30 @@ class TitlesController < ApplicationController
 			# Get the actors that match the names
 			max_titles = 100
 			max_others = 20
-			@actor_map = {} # {'Bobrick Bobberton' : title}
-			@other_actors = [] #['Fredrick Fredderson']
+			@person_map = {} # {'Bobrick Bobberton' : title}
+			@other_persons = [] #['Fredrick Fredderson']
 			@titles.each do |title|
-				title.cast.split(',').collect{|a| a.strip}.each do |actor|
+				title.cast.split(',').collect{|a| a.strip}.each do |person|
 					match_count = 0
 					# Find the number of matching words there are
 					search_params.each do |s_param|
-						match_count += 1 if actor.downcase.include? s_param.downcase
+						match_count += 1 if person.downcase.include? s_param.downcase
 					end
 
 					if match_count == search_params.length && max_titles > 0
-						@actor_map[actor] ||= []
-						@actor_map[actor] << title
+						@person_map[person] ||= []
+						@person_map[person] << title
 						max_titles -= 1
 					elsif match_count > 0 && match_count < search_params.length && max_others > 0
-						unless @other_actors.include? actor
-							@other_actors << actor
+						unless @other_persons.include? person
+							@other_persons << person
 							max_others -= 1
 						end
 					end
 				end
 			end
 
-			@other_actors = @other_actors.sort
+			@other_persons = @other_persons.sort
 		elsif params[:type] == 'by_rating'
 			# Make sure something was selected
 			if params[:title_rating].values.uniq == ["0"]
