@@ -168,18 +168,21 @@
 				<% end %>
 				<% if @other_actors.length > 0 %>
 					Other actors you may be looking for:
-					<input type="hidden" name="type" value="by_actor" />
-					<ul>
-					<% for actor in @other_actors %>
-						<li><%=link_to(h(actor), :action => 'search')%></li>
+					<% form_tag({:action => 'search', :method => 'post' }, {:id => 'other_actor_form'}) do -%>
+						<input type="hidden" name="type" value="by_actor" />
+						<input id="actor_field" type="hidden" name="actor" value="" />
+						<ul>
+						<% for actor in @other_actors %>
+							<li><%=link_to_function(h(actor), "$('actor_field').value='#{actor}'; $('other_actor_form').submit()")%></li>
+						<% end %>
+						</ul>
 					<% end %>
-					</ul>
 				<% end %>
 				<% if @actor_map.length == 0 && @other_actors.length == 0 %>
 					There were no actors found.
 				<% end %>
 			</div>
-			<% elsif @titles %>
+-			<% elsif @titles %>
 			<h1>Search Results</h1>
 			<div style="padding-bottom: 200px;">
 				<% for title in @titles %>
