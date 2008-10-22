@@ -155,7 +155,31 @@
 			</div>
 
 			<div id="search_results" style="padding-left:20px;">
-			<% if @titles %>
+			<% if @actor_map && @other_actors %>
+			<h1>Search Results</h1>
+			<div style="padding-bottom: 200px;">
+				<% for actor, titles in @actor_map %>
+					<%=h(actor)%>
+					<ul>
+					<% for title in titles %>
+						<li><%= link_to title.proper_name, :controller => 'titles', :action => 'show', :id => title.id %></li>
+					<% end %>
+					</ul>
+				<% end %>
+				<% if @other_actors.length > 0 %>
+					Other actors you may be looking for:
+					<input type="hidden" name="type" value="by_actor" />
+					<ul>
+					<% for actor in @other_actors %>
+						<li><%=link_to(h(actor), :action => 'search')%></li>
+					<% end %>
+					</ul>
+				<% end %>
+				<% if @actor_map.length == 0 && @other_actors.length == 0 %>
+					There were no actors found.
+				<% end %>
+			</div>
+			<% elsif @titles %>
 			<h1>Search Results</h1>
 			<div style="padding-bottom: 200px;">
 				<% for title in @titles %>

@@ -183,6 +183,34 @@ class TitlesController < ApplicationController
 											search_params.collect { |n| "#{db_field} like ?"}.join(' and '),
 											*search_params.collect { |n| "%#{n}%"}],
 								 :order => :name)
+
+			# Get the actors that match the names
+			max_titles = 100
+			max_others = 20
+			@actor_map = {} # {'Bobrick Bobberton' : title}
+			@other_actors = [] #['Fredrick Fredderson']
+			@titles.each do |title|
+				title.cast.split(',').collect{|a| a.strip}.each do |actor|
+					match_count = 0
+					# Find the number of matching words there are
+					search_params.each do |s_param|
+						match_count += 1 if actor.downcase.include? s_param.downcase
+					end
+
+					if match_count == search_params.length && max_titles > 0
+						@actor_map[actor] ||= []
+						@actor_map[actor] << title
+						max_titles -= 1
+					elsif match_count > 0 && match_count < search_params.length && max_others > 0
+						unless @other_actors.include? actor
+							@other_actors << actor
+							max_others -= 1
+						end
+					end
+				end
+			end
+
+			@other_actors = @other_actors.sort
 		elsif params[:type] == 'by_rating'
 			# Make sure something was selected
 			if params[:title_rating].values.uniq == ["0"]
