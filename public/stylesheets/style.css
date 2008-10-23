@@ -180,7 +180,7 @@ img{
 	height:42px;
 }
 
-#search input, textarea{
+#search input{
 	margin:0; padding:0;
 	padding-bottom:5px;
 	background: none;
@@ -211,7 +211,7 @@ img{
 	height:42px;
 }
 
-#login input, textarea{
+#login input{
 	margin:0; padding:0;
 	padding-bottom:5px;
 	background: none;
@@ -246,7 +246,7 @@ img{
 	margin:0; padding:0; padding-left:20px;
 }
 
-#search_page input, textarea{
+#search_page input{
 	margin:0; padding:0;
 	width: 150px;
 	font-size:12px;
