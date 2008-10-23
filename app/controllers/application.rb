@@ -58,10 +58,14 @@ private
 		raise "The 'get_originating_user_id' method needs to be overwritten in the controller, before calling the 'authorize_originating_user_only' method."
 	end
 
-	def authorize_originating_user_only
+	def is_originating_user_or_admin
 		user = User.find_by_id(session[:user_id])
 
-		if user == nil || (get_originating_user_id != user.id && user.user_type != 'A')
+		return !(user == nil || (get_originating_user_id != user.id && user.user_type != 'A'))
+	end
+
+	def authorize_originating_user_only
+		unless is_originating_user_or_admin
 			flash_notice "Only that user can access this page."
 			render :layout => 'default', :text => ""
 		end

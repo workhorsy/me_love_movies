@@ -23,6 +23,8 @@ class UsersController < ApplicationController
 		@title_ratings = TitleRating.find(:all, :conditions => ["user_id=?", @user.id])
 		@title_ratings = @title_ratings.sort {|x,y| Title.find_by_id(y.title_id).name <=> Title.find_by_id(x.title_id).name }.reverse
 
+		@can_see_private_information = is_originating_user_or_admin
+
 		respond_to do |format|
 			format.html # show.html.erb
 			#format.xml	{ render :xml => @user }
