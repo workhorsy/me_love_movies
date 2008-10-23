@@ -55,11 +55,12 @@
 <!-- Search Movie by Title -->
 <div id="search">
 	<% form_tag :controller => 'titles', :action => 'search', :method => 'post' do %>
-		<table style="padding: 0px; margin: 0px;">
+		<table cellpadding="0" cellspacing="0">
 			<tr>
+				<td><img src="/images/search_title.jpg" alt="Search Title" /></td>
 				<td><%= text_field_tag :title, params[:title], :id => 'search_title', :value => 'Search by Title' -%></td>
 				<td><%= hidden_field_tag :type, 'by_title' -%></td>
-				<td><%= submit_tag 'Search', :id => 'submitbutton' -%></td>
+				<td><%= submit_tag '&nbsp;', :id => 'submitbutton' -%></td>
 			</tr>
 		</table>
 	<% end -%>
@@ -73,11 +74,13 @@
 
 <div id="login" class="login">
 	<% form_tag :controller => 'users', :action => 'login' do %>
-		<table style="padding: 0px; margin: 0px;">
+		<table cellpadding="0" cellspacing="0">
 			<tr>
+				<td><img src="/images/login_start.jpg" alt="Login tip" /></td>
 				<td><%= text_field_tag :user_name, params[:user_name], :value => 'Username' -%></td>
+				<td><img src="/images/login_center.jpg" alt="Login mid" /></td>
 				<td><%= password_field_tag :password, params[:password], :value => 'Password' -%></td>
-				<td><%= submit_tag "Login", :id => 'submitbutton' -%></td>
+				<td><%= submit_tag "&nbsp;", :id => 'submitbutton' -%></td>
 			</tr>
 		</table>
 	<% end %>
