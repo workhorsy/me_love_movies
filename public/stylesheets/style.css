@@ -326,10 +326,13 @@ img{
 
 
 #flash_notice {
-	color: green;
-	border: 1px solid #bebe55;
-	padding: 5px;
-	background: #f3f3b9;
+	color: #660000;
+	border: 5px solid #660000;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+	padding: 10px;
+	background: #FFF;
 }
 
 .title_rating_attribute {
