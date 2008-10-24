@@ -5,7 +5,7 @@ class Settings < ActiveRecord::Base
 	end
 
 	def self.beta_end_date
-		DateTime.strptime("10/31/2008", "%m/%d/%Y")
+		DateTime.strptime("9/1/2008", "%m/%d/%Y")
 	end
 
 	def self.beta_email_processor
