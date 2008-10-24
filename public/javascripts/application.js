@@ -27,7 +27,7 @@ function get_user_greeting_from_cookie() {
 	var greeting = get_cookie('user_greeting');
 
 	if(name != null) {
-		return greeting + " " + unescape(name).replace(/[+]/g, ' ');
+		return unescape(greeting).replace(/[+]/g, ' ') + " " + unescape(name).replace(/[+]/g, ' ');
 	} else {
 		return "Howdy Stranger";
 	}
