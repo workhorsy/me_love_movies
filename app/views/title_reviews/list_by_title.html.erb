@@ -26,9 +26,9 @@
 			<div>
 				&quot;<%=h review.body %>&quot;
 				<% user_rating = review.get_user_rating(session[:user_id]) || 0 %>
-
+				<table><tr><td>
 				<div id="tr_rating_<%=id%>" class="rating_star" style="display: none;">
-					How you rate this review:<br />
+					<b>How you rate this review:</b>
 					<input id="table_rating_<%=id%>" name="table_rating[<%=id%>]" class="holder" type="hidden" value="<%= user_rating %>" />
 					<a title="Don't Rate" class="dont" onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
 					<a title="ehh..."                  onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
@@ -53,12 +53,12 @@
 					// ]]>
 				</script>
 
-
+				</td><td>
 
 				<% avg_rating = review.avg_user_rating || 0 %>
 				<div id="table_average_<%=id%>_container">
 					<input id="table_average_<%=id%>" type="hidden" value="<%=avg_rating%>" />
-					How others rated this review:<br />
+					<b>How others rated this review:</b><br />
 					<span id="table_average_<%=id%>_info">
 						<%=
 							("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * avg_rating) +
@@ -66,6 +66,9 @@
 						%>
 					</span>
 				</div>
+				
+				</td></tr></table>
+
 			</div>
 		</td>
 	

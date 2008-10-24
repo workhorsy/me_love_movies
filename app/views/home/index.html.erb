@@ -22,7 +22,7 @@
 			<table class="content" width="100%" align="center">
 				<tr valign="top">
 				<% for title in @titles[category] %>
-					<td align="center" width="100px"><div class="image_holder1">Poster</div>
+					<td align="center" width="100px"><img src="/images/noposter.jpg" alt="No poster">
 						<h2 style="padding:0"><%=link_to(title.proper_name, {:controller => 'titles', :action => 'show', :id => title.id}, :class => 'black')%></h2>
 					</td>
 				<% end %>

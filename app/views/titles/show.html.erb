@@ -19,16 +19,16 @@
 <!-- Start Entry Block -->
 <tr valign="top"><td><%= poster_link(@title) %></td><td>
 
-<p>
+<p style="font-size:14px;">
 
-Release Date: <%=h @title.release_date %><br />
-Source: <%=h @title.source %><br />
-Director: <%=h @title.director %><br />
-Cast: <%=h @title.cast %><br />
-Runtime: <%=h @title.runtime %><br />
-Rating: <%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %><br />
-Data Source: <%= urls_to_hrefs(@title.data_source) || 'Unspecified' %><br />
-Premise: <%=h @title.premise %><br />
+<b>Release Date:</b> <%=h @title.release_date %><br />
+<b>Source:</b> <%=h @title.source %><br />
+<b>Director:</b> <%=h @title.director %><br />
+<b>Cast:</b><%=h @title.cast %><br />
+<b>Runtime:</b> <%=h @title.runtime %><br />
+<b>Rating:</b> <%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %><br /><br />
+<b>Data Source:</b><br /><%= urls_to_hrefs(@title.data_source) || 'Unspecified' %><br />
+<b>Premise:</b> <%=h @title.premise %><br />
 
 <%= link_to 'Edit title information', edit_title_path(@title), :id => 'lnk_edit_title', :style => 'display: none;' %>
 </td></tr>
@@ -139,7 +139,14 @@ Ratings
 </td></tr>
 </table>
 
+<table align="center" style="margin-top:25px;"><tr><td>
 <%= link_to image_tag('rate_this_movie.jpg'), {:controller => 'title_ratings', :action => 'new', :title_id => @title.id }, {:id => 'lnk_edit_rating', :style => 'display: none;'} %>
+</td><td>
+	<%= link_to image_tag('write_a_review.jpg'), {:controller => 'title_reviews', :action => 'new', :title_id => @title.id}, {:id => 'lnk_edit_review', :style => 'display: none;'} %>
+</td></tr></table>
+
+
+
 <!-- =================================================================================== START END TABLE ======== -->
 </td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
 <td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
@@ -155,8 +162,6 @@ Ratings
 
 <div id="reviews">
 	<h2>Reviews</h2>
-
-	<%= link_to image_tag('write_a_review.jpg'), {:controller => 'title_reviews', :action => 'new', :title_id => @title.id}, {:id => 'lnk_edit_review', :style => 'display: none;'} %>
 
 	<br />
 
@@ -196,7 +201,8 @@ Ratings
 			<% user_rating = review.get_user_rating(session[:user_id]) || 0 %>
 
 			<div id="rating_<%=id%>" class="rating_star" style="display: none;">
-				How you rate this review:<br />
+				
+				<b>How you rate this review:</b><br />
 				<input id="title_rating_<%=id%>" name="title_rating[<%=id%>]" class="holder" type="hidden" value="<%= user_rating %>" />
 				<a title="Don't Rate" class="dont" onclick="star_click_rating(this); rate_review('title_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
 				<a title="1"    onclick="star_click_rating(this); rate_review('title_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
@@ -226,7 +232,7 @@ Ratings
 			<% avg_rating = review.avg_user_rating || 0 %>
 			<div id="average_<%=id%>_container">
 				<input id="average_<%=id%>" type="hidden" value="<%=avg_rating%>" />
-				How others rated this review:<br />
+				<b>How others rated this review:</b><br />
 				<span id="average_<%=id%>_info">
 					<%=
 						("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * avg_rating) +
