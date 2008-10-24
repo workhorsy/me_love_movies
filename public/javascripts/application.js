@@ -176,12 +176,4 @@ function update_flash_notice() {
 }
 
 
-function google_analytics() {
-	// Do some google analytics fu
-	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-
-	var pageTracker = _gat._getTracker("UA-5538890-3");
-	pageTracker._trackPageview();
-}
 
