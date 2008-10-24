@@ -399,9 +399,11 @@ class UsersController < ApplicationController
 	end
 
 	def login_set_sessions_and_cookies(user)
+		greetings = ['Howdy', 'Holla', 'Bonjour', 'Guten Tag', 'Aloha', 'Konnichi Wa']
 		session[:user_id] = user.id
 		cookies[:user_name] = { :value => user.user_name }
 		cookies[:user_greeting] = { :value => 'Howdy' }
+		cookies[:user_greeting] = { :value => greetings[rand(greetings.length)] }
 		cookies[:user_type] = { :value => user.user_type }
 		cookies[:user_id] = { :value => user.id.to_s }
 	end
