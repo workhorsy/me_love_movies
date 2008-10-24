@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 17) do
+ActiveRecord::Schema.define(:version => 18) do
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.integer  "acting"
     t.integer  "special_effects"
     t.integer  "pace"
-    t.integer  "character_development"
+    t.integer  "character_dev"
     t.integer  "cinematography"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.float    "avg_acting"
     t.float    "avg_special_effects"
     t.float    "avg_pace"
-    t.float    "avg_character_development"
+    t.float    "avg_character_dev"
     t.float    "avg_cinematography"
     t.text     "data_source"
     t.text     "affiliate_links"

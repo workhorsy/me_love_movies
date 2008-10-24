@@ -22,7 +22,7 @@ class Title < ActiveRecord::Base
 
 	def self.attributes
 		%w{premise plot music acting special_effects pace 
-				character_development cinematography}
+				character_dev cinematography}
 	end
 
 	def proper_name
