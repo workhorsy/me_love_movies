@@ -1,187 +1,210 @@
 
 
-<div style="width: 300px; height: 100%; float: left; margin:5px;">
-<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
-<table cellpadding="0" cellspacing="0" width="100%" border="0">
-<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
-<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
-<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
-<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+<table>
+	<tr>
+		<td style="vertical-align: top;">
+			<div style="width: 300px; height: 100%; margin:5px;">
+			<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+			<table cellpadding="0" cellspacing="0" width="100%" border="0">
+			<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+			<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+			<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+			<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
 
-User Details
+			User Details
 
-</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
-</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
-<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
-<!-- =================================================================================== END CENTER STUFF ======= -->
+			</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+			</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+			<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+			<!-- =================================================================================== END CENTER STUFF ======= -->
 
-<table class="content" width="100%" align="center">
-<tr valign="top">
-<td>
-	<p>
-		<%= image_tag @user.avatar_file_or_default, :size => "100x100" %>
-	</p>
+			<table class="content" width="100%" align="center">
+			<tr valign="top">
+			<td>
+				<p>
+					<%= image_tag @user.avatar_file_or_default, :size => "100x100" %>
+				</p>
 
-	<p>
-		<div id="div_no_upload_avatar" style="display: none;">
-			<%= link_to_function( 
-					"upload an avatar", 
-					"$('div_no_upload_avatar').hide(); $('user_info').hide(); Effect.Appear('div_upload_avatar', { duration: 0.3 });") %>
-		</div>
-		<div id="div_upload_avatar" style="display: none;">
-			<% form_tag({ :action => 'set_avatar_file' }, :multipart => true ) do %>
-				<%= file_field_tag :file %>
-				<%= hidden_field_tag :id, params[:id] %>
+				<p>
+					<div id="div_no_upload_avatar" style="display: none;">
+						<%= link_to_function( 
+								"upload an avatar", 
+								"$('div_no_upload_avatar').hide(); $('user_info').hide(); Effect.Appear('div_upload_avatar', { duration: 0.3 });") %>
+					</div>
+					<div id="div_upload_avatar" style="display: none;">
+						<% form_tag({ :action => 'set_avatar_file' }, :multipart => true ) do %>
+							<%= file_field_tag :file %>
+							<%= hidden_field_tag :id, params[:id] %>
 
-				<%= submit_tag "Upload avatar" %> or
-				<%= link_to_function(
-						"don't upload an avatar", 
-						"$('div_upload_avatar').hide(); $('user_info').show(); Effect.Appear('div_no_upload_avatar',  { duration: 0.3 })") %>
+							<%= submit_tag "Upload avatar" %> or
+							<%= link_to_function(
+									"don't upload an avatar", 
+									"$('div_upload_avatar').hide(); $('user_info').show(); Effect.Appear('div_no_upload_avatar',  { duration: 0.3 })") %>
+						<% end %>
+					</div>
+				</p>
+				<div id="user_info">
+					<p>
+						<b>User Name:</b>
+						<%=h @user.user_name %>
+					</p>
+					<% if @can_see_private_information %>
+					<p>
+						<b>Name:</b>
+						<%=h @user.name %>
+					</p>
+					<p>
+						<b>Email:</b>
+						<%=h @user.email %>
+					</p>
+					<% end %>
+					<p>
+						<b>Year of birth:</b>
+						<%=h @user.year_of_birth %>
+					</p>
+					<p>
+						<b>Time Zone:</b>
+						<%=h @user.time_zone %>
+					</p>
+					<p>
+						<b>Gender:</b>
+						<%=h Sex::NAMES_ABBREVIATIONS.select { |k, v| v == @user.gender }.first.first %>
+					</p>
+
+					<%= link_to 'Edit user information', edit_user_path(@user), :id => 'lnk_edit_user', :style => 'display: none;' %>
+				</div>
+			</td>
+			</tr>
+			</table>
+
+			<!-- =================================================================================== START END TABLE ======== -->
+			</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+			<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+			<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+			<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+			</tr></table><!-- ====================================================================== END TABLE ============== -->
+			</div>
+		</td>
+		<td style="vertical-align: top;">
+			<div style="width: 300px; height: 100%; margin:5px;">
+			<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+			<table cellpadding="0" cellspacing="0" width="100%" border="0">
+			<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+			<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+			<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+			<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+			Reviews by this user
+
+			</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+			</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+			<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+			<!-- =================================================================================== END CENTER STUFF ======= -->
+
+			<table class="content" width="100%" align="center">
+			<tr valign="top">
+			<td>
+				<% if @title_reviews.length == 0 %>
+					This user has no reviews.
+				<% else %>
+					<% for review in @title_reviews %>
+					<%= link_to review.title.proper_name, :controller => 'title_reviews', :action => 'show', :id => review.id %><br />
+					<% end %>
+				<% end %>
+
+			</td>
+			</tr>
+			</table>
+
+			<!-- =================================================================================== START END TABLE ======== -->
+			</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+			<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+			<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+			<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+			</tr></table><!-- ====================================================================== END TABLE ============== -->
+			</div>
+		</td>
+		<td style="vertical-align: top;">
+			<div style="width: 300px; height: 100%; float: left; margin:5px;">
+			<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+			<table cellpadding="0" cellspacing="0" width="100%" border="0">
+			<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+			<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+			<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+			<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+			Ratings by this user
+
+			</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+			</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+			<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+			<!-- =================================================================================== END CENTER STUFF ======= -->
+
+			<table class="content" width="100%" align="center">
+			<tr valign="top">
+			<td>
+				<% if @title_ratings.length == 0 %> 
+					This user has no ratings.
+				<% else %>
+					<% for ratings in @title_ratings %>
+					<%= link_to ratings.title.proper_name, :controller => 'title_ratings', :action => 'show', :id => ratings.id %><br />
+					<% end %>
+				<% end %>
+
+			</td>
+			</tr>
+			</table>
+
+			<!-- =================================================================================== START END TABLE ======== -->
+			</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+			<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+			<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+			<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+			</tr></table><!-- ====================================================================== END TABLE ============== -->
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<div id="div_feedback_form" style="width: 930px; height: 100%; margin:5px; display: none">
+			<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
+			<table cellpadding="0" cellspacing="0" width="100%" border="0">
+			<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
+			<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
+			<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
+			<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
+
+			Got feedback? Found bugs? Want new features? Wanna tell us how much we suck? Do it below.
+
+			</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
+			</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
+			<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
+			<!-- =================================================================================== END CENTER STUFF ======= -->
+
+			<% form_tag :action => 'send_feedback', :method => 'post' do %>
+				<input name="id" type="hidden" value="<%=@user.id%>" />
+				<%= text_area_tag 'comment', nil, :style => "width: 880px; height: 200px;" %>
+				<%= submit_tag "Send Feedback" %>
 			<% end %>
-		</div>
-	</p>
-	<div id="user_info">
-		<p>
-			<b>User Name:</b>
-			<%=h @user.user_name %>
-		</p>
-		<% if @can_see_private_information %>
-		<p>
-			<b>Name:</b>
-			<%=h @user.name %>
-		</p>
-		<p>
-			<b>Email:</b>
-			<%=h @user.email %>
-		</p>
-		<% end %>
-		<p>
-			<b>Year of birth:</b>
-			<%=h @user.year_of_birth %>
-		</p>
-		<p>
-			<b>Time Zone:</b>
-			<%=h @user.time_zone %>
-		</p>
-		<p>
-			<b>Gender:</b>
-			<%=h Sex::NAMES_ABBREVIATIONS.select { |k, v| v == @user.gender }.first.first %>
-		</p>
 
-		<%= link_to 'Edit user information', edit_user_path(@user), :id => 'lnk_edit_user', :style => 'display: none;' %>
-	</div>
-</td>
-</tr>
+			<!-- =================================================================================== START END TABLE ======== -->
+			</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
+			<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
+			<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
+			<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
+			</tr></table><!-- ====================================================================== END TABLE ============== -->
+			</div>
+		</td>
+	</tr>
 </table>
-
-<!-- =================================================================================== START END TABLE ======== -->
-</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
-<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
-<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
-<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
-</tr></table><!-- ====================================================================== END TABLE ============== -->
-</div>
-
-
-
-
-
-
-
-
-
-
-<div style="width: 300px; height: 100%; float: left; margin:5px;">
-<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
-<table cellpadding="0" cellspacing="0" width="100%" border="0">
-<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
-<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
-<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
-<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
-
-Reviews by this user
-
-</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
-</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
-<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
-<!-- =================================================================================== END CENTER STUFF ======= -->
-
-<table class="content" width="100%" align="center">
-<tr valign="top">
-<td>
-	<% if @title_reviews.length == 0 %>
-		This user has no reviews.
-	<% else %>
-		<% for review in @title_reviews %>
-		<%= link_to review.title.proper_name, :controller => 'title_reviews', :action => 'show', :id => review.id %><br />
-		<% end %>
-	<% end %>
-
-</td>
-</tr>
-</table>
-
-<!-- =================================================================================== START END TABLE ======== -->
-</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
-<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
-<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
-<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
-</tr></table><!-- ====================================================================== END TABLE ============== -->
-</div>
-
-
-
-
-
-
-
-<div style="width: 300px; height: 100%; float: left; margin:5px;">
-<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
-<table cellpadding="0" cellspacing="0" width="100%" border="0">
-<tr valign="top"><td style="background:url(/images/oj_top_left.jpg) top left no-repeat;" width="22px" height="48px"></td>
-<td style="background:url(/images/oj_top_center.jpg) repeat-x;">
-<table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
-<td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
-
-Ratings by this user
-
-</h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
-</td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
-<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
-<!-- =================================================================================== END CENTER STUFF ======= -->
-
-<table class="content" width="100%" align="center">
-<tr valign="top">
-<td>
-	<% if @title_ratings.length == 0 %> 
-		This user has no ratings.
-	<% else %>
-		<% for ratings in @title_ratings %>
-		<%= link_to ratings.title.proper_name, :controller => 'title_ratings', :action => 'show', :id => ratings.id %><br />
-		<% end %>
-	<% end %>
-
-</td>
-</tr>
-</table>
-
-<!-- =================================================================================== START END TABLE ======== -->
-</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
-<td style="background:url(/images/oj_btm_left.jpg) bottom left no-repeat;" width="22px" height="22px"></td>
-<td style="background:url(/images/oj_btm_center.jpg) bottom repeat-x;"></td>
-<td style="background:url(/images/oj_btm_right.jpg) bottom right no-repeat;" width="22px" height="22px"></td>
-</tr></table><!-- ====================================================================== END TABLE ============== -->
-</div>
-
-
-
 
 
 
 <script type="text/javascript">
 	// <!CDATA[
 	// Show all the elements the user is allowed to see.
-	show_tags_to_user_only('div', 'div_no_upload_avatar');
-	show_tags_to_user_only('a', 'lnk_edit_user');
+	show_tags_to_originating_user_only('div', 'div_no_upload_avatar', <%=@user.id%>);
+	show_tags_to_originating_user_only('a', 'lnk_edit_user', <%=@user.id%>);
+	show_tags_to_originating_user_only('div', 'div_feedback_form', <%=@user.id%>);
 	// ]]>
 </script>

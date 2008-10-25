@@ -79,6 +79,22 @@ class Mailer < ActionMailer::Base
 		body[:email] = email
 		body[:server_domain] = server_domain
 	end
+
+	def user_comment(user_id, server_domain, comment, user_name, user_email)
+		@subject       = "Me Love Movies User Comment"
+		@body          = {}
+		@recipients    = Settings.beta_email_processor
+		@from          = "noreply@melovemovies.com"
+		@headers       = { "Reply-to" => "noreply@melovemovies.com" }
+		@sent_on       = Time.now
+		@content_type  = "text/xhtml"
+
+		body[:comment] = comment
+		body[:user_name] = user_name
+		body[:user_email] = user_email
+		body[:user_id] = user_id
+		body[:server_domain] = server_domain
+	end
 end
 
 

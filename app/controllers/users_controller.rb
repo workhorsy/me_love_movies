@@ -3,7 +3,7 @@
 class UsersController < ApplicationController
 	layout 'default'
 	before_filter :authorize_admins_only, :only => ['destroy']
-	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'set_avatar_file']
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'set_avatar_file', 'send_feedback']
 
 	# GET /users
 	# GET /users.xml
@@ -386,6 +386,24 @@ class UsersController < ApplicationController
 	def beta
 		date = Settings.beta_end_date
 		@end_date = "#{date.month}/#{date.day}/#{date.year}"
+	end
+
+	def send_feedback
+		@comment = params[:comment] || ''
+		@user = User.find(params[:id])
+
+		# Make sure the comment has something in it
+		if @comment.strip.length == 0
+			flash_notice "Your comment was empty."
+			redirect_to :action => 'show', :id => @user.id
+			return
+		end
+
+		# Send the comment otherwise
+		@server_domain = get_server_url(request)
+		Mailer.deliver_user_comment(@user.id, @server_domain, @comment, @user.user_name, @user.email)
+		flash_notice "Your comment was sent."
+		redirect_to :action => 'show', :id => @user.id
 	end
 
 	private

@@ -55,7 +55,7 @@ function is_user_user() {
 }
 
 function is_originating_user(user_id) {
-	return (get_cookie('user_id') == user_id);
+	return (get_cookie('user_id') == user_id || is_user_admin());
 }
 
 function show_tags_to_user_only(tag_type, name_pattern) {

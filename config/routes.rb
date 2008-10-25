@@ -10,7 +10,8 @@ ActionController::Routing::Routes.draw do |map|
 										:set_beta_activated => :get,
 										:set_beta_delete => :get,
 										:toggle_is_email_activated => :get,
-										:beta => :get }
+										:beta => :get,
+										:send_feedback => :get }
   map.resources :home, :collection => { :index => :get }
   map.resources :titles, :collection => { :search => :get }
   map.resources :title_ratings

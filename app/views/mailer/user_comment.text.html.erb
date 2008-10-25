@@ -1,0 +1,15 @@
+
+
+<p>Me Love Movies User Comment from <i><%=@user_name%></i></p>
+
+<p>
+	<span style="font-size: 20px">&quot;</span>
+	<%=h(@comment).gsub("\n", "<br />")%>
+	<span style="font-size: 20px">&quot;</span>
+</p>
+
+<p>
+	<a href="<%=@server_domain%>/users/<%=@user_id%>">The profile of this user <%=@server_name%></a>
+	<br />
+	<a href="mailto:<%=@user_email%>">Send this user an email at <%=@user_email%></a>
+</p>
