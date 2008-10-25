@@ -138,12 +138,12 @@
 <div id="footer">
 
 <ul>
-    <li><a href="">Terms of Service</a></li>
-    <li><a href="">Privacy Policy</a></li>
-    <li><a href="">How This Works</a></li>
-    <li><a href="">About</a></li>
-    <li><a href="">Advertise with Us</a></li>
-    <li><a href="">Contact</a></li>
+    <li><%=link_to "Terms of Service", :controller => 'home', :action => "terms_of_service" %></li>
+    <li><%=link_to "Privacy Policy", :controller => 'home', :action => "privacy_policy" %></li>
+    <li><%=link_to "Why Sign Up", :controller => 'home', :action => "why_sign_up" %></li>
+    <li><%=link_to "About", :controller => 'home', :action => "about" %></li>
+    <li><strike><%=link_to "Advertise with Us", :controller => 'home', :action => "advertise_with_us" %></strike></li>
+    <li><%=link_to "Contact", :controller => 'home', :action => "contact" %></li>
 </ul>
 
 </div>

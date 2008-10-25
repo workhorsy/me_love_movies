@@ -46,4 +46,19 @@ class HomeController < ApplicationController
 			#format.xml	{ render :xml => "" }
 		end
 	end
+
+	def about
+	end
+
+	def contact
+	end
+
+	def privacy_policy
+	end
+
+	def terms_of_service
+	end
+	
+	def why_sign_up
+	end
 end
