@@ -24,7 +24,7 @@
 		</td>
 		<td>
 			<div>
-				&quot;<%=h review.body %>&quot;
+				&quot;<%= h(review.body).gsub("\n", "<br />") %>&quot;
 				<% user_rating = review.get_user_rating(session[:user_id]) || 0 %>
 				<table><tr><td>
 				<div id="tr_rating_<%=id%>" class="rating_star" style="display: none;">

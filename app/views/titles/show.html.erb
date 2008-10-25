@@ -192,7 +192,7 @@ Ratings
 		</div>
 
 		<div>
-			&quot;<%=h review.body %>&quot;
+			&quot;<%= h(review.body).gsub("\n", "<br />") %>&quot;
 			by <%= link_to(
 				h(review.user.user_name), 
 				:controller => 'users', 

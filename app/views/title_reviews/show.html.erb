@@ -10,8 +10,8 @@
 </p>
 
 <p>
-  <b>Body:</b>
-  <%=h @title_review.body %>
+  <b>Body:</b><br />
+  <%= h(@title_review.body).gsub("\n", "<br />") %>
 </p>
 
 
