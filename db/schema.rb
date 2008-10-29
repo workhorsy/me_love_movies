@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 18) do
+ActiveRecord::Schema.define(:version => 19) do
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -136,6 +136,8 @@ ActiveRecord::Schema.define(:version => 18) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_email_activated", :default => false, :null => false
+    t.boolean  "disabled"
+    t.text     "disabled_reason"
   end
 
   add_index "users", ["id"], :name => "index_users_on_id"
