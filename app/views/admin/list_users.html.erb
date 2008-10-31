@@ -80,7 +80,7 @@
 		var table = $('tbl_users');
 		g_table_user_row[user_id] = {};
 		var keys = g_table_user_row[user_id];
-		keys['name'] = "<%=h(user.user_name)%>";
+		keys['name'] = user_name;
 		keys['orig_row'] = $('row_' + user_id);
 
 		// Find the row number of this row
