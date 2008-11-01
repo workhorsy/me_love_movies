@@ -8,7 +8,7 @@
 	// ]]>
 </script>
 
-<table id="tbl_users" cellpadding="5" border="0">
+<table id="tbl_users" cellpadding="5" cellspacing="0" border="0">
 	<tr>
 		<th>User Name</th>
 		<th>Name</th>
@@ -78,6 +78,34 @@
 	// <![CDATA[
 	function change_row_to_disable_user(user_id, user_name) {
 		var table = $('tbl_users');
+
+		// Hide all the other rows that are being edited
+		for(i=0; i<table.rows.length; i++) {
+			var elements = table.rows[i].getElementsByTagName('div');
+
+			for(j=0; j<elements.length; j++) {
+				if(elements[j].id == 'user_popup') {
+					// Delete the edit row
+					var row_n = get_table_row_number_by_row_object(table, table.rows[i]);
+					table.deleteRow(row_n);
+
+					// Re add the original row
+					var orig_row = null;
+					for(key in g_table_user_row) {
+						if(g_table_user_row[key]['row_n'] == row_n) {
+							orig_row = g_table_user_row[key]['orig_row'];
+							break;
+						}
+					}
+					
+					var new_row = $('tbl_users').insertRow(row_n);
+					new_row.innerHTML = orig_row.innerHTML;
+					new_row.id = orig_row.id;
+					new_row.style.display = 'none;';
+				}
+			}
+		}
+
 		g_table_user_row[user_id] = {};
 		var keys = g_table_user_row[user_id];
 		keys['name'] = user_name;
@@ -98,7 +126,10 @@
 		// Insert the body into the new row
 		keys['new_row'] = new_row;
 		new_row.id = 'row_' + user_id;
-		new_row.innerHTML = "<td colspan=\"6\">Reason for disabling '" +  g_table_user_row[user_id]['name'] + "':<br /> \
+		new_row.className='selected';
+		new_row.innerHTML = "<td colspan=\"6\"> \
+								<div id=\"user_popup\" style=\"display: none\"> \
+								Reason for disabling '" +  g_table_user_row[user_id]['name'] + "':<br /> \
 								<textarea id=\"comment\" name=\"disable_reason\" rows=\"2\" style=\"width: 90%;\"></textarea> \
 								<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\" /> \
 								<br /> \
@@ -110,7 +141,32 @@
 																new_row.id = keys['orig_row'].id; \
 																new_row.style.display = 'none;'; \
 																return false;\">don't disable user</a> \
+								</div> \
 							</td>";
+
+		Effect.BlindDown('user_popup', { duration: 0.3 });
+		Effect.Appear('user_popup', { duration: 0.6 });
+	}
+
+	function get_table_row_number_by_row_object(table_object,  row_object) {
+		for(i=0; i<table_object.rows.length; i++) {
+			if(table_object.rows[i] == row_object) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	function get_table_row_number_by_row_id(table_object,  row_id) {
+		for(i=0; i<table_object.rows.length; i++) {
+			if(table_object.rows[i].id == row_id) {
+				return i;
+			}
+		}
+
+		return -1;
 	}
 	// ]]>
 </script>
+

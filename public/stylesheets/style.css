@@ -358,3 +358,18 @@ img{
 .rating_star .dont{ background:url(/images/heart_none.jpg) no-repeat; }
 .rating_star a{ background:url(/images/heart_off.jpg) no-repeat; float:left; width:20px; height:20px; }
 
+
+#tbl_users tr th {
+	border-bottom: 2px solid #e3d7d7;
+}
+
+#tbl_users tr td {
+	border-bottom: 1px solid #e3d7d7;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#tbl_users .selected {
+	background-color: #e5f8d4;
+}
+
