@@ -1,0 +1,45 @@
+
+	
+		<td><%=h user.user_name %></td>
+		<td><%=h user.name %></td>
+		<td>
+		<% for t in %w{User Critic Moderator Administrator} %>
+			<% is_checked = (t[0..0] == user.user_type) %>
+			<%= radio_button("user", 
+				"user_type[#{user.id}]", 
+				t, 
+				:checked => is_checked, 
+				:onclick => "$('status_user_type_#{user.id}').value='#{t}'") + t %>
+		<% end %>
+		<input type="hidden" id="status_user_type_<%=user.id%>" value="">
+			<%= observe_field "status_user_type_#{user.id}",
+								:url => { :controller => 'users', :action => 'set_user_type', :id => user.id },
+								:frequency => 0.25,
+								:on => "changed",
+								:update => 'flash_notice',
+								:with => "'user_type=' + value",
+								:after => "$('flash_notice').show()" %>
+		</td>
+		<td>
+			<%= check_box("user", 
+				"is_email_activated[#{user.id}]", 
+				:checked => user.is_email_activated) %>
+			<%= observe_field "user_is_email_activated[#{user.id}]",
+								:url => { :controller => 'users', :action => 'toggle_is_email_activated', :id => user.id },
+								:frequency => 0.25,
+								:on => "changed",
+								:update => 'flash_notice',
+								:with => "'is_email_activated=' + value",
+								:after => "$('flash_notice').show()" %>
+		</td>
+		<td>
+			<%= link_to 'Show', user %> &nbsp;
+			<%= link_to 'Edit', edit_user_path(user) %> &nbsp;
+			<%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %>
+		</td>
+		<td>
+			<%=link_to_remote("Disable", 
+							:url => { :action => '_user_admin_disable', :id => user.id }, 
+							:update => "row_#{user.id}")%>
+		</td>
+

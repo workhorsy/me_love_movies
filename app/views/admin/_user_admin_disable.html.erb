@@ -1,0 +1,22 @@
+
+		<td colspan="6">
+			<div id="user_popup<%=user.id%>" style="display: none">
+			Reason for disabling '<%=user.name%>':<br />
+			<textarea id="comment" name="disable_reason" rows="2" style="width: 90%;"></textarea>
+			<input type="hidden" name="user_id" value="<%=user.id%>" />
+			<br />
+			<input type="submit" value="Disable user" /> or
+			<%=link_to_remote("don't disable user", 
+							:url => { :action => '_user_admin_show', :id => user.id }, 
+							:update => "row_#{user.id}")%>
+			</div>
+			<script type="text/javascript">
+				// <!CDATA[
+					Effect.BlindDown('user_popup<%=user.id%>', { duration: 0.3 });
+					Effect.Appear('user_popup<%=user.id%>', { duration: 0.6 });
+				// ]]>
+			</script>
+		</td>
+
+
+

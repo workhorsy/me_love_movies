@@ -2,12 +2,6 @@
 
 <%= will_paginate @users %>
 
-<script type="text/javascript" language="JavaScript">
-	// <![CDATA[
-		var g_table_user_row = {};
-	// ]]>
-</script>
-
 <table id="tbl_users" cellpadding="5" cellspacing="0" border="0">
 	<tr>
 		<th>User Name</th>
@@ -17,54 +11,15 @@
 		<th></th>
 		<th>Disable</th>
 	</tr>
-
 <% row_number = 1 %>
 <% for user in @users -%>
 	<tr id="row_<%=user.id%>">
-		<td id="row_<%=user.id%>_col_0"><%=h user.user_name %></td>
-		<td id="row_<%=user.id%>_col_1"><%=h user.name %></td>
-		<td id="row_<%=user.id%>_col_2">
-		<% for name in %w{User Critic Moderator Administrator} %>
-			<% is_checked = (name[0..0] == user.user_type) %>
-			<%= radio_button("user", 
-				"user_type[#{user.id}]", 
-				name, 
-				:checked => is_checked, 
-				:onclick => "$('status_user_type_#{user.id}').value='#{name}'") + name %>
-		<% end %>
-		<input type="hidden" id="status_user_type_<%=user.id%>" value="">
-			<%= observe_field "status_user_type_#{user.id}",
-								:url => { :controller => 'users', :action => 'set_user_type', :id => user.id },
-								:frequency => 0.25,
-								:on => "changed",
-								:update => 'flash_notice',
-								:with => "'user_type=' + value",
-								:after => "$('flash_notice').show()" %>
-		</td>
-		<td>
-			<%= check_box("user", 
-				"is_email_activated[#{user.id}]", 
-				:checked => user.is_email_activated) %>
-			<%= observe_field "user_is_email_activated[#{user.id}]",
-								:url => { :controller => 'users', :action => 'toggle_is_email_activated', :id => user.id },
-								:frequency => 0.25,
-								:on => "changed",
-								:update => 'flash_notice',
-								:with => "'is_email_activated=' + value",
-								:after => "$('flash_notice').show()" %>
-		</td>
-		<td>
-			<%= link_to 'Show', user %> &nbsp;
-			<%= link_to 'Edit', edit_user_path(user) %> &nbsp;
-			<%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %>
-		</td>
-		<td>
-			<a href="#" onclick="change_row_to_disable_user(<%=user.id%>, '<%=user.user_name%>'); return false;">Disable</a>
-		</td>
+	<%= render :partial => "user_admin_show",  :locals => { :user => user } %>
 	</tr>
 	<% row_number += 1 %>
 <% end -%>
 </table>
+
 
 <%= will_paginate @users %>
 
@@ -72,101 +27,4 @@
 
 <%= link_to 'New user', new_user_path %>
 
-
-
-<script type="text/javascript" language="JavaScript">
-	// <![CDATA[
-	function change_row_to_disable_user(user_id, user_name) {
-		var table = $('tbl_users');
-
-		// Hide all the other rows that are being edited
-		for(i=0; i<table.rows.length; i++) {
-			var elements = table.rows[i].getElementsByTagName('div');
-
-			for(j=0; j<elements.length; j++) {
-				if(elements[j].id == 'user_popup') {
-					// Delete the edit row
-					var row_n = get_table_row_number_by_row_object(table, table.rows[i]);
-					table.deleteRow(row_n);
-
-					// Re add the original row
-					var orig_row = null;
-					for(key in g_table_user_row) {
-						if(g_table_user_row[key]['row_n'] == row_n) {
-							orig_row = g_table_user_row[key]['orig_row'];
-							break;
-						}
-					}
-					
-					var new_row = $('tbl_users').insertRow(row_n);
-					new_row.innerHTML = orig_row.innerHTML;
-					new_row.id = orig_row.id;
-					new_row.style.display = 'none;';
-				}
-			}
-		}
-
-		g_table_user_row[user_id] = {};
-		var keys = g_table_user_row[user_id];
-		keys['name'] = user_name;
-		keys['orig_row'] = $('row_' + user_id);
-
-		// Find the row number of this row
-		for(i=0; i<table.rows.length; i++) {
-			if(table.rows[i] == keys['orig_row']) {
-				keys['row_n'] = i;
-				break;
-			}
-		}
-
-		// swap the rows
-		var new_row = table.insertRow(keys['row_n']);
-		table.deleteRow(keys['row_n'] + 1);
-
-		// Insert the body into the new row
-		keys['new_row'] = new_row;
-		new_row.id = 'row_' + user_id;
-		new_row.className='selected';
-		new_row.innerHTML = "<td colspan=\"6\"> \
-								<div id=\"user_popup\" style=\"display: none\"> \
-								Reason for disabling '" +  g_table_user_row[user_id]['name'] + "':<br /> \
-								<textarea id=\"comment\" name=\"disable_reason\" rows=\"2\" style=\"width: 90%;\"></textarea> \
-								<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\" /> \
-								<br /> \
-								<input type=\"submit\" value=\"Disable user\" /> or \
-								<a href=\"#\" onclick=\"var keys = g_table_user_row[" + user_id + "]; \
-																$('tbl_users').deleteRow(keys['row_n']); \
-																var new_row = $('tbl_users').insertRow(keys['row_n']); \
-																new_row.innerHTML = keys['orig_row'].innerHTML; \
-																new_row.id = keys['orig_row'].id; \
-																new_row.style.display = 'none;'; \
-																return false;\">don't disable user</a> \
-								</div> \
-							</td>";
-
-		Effect.BlindDown('user_popup', { duration: 0.3 });
-		Effect.Appear('user_popup', { duration: 0.6 });
-	}
-
-	function get_table_row_number_by_row_object(table_object,  row_object) {
-		for(i=0; i<table_object.rows.length; i++) {
-			if(table_object.rows[i] == row_object) {
-				return i;
-			}
-		}
-
-		return -1;
-	}
-
-	function get_table_row_number_by_row_id(table_object,  row_id) {
-		for(i=0; i<table_object.rows.length; i++) {
-			if(table_object.rows[i].id == row_id) {
-				return i;
-			}
-		}
-
-		return -1;
-	}
-	// ]]>
-</script>
 

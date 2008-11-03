@@ -23,7 +23,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :title_reviews, :member => { :list_by_title => :get }
   map.resources :admin, :collection => { :list_users => :get,
 										:list_title_ratings => :get,
-										:list_title_reviews => :get }
+										:list_title_reviews => :get,
+										:_user_admin_disable => :get,
+										:_user_admin_show => :get }
 
   map.root :controller => "home"
 

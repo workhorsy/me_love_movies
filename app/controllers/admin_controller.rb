@@ -43,5 +43,17 @@ class AdminController < ApplicationController
 			#format.xml	{ render :xml => @title_ratings }
 		end
 	end
+
+	def _user_admin_disable
+		respond_to do |format|
+			format.js { render :partial => 'user_admin_disable', :locals => { :user => User.find(params[:id]) } }
+		end
+	end
+
+	def _user_admin_show
+		respond_to do |format|
+			format.js { render :partial => 'user_admin_show', :locals => { :user => User.find(params[:id]) } }
+		end
+	end
 end
 
