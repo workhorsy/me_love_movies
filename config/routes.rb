@@ -25,8 +25,10 @@ ActionController::Routing::Routes.draw do |map|
 										:list_title_ratings => :get,
 										:list_title_reviews => :get,
 										:_user_admin_disable => :get,
+										:_user_admin_enable => :get,
 										:_user_admin_show => :get,
-										:disable_user => :get }
+										:disable_user => :get,
+										:enable_user => :get }
 
   map.root :controller => "home"
 

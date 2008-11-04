@@ -39,7 +39,9 @@
 		</td>
 		<td>
 			<% if user.disabled %>
-			Is Disabled
+			<%=link_to_remote("Enable", 
+							:url => { :action => '_user_admin_enable', :id => user.id }, 
+							:update => "row_#{user.id}")%>
 			<% else %>
 			<%=link_to_remote("Disable", 
 							:url => { :action => '_user_admin_disable', :id => user.id }, 

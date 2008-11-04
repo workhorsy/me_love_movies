@@ -1,12 +1,12 @@
 
 		<td colspan="6" class="selected">
 			<div id="user_popup<%=user.id%>" style="display: none">
-				<% form_tag :action => "disable_user" do |t|%>
-					Reason for disabling "<%=user.name%>(<%=user.user_name%>)":<br />
-					<textarea id="disabled_reason" name="disabled_reason" rows="2" style="width: 90%;"></textarea>
+				<% form_tag :action => "enable_user" do |t|%>
+					The user "<%=user.name%>(<%=user.user_name%>)" was disabled because:<br />
+					<blockquote><%=user.disabled_reason%></blockquote>
 					<input type="hidden" name="id" value="<%=user.id%>" />
 					<br />
-					<input type="button" value="Disable user" onclick="function done_disabling() { 
+					<input type="button" value="Enable user" onclick="function done_enabling() { 
 																		new Ajax.Updater('row_<%=user.id%>', 
 																		'/admin/_user_admin_show?id=<%=user.id%>', {
 																			asynchronous: true, 
@@ -16,15 +16,15 @@
 																		});
 																	 }
 																	new Ajax.Updater('row_<%=user.id%>', 
-																	'/admin/disable_user?id=<%=user.id%>&disabled_reason=' + encodeURIComponent($('disabled_reason').value), {
+																	'/admin/enable_user?id=<%=user.id%>', {
 																		asynchronous: true, 
 																		evalScripts: true, 
 																		parameters: 'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>'), 
-																		onComplete: done_disabling
+																		onComplete: done_enabling
 																	});" 
 					/>
 					 or
-					<%=link_to_remote("don't disable user", 
+					<%=link_to_remote("don't enable user", 
 									:url => { :action => '_user_admin_show', :id => user.id }, 
 									:update => "row_#{user.id}")%>
 				<% end %>
