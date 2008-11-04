@@ -44,6 +44,17 @@ class AdminController < ApplicationController
 		end
 	end
 
+	def disable_user
+		user = User.find(params[:id])
+		user.disabled_reason = params[:disable_reason]
+		user.disabled = true
+		user.save!
+
+		respond_to do |format|
+			format.js { head :ok }
+		end
+	end
+
 	def _user_admin_disable
 		respond_to do |format|
 			format.js { render :partial => 'user_admin_disable', :locals => { :user => User.find(params[:id]) } }

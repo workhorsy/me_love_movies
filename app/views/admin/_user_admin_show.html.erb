@@ -38,8 +38,12 @@
 			<%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %>
 		</td>
 		<td>
+			<% if user.disabled %>
+			Is Disabled
+			<% else %>
 			<%=link_to_remote("Disable", 
 							:url => { :action => '_user_admin_disable', :id => user.id }, 
 							:update => "row_#{user.id}")%>
+			<% end %>
 		</td>
 

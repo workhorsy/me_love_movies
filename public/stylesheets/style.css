@@ -369,7 +369,7 @@ img{
 	padding-bottom: 10px;
 }
 
-#tbl_users .selected {
+#tbl_users tr .selected {
 	background-color: #e5f8d4;
 }
 
