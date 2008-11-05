@@ -44,6 +44,13 @@ class AdminController < ApplicationController
 		end
 	end
 
+	def destroy_user
+		@user = User.find(params[:id])
+		@user.destroy
+
+		redirect_to :action => 'list_users'
+	end
+
 	def disable_user
 		user = User.find(params[:id])
 		user.disabled_reason = params[:disabled_reason]

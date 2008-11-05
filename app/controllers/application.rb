@@ -14,11 +14,16 @@ class ApplicationController < ActionController::Base
 	def check_for_disabled_user
 		# If the user has been marked as disabled, log them out, and take them to their profile
 		if session[:user_id]
-			user = User.find(session[:user_id])
-			if user.disabled
+			user = User.find_by_id(session[:user_id])
+			if user && user.disabled
 				login_clear_sessions_and_cookies
 				flash_notice "Your account has been disabled."
 				redirect_to user_path(user)
+			end
+
+			# If the user is no longer in the database, clear their cookies and sessions
+			if user == nil
+				login_clear_sessions_and_cookies
 			end
 		end
 	end

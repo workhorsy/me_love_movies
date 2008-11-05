@@ -2,7 +2,6 @@
 
 class UsersController < ApplicationController
 	layout 'default'
-	before_filter :authorize_admins_only, :only => ['destroy']
 	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'set_avatar_file', 'send_feedback']
 
 	# GET /users
@@ -100,18 +99,6 @@ class UsersController < ApplicationController
 				format.html { render :action => "edit" }
 				#format.xml	{ render :xml => @user.errors, :status => :unprocessable_entity }
 			end
-		end
-	end
-
-	# DELETE /users/1
-	# DELETE /users/1.xml
-	def destroy
-		@user = User.find(params[:id])
-		@user.destroy
-
-		respond_to do |format|
-			format.html { redirect_to(users_url) }
-			#format.xml	{ head :ok }
 		end
 	end
 

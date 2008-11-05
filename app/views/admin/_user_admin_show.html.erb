@@ -35,7 +35,7 @@
 		<td>
 			<%= link_to 'Show', user %> &nbsp;
 			<%= link_to 'Edit', edit_user_path(user) %> &nbsp;
-			<%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %>
+			<%= link_to 'Destroy', {:action => 'destroy_user', :id => user.id}, :confirm => 'Are you sure? This will delete all their ratings, and reviews. It is highly recommended to disable a user instead.', :method => :delete %>
 		</td>
 		<td>
 			<% if user.disabled %>

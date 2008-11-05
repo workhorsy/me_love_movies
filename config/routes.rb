@@ -28,7 +28,8 @@ ActionController::Routing::Routes.draw do |map|
 										:_user_admin_enable => :get,
 										:_user_admin_show => :get,
 										:disable_user => :get,
-										:enable_user => :get }
+										:enable_user => :get,
+										:destroy_user => :get }
 
   map.root :controller => "home"
 

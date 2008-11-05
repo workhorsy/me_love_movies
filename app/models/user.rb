@@ -4,6 +4,7 @@ require 'base64'
 
 class User < ActiveRecord::Base
 	has_many :title_ratings
+	has_many :title_reviews
 	has_many :title_review_ratings
 
 	validates_presence_of :name, :email, :user_name, :year_of_birth, :time_zone, :gender, :message => 'is required'
@@ -43,6 +44,23 @@ class User < ActiveRecord::Base
 
 	def avatar_file_or_default
 		self.avatar_file || "/images/noimage.jpg"
+	end
+
+	def before_destroy
+		# Destroy all the other user's content that is dependent on this user's reviews
+		TitleReviewRating.find(:all, :conditions => ["title_review_id in (?)", self.title_reviews.collect{ |r| r.id }.join(', ')]).each do |review|
+			review.destroy
+		end
+
+		# Destroy all all the stuff from this user
+		self.title_ratings.each { |rating| rating.destroy }
+		self.title_review_ratings.each { |review| review.destroy }
+		self.title_reviews.each { |review| review.destroy }
+
+		# Delete the avatar file
+		if self.avatar_file && File.exist?("public#{self.avatar_file}")
+			File.delete("public#{self.avatar_file}")
+		end
 	end
 
 	private
