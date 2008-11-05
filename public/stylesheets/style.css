@@ -373,7 +373,7 @@ img{
 	background-color: #e5f8d4;
 }
 
-
+/*
 blockquote:before { 
 	content: "\201C";
 	font-family:Arial, Helvetica, sans-serif;
@@ -385,5 +385,30 @@ blockquote:after {
 	font-family:Arial, Helvetica, sans-serif;
 	font-weight: bold;
 }
+*/
 
+
+blockquote {
+	line-height: 2.0em;
+	padding-right: 200px;
+}
+
+.quote_open {
+	float: left;
+	padding-right: 20px;
+	margin-top: -25px;
+	font-family:Arial, Helvetica, sans-serif;
+	line-height: 1em;
+	font-size: 150px;
+	color: #f7ef2c;
+ }
+
+.quote_end {
+	float: right;
+	margin-top: 40px;
+	font-family:Arial, Helvetica, sans-serif;
+	line-height: 1em;
+	font-size: 150px;
+	color: #f7ef2c;
+}
 

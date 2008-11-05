@@ -3,7 +3,7 @@
 			<div id="user_popup<%=user.id%>" style="display: none">
 				<% form_tag :action => "disable_user" do |t|%>
 					Reason for disabling "<%=user.name%>(<%=user.user_name%>)":<br />
-					<textarea id="disabled_reason" name="disabled_reason" rows="2" style="width: 90%;"></textarea>
+					<textarea id="disabled_reason" name="disabled_reason" rows="2" style="width: 90%;"><%=user.disabled_reason%></textarea>
 					<input type="hidden" name="id" value="<%=user.id%>" />
 					<br />
 					<input type="button" value="Disable user" onclick="function done_disabling() { 

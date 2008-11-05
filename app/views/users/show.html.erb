@@ -2,6 +2,26 @@
 
 <table>
 	<tr>
+		<td colspan="3">
+			<% if @user.disabled %>
+			<p>
+				This user has been disabled by an administrator. 
+				You will not be able to log into an account that has been disabled. 
+				If you feel that this account was closed in error, <a href="mailto:<%=Settings.beta_email_processor%>">email us</a> and explain why.
+				You may also wish to have the account closed.
+			</p>
+			<p>
+				The specific reason for the account being disabled was:
+			</p>
+			<blockquote>
+				<span class="quote_open">&#8220;</span>
+				<span class="quote_end">&#8221;</span>
+				<%=@user.disabled_reason%>
+			</blockquote>
+			<% end %>
+		</td>
+	<tr>
+	<tr>
 		<td style="vertical-align: top;">
 			<div style="width: 300px; height: 100%; margin:5px;">
 			<!-- ====================================================================================TABLE BLOCK STARTS HERE -->

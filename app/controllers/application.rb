@@ -8,7 +8,20 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '455e48fedc601070a5a1eb98ddffca90'
 
+	before_filter :check_for_disabled_user
 	before_filter :check_beta_login_requirements
+
+	def check_for_disabled_user
+		# If the user has been marked as disabled, log them out, and take them to their profile
+		if session[:user_id]
+			user = User.find(session[:user_id])
+			if user.disabled
+				login_clear_sessions_and_cookies
+				flash_notice "Your account has been disabled."
+				redirect_to user_path(user)
+			end
+		end
+	end
 
 	def check_beta_login_requirements
 		return if self.controller_name == "users"
@@ -85,6 +98,23 @@ private
 
 	def flash_notice(value)
 		cookies[:flash_notice] = value
+	end
+
+	def login_clear_sessions_and_cookies
+		session[:user_id] = nil
+		cookies[:user_name] = nil
+		cookies[:user_greeting] = nil
+		cookies[:user_type] = nil
+		cookies[:user_id] = nil
+	end
+
+	def login_set_sessions_and_cookies(user)
+		greetings = ['Howdy', 'Holla', 'Bonjour', 'Guten Tag', 'Aloha', 'Konnichi Wa']
+		session[:user_id] = user.id
+		cookies[:user_name] = { :value => user.user_name }
+		cookies[:user_greeting] = { :value => greetings[rand(greetings.length)] }
+		cookies[:user_type] = { :value => user.user_type }
+		cookies[:user_id] = { :value => user.id.to_s }
 	end
 end
 
