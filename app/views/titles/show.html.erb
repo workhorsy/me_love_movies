@@ -24,7 +24,7 @@
 <b>Release Date:</b> <%=h @title.release_date %><br />
 <b>Source:</b> <%=h @title.source %><br />
 <b>Director:</b> <%=h @title.director %><br />
-<b>Cast:</b><%=h @title.cast %><br />
+<b>Cast:</b> <%=h @title.cast %><br />
 <b>Runtime:</b> <%=h @title.runtime %><br />
 <b>Rating:</b> <%=h Rating::NAMES_ABBREVIATIONS.select { |k, v| v == @title.rating }.first.first %><br /><br />
 <b>Data Source:</b><br /><%= urls_to_hrefs(@title.data_source) || 'Unspecified' %><br />
