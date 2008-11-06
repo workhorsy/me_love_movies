@@ -1,0 +1,7 @@
+<h1>Editing tag</h1>
+
+<%= error_messages_for :tag %>
+
+<%= render :partial => 'tag', :object => @tag, :locals => { :button_name => 'Update'} %>
+
+<%= link_to 'Back to tag', @tag %>

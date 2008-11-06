@@ -3,6 +3,7 @@ require 'date'
 
 class Title < ActiveRecord::Base
 	has_many :title_ratings
+	has_many :title_tags
 
 	attr_accessor :runtime_hours
 	attr_accessor :runtime_minutes

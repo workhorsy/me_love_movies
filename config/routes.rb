@@ -30,6 +30,7 @@ ActionController::Routing::Routes.draw do |map|
 										:disable_user => :get,
 										:enable_user => :get,
 										:destroy_user => :get }
+  map.resources :tags, :collection => {}
 
   map.root :controller => "home"
 

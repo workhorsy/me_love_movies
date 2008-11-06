@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 19) do
+ActiveRecord::Schema.define(:version => 20) do
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -19,6 +19,10 @@ ActiveRecord::Schema.define(:version => 19) do
   create_table "sexes", :force => true do |t|
     t.string "name"
     t.string "abbreviation"
+  end
+
+  create_table "tags", :force => true do |t|
+    t.string "name"
   end
 
   create_table "title_ratings", :force => true do |t|
@@ -74,6 +78,11 @@ ActiveRecord::Schema.define(:version => 19) do
   end
 
   add_index "title_reviews", ["id"], :name => "index_title_reviews_on_id"
+
+  create_table "title_tags", :force => true do |t|
+    t.integer "tag_id"
+    t.integer "user_id"
+  end
 
   create_table "titles", :force => true do |t|
     t.string   "name"

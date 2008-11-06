@@ -1,0 +1,37 @@
+
+<h1>Listing tags</h1>
+
+
+<%= will_paginate @tags %>
+<br />
+
+<table>
+<% for tag in @tags -%>
+<% n = @tags.index(tag) %>
+	<tr>
+		<td><%= link_to(h(tag.name), tag) %></td>
+		<td><%= link_to 'Edit', edit_tag_path(tag), :id => "lnk_edit_#{n}", :style => 'display: none;' %></td>
+		<td><%= link_to 'Destroy', tag, :id => "lnk_delete_#{n}", :style => 'display: none;', :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+<% end -%>
+<% if @tags.length == 0 %>
+	There are no tags
+<% end %>
+</table>
+<br />
+
+<%= will_paginate @tags %>
+<br />
+
+
+<%= link_to 'New tag', new_tag_path, :id => 'lnk_new', :style => 'display: none;' %>
+
+<script type="text/javascript">
+	// <!CDATA[
+	// Show all the elements the user is allowed to see.
+	show_tags_to_moderator_only('a', /^lnk_edit_\d*$/);
+	show_tags_to_admin_only('a', /^lnk_delete_\d*$/);
+	show_tags_to_admin_only('a', 'lnk_new');
+	// ]]>
+</script>
+
