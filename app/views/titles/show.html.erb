@@ -142,7 +142,9 @@ Ratings
 <table align="center" style="margin-top:25px;"><tr><td>
 <%= link_to image_tag('rate_this_movie.jpg'), {:controller => 'title_ratings', :action => 'new', :title_id => @title.id }, {:id => 'lnk_edit_rating', :style => 'display: none;'} %>
 </td><td>
-	<%= link_to image_tag('write_a_review.jpg'), {:controller => 'title_reviews', :action => 'new', :title_id => @title.id}, {:id => 'lnk_edit_review', :style => 'display: none;'} %>
+<%= link_to image_tag('write_a_review.jpg'), {:controller => 'title_reviews', :action => 'new', :title_id => @title.id}, {:id => 'lnk_edit_review', :style => 'display: none;'} %>
+</td><td>
+<%= link_to image_tag('tag_this_movie.jpg'), {:controller => 'title_tags', :action => 'new', :id => @title.id }, {:id => 'lnk_edit_tag', :style => 'display: none;'} %>
 </td></tr></table>
 
 
@@ -295,6 +297,7 @@ Other Reviews
 	show_tags_to_moderator_only('a', 'lnk_edit_title');
 	show_tags_to_user_only('a', 'lnk_edit_rating');
 	show_tags_to_user_only('a', 'lnk_edit_review');
+	show_tags_to_user_only('a', 'lnk_edit_tag');
 	show_tags_to_user_only('div', /^rating_\d*$/);
 
 	// Hide the reviews and ratings if this title is not out yet

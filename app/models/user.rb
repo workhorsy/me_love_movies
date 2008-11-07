@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 	has_many :title_ratings
 	has_many :title_reviews
 	has_many :title_review_ratings
-	has_many :title_tags
+	has_many :user_tags
 
 	validates_presence_of :name, :email, :user_name, :year_of_birth, :time_zone, :gender, :message => 'is required'
 	validates_uniqueness_of :user_name, :email, :message => "is already used by another user"
@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
 		self.title_ratings.each { |rating| rating.destroy }
 		self.title_review_ratings.each { |review| review.destroy }
 		self.title_reviews.each { |review| review.destroy }
-		self.title_tags.each { |title_tag| title_tag.destroy }
+		self.user_tags.each { |user_tag| user_tag.destroy }
 
 		# Delete the avatar file
 		if self.avatar_file && File.exist?("public#{self.avatar_file}")

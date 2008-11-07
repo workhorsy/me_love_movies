@@ -81,7 +81,8 @@ ActiveRecord::Schema.define(:version => 21) do
 
   create_table "title_tags", :force => true do |t|
     t.integer "tag_id"
-    t.integer "user_id"
+    t.integer "title_id"
+    t.integer "count"
   end
 
   create_table "titles", :force => true do |t|
@@ -125,6 +126,12 @@ ActiveRecord::Schema.define(:version => 21) do
 
   add_index "titles", ["id"], :name => "index_titles_on_id"
   add_index "titles", ["name"], :name => "index_titles_on_name"
+
+  create_table "user_tags", :force => true do |t|
+    t.integer "tag_id"
+    t.integer "user_id"
+    t.integer "title_id"
+  end
 
   create_table "user_types", :force => true do |t|
     t.string "name"

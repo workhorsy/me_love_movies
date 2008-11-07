@@ -6,7 +6,14 @@ class AddTags < ActiveRecord::Migration
 
     create_table :title_tags do |t|
       t.integer :tag_id
+      t.integer :title_id
+      t.integer :count
+    end
+
+    create_table :user_tags do |t|
+      t.integer :tag_id
       t.integer :user_id
+      t.integer :title_id
     end
   end
 
