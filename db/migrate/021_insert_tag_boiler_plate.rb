@@ -1,7 +1,6 @@
 class InsertTagBoilerPlate < ActiveRecord::Migration
   def self.up
 		Tag.create([
-			{:name => 'Unspecified'},
 			{:name => 'comic book'},
 			{:name => 'super hero'},
 			{:name => 'dragon'},
@@ -15,8 +14,8 @@ class InsertTagBoilerPlate < ActiveRecord::Migration
 			{:name => 'heist'},
 			{:name => 'mockumentary'},
 			{:name => 'slapstick'},
-			{:name => 'Spoofs'},
-			{:name => 'Stand Up'},
+			{:name => 'spoofs'},
+			{:name => 'stand Up'},
 			{:name => 'mythology'},
 			{:name => 'politics'},
 			{:name => 'biography'},

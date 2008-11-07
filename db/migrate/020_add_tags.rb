@@ -18,6 +18,7 @@ class AddTags < ActiveRecord::Migration
   end
 
   def self.down
+    drop_table :user_tags
     drop_table :title_tags
     drop_table :tags
   end

@@ -13,7 +13,9 @@ class TitleTagsController < ApplicationController
 	# GET /title_tags/1
 	# GET /title_tags/1.xml
 	def show
-		@title_tag = TitleTag.find(params[:id])
+		@user = User.find(session[:user_id])
+		@title = Title.find(params[:id])
+		@user_tags = UserTag.find(:all, :conditions => ["user_id=? and title_id=?", @user.id, @title.id])
 
 		respond_to do |format|
 			format.html # show.html.erb
@@ -24,81 +26,96 @@ class TitleTagsController < ApplicationController
 	# GET /title_tags/new/1
 	# GET /title_tags/new/1.xml
 	def new
-		user = User.find(session[:user_id])
+		@user = User.find(session[:user_id])
 		@title = Title.find(params[:id])
-		@user_tags = UserTag.find(:all, :conditions => ["user_id=? and title_id=?", user.id, @title.id])
+		@user_tag = UserTag.find(:first, :conditions => ["user_id=? and title_id=?", @user.id, @title.id])
 
 		# If there are any user_tags, take us to edit instead
-		if @user_tags.length > 0
+		if @user_tag != nil
 			redirect_to :action => 'edit', :id => @title_id
 			return
 		end
 
-		@tags = Tag.find(:all)
+		@tags = Tag.find(:all, :order => 'name')
+
+		# Create a map of tags
+		@tag_map = {}
+		Tag.find(:all, :order => 'name').collect do |tag|
+			@tag_map[tag] = false
+		end
+		@tag_map = @tag_map.sort {|a,b| a.first.name <=> b.first.name}
+	end
+
+	# POST /title_tags/1
+	# POST /title_tags/1.xml
+	def create
+		@user = User.find(session[:user_id])
+		@title = Title.find(params[:id])
+		@tags = params[:tag].collect { |id, state| Tag.find(id) }
+
+		# Delete any previous user_tags
+		UserTag.find(:all, :conditions => ["user_id=? and title_id=?", @user.id, @title.id]).each do |user_tag|
+			user_tag.destroy
+		end
+
+		@tags.each do |tag|
+			user_tag = UserTag.new
+			user_tag.tag = tag
+			user_tag.user = @user
+			user_tag.title = @title
+			user_tag.save!
+		end
+
+		respond_to do |format|
+			flash_notice 'The User Tags were successfully created.'
+			format.html { redirect_to(:action => 'show', :id => @title.id, :user_id => @user.id) }
+		end
 	end
 
 	# GET /title_tags/1/edit
 	def edit
-		user = User.find(session[:user_id])
+		@user = User.find(session[:user_id])
 		@title = Title.find(params[:id])
-		@user_tags = UserTag.find(:all, :conditions => ["user_id=? and title_id=?", user.id, @title.id])
-		@tags = Tag.find(:all)
-	end
+		@user_tags = UserTag.find(:all, :conditions => ["user_id=? and title_id=?", @user.id, @title.id])
+		@tags = Tag.find(:all, :order => 'name')
 
-=begin
-	# POST /title_tags
-	# POST /title_tags.xml
-	def create
-		@title_tag = TitleTag.new(params[:title_tag])
-		@title_tag.user_id = session[:user_id]
-		@title_name = Title.find(@title_tag.title_id).name
-
-		respond_to do |format|
-			# Save the title_tags, then if there is another by the same user, undo the save and print a warning
-			was_saved = false
-			begin
-				TitleTag.transaction do
-					was_saved = @title_tag.save
-					if TitleTag.count(:conditions => ["title_id=? and user_id=?", @title_tag.title_id, @title_tag.user_id]) > 1
-						was_saved = false
-						raise ""
-					end
-				end
-			rescue Exception => err
-				if err.message == ""
-					@title_tag.errors.add_to_base("The user already has a review for this title.")
-				else
-					raise
-				end
-			end
-			if was_saved
-				flash_notice 'The Title Review was successfully created.'
-				format.html { redirect_to(@title_tag) }
-				#format.xml	{ render :xml => @title_tag, :status => :created, :location => @title_tag }
-			else
-				format.html { render :action => "new" }
-				#format.xml	{ render :xml => @title_tag.errors, :status => :unprocessable_entity }
-			end
+		# Create a map of tags, and if they have been selected or not
+		@tag_map = {}
+		Tag.find(:all, :order => 'name').each do |tag|
+			@tag_map[tag] = false
 		end
+		@user_tags.each do |user_tag|
+			@tag_map[user_tag.tag] = true
+		end
+		@tag_map = @tag_map.sort {|a,b| a.first.name <=> b.first.name}
 	end
 
 	# PUT /title_tags/1
 	# PUT /title_tags/1.xml
 	def update
-		@title_tag = TitleTag.find(params[:id])
+		@user = User.find(session[:user_id])
+		@title = Title.find(params[:id])
+		@tags = params[:tag].collect { |id, state| Tag.find(id) }
+
+		# Delete any previous user_tags
+		UserTag.find(:all, :conditions => ["user_id=? and title_id=?", @user.id, @title.id]).each do |user_tag|
+			user_tag.destroy
+		end
+
+		@tags.each do |tag|
+			user_tag = UserTag.new
+			user_tag.tag = tag
+			user_tag.user = @user
+			user_tag.title = @title
+			user_tag.save!
+		end
 
 		respond_to do |format|
-			if @title_tag.update_attributes(params[:title_tag])
-				flash_notice 'The Title Review was successfully updated.'
-				format.html { redirect_to(@title_tag) }
-				#format.xml	{ head :ok }
-			else
-				format.html { render :action => "edit" }
-				#format.xml	{ render :xml => @title_tag.errors, :status => :unprocessable_entity }
-			end
+			flash_notice 'The User Tags were successfully updated.'
+			format.html { redirect_to(:action => 'show', :id => @title.id, :user_id => @user.id) }
 		end
 	end
-
+=begin
 	# DELETE /title_tags/1
 	# DELETE /title_tags/1.xml
 	def destroy
@@ -115,8 +132,7 @@ class TitleTagsController < ApplicationController
 	private
 
 	def get_originating_user_id
-		review = TitleTag.find_by_id(params[:id])
-		review.user.id
+		User.find(params[:user_id])
 	end
 end
 
