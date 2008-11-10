@@ -13,7 +13,7 @@ class TitleTagsController < ApplicationController
 	# GET /title_tags/1
 	# GET /title_tags/1.xml
 	def show
-		@user = User.find(session[:user_id])
+		@user = User.find(params[:user_id])
 		@title = Title.find(params[:id])
 		@user_tags = UserTag.find(:all, :conditions => ["user_id=? and title_id=?", @user.id, @title.id])
 
@@ -26,13 +26,13 @@ class TitleTagsController < ApplicationController
 	# GET /title_tags/new/1
 	# GET /title_tags/new/1.xml
 	def new
-		@user = User.find(session[:user_id])
+		@user = User.find(params[:user_id])
 		@title = Title.find(params[:id])
 		@user_tag = UserTag.find(:first, :conditions => ["user_id=? and title_id=?", @user.id, @title.id])
 
 		# If there are any user_tags, take us to edit instead
 		if @user_tag != nil
-			redirect_to :action => 'edit', :id => @title_id
+			redirect_to :action => 'edit', :id => @title.id, :user_id => @user.id
 			return
 		end
 
@@ -49,7 +49,7 @@ class TitleTagsController < ApplicationController
 	# POST /title_tags/1
 	# POST /title_tags/1.xml
 	def create
-		@user = User.find(session[:user_id])
+		@user = User.find(params[:user_id])
 		@title = Title.find(params[:id])
 		@tags = params[:tag].collect { |id, state| Tag.find(id) }
 
@@ -74,7 +74,7 @@ class TitleTagsController < ApplicationController
 
 	# GET /title_tags/1/edit
 	def edit
-		@user = User.find(session[:user_id])
+		@user = User.find(params[:user_id])
 		@title = Title.find(params[:id])
 		@user_tags = UserTag.find(:all, :conditions => ["user_id=? and title_id=?", @user.id, @title.id])
 		@tags = Tag.find(:all, :order => 'name')

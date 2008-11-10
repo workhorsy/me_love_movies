@@ -17,6 +17,8 @@ class TitlesController < ApplicationController
 	# GET /titles/1
 	# GET /titles/1.xml
 	def show
+		@user_id = session[:user_id]
+
 		# Determine if the id is the name or id
 		id_is_name = (params[:id].to_i == 0 && params[:id] != "0")
 
