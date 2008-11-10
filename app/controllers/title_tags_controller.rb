@@ -1,8 +1,7 @@
 class TitleTagsController < ApplicationController
 	layout 'default'
 	before_filter :authorize_admins_only, :only => ['destroy']
-	before_filter :authorize_users_only, :only => ['new', 'create']
-	before_filter :authorize_originating_user_only, :only => ['edit', 'update']
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'new', 'create']
 
 	# GET /title_tags
 	# GET /title_tags.xml
@@ -132,7 +131,7 @@ class TitleTagsController < ApplicationController
 	private
 
 	def get_originating_user_id
-		User.find(params[:user_id])
+		User.find(params[:user_id]).id
 	end
 end
 
