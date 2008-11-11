@@ -57,12 +57,26 @@ class TitleTagsController < ApplicationController
 			user_tag.destroy
 		end
 
+		# Save the new tags
 		@tags.each do |tag|
 			user_tag = UserTag.new
 			user_tag.tag = tag
 			user_tag.user = @user
 			user_tag.title = @title
 			user_tag.save!
+		end
+
+		# Destroy all the title_tags for this title
+		TitleTag.find(:all, :conditions => ["title_id=?", @title.id]).each do |title_tag|
+			title_tag.destroy
+		end
+
+		# Save all the title_tags for this title
+		Tag.find(:all).each do |tag|
+			title_tag = TitleTag.new
+			title_tag.title = @title
+			title_tag.count = UserTag.count(:conditions => ["title_id=? and tag_id=?", @title.id, tag.id])
+			title_tag.save!
 		end
 
 		respond_to do |format|
@@ -101,12 +115,26 @@ class TitleTagsController < ApplicationController
 			user_tag.destroy
 		end
 
+		# Save all the new tags
 		@tags.each do |tag|
 			user_tag = UserTag.new
 			user_tag.tag = tag
 			user_tag.user = @user
 			user_tag.title = @title
 			user_tag.save!
+		end
+
+		# Destroy all the title_tags for this title
+		TitleTag.find(:all, :conditions => ["title_id=?", @title.id]).each do |title_tag|
+			title_tag.destroy
+		end
+
+		# Save all the title_tags for this title
+		Tag.find(:all).each do |tag|
+			title_tag = TitleTag.new
+			title_tag.title = @title
+			title_tag.count = UserTag.count(:conditions => ["title_id=? and tag_id=?", @title.id, tag.id])
+			title_tag.save!
 		end
 
 		respond_to do |format|
