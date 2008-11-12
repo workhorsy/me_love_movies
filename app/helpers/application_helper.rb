@@ -42,7 +42,7 @@ EOF
 			item_id, poster_url = posters[rand(posters.length)].split(',')
 <<EOF
 	<a class="APCTitleAnchor" href="http://affiliates.allposters.com/link/redirect.asp?item=#{item_id}&AID=#{Settings.affiliate_id}&PSTID=1&LTID=2&lang=1" target="_blank" title="#{title.proper_name}">
-		<img src="#{poster_url}" alt="#{title.proper_name}" border="0" height="300" width="">
+		<img src="#{poster_url}" alt="#{title.proper_name}" border="0" height="" width="200">
 	</a>
 	<img src="http://tracking.allposters.com/allposters.gif?AID=#{Settings.affiliate_id}&PSTID=1&LTID=2&lang=1" border="0" height="1" width="1">
 	<br />
