@@ -47,7 +47,7 @@ class InsertTagBoilerPlate < ActiveRecord::Migration
 			{:name => 'dinosaurs'},
 			{:name => 'disaster'},
 			{:name => 'anti-war'},
-			{:name => 'espinoage'},
+			{:name => 'espionage'},
 			{:name => 'spy movie'},
 			{:name => 'modern western'},
 			{:name => 'euro western'},
