@@ -58,6 +58,29 @@ class TitlesController < ApplicationController
 		# Get the number of ratings
 		@ratings_count = TitleRating.count(:conditions => ["title_id=?", @title.id])
 
+		# Get the tags
+		@tag_map = {}
+		Tag.find(:all).each do |tag|
+			title_tag = TitleTag.find(:first, :conditions => ["title_id=? and tag_id=?", @title.id, tag.id])
+			@tag_map[tag] = title_tag.count if title_tag && title_tag.count > 0
+		end
+
+		# Find the biggest and smallest tags
+		range, big, small, sizes, font = 0, 0, 100_000_000, 5, 3
+		@tag_map.each do |tag, count|
+			if count > big
+				big = count
+			elsif count < small
+				small = count
+			end
+		end
+		range = ((big - small) / sizes) | 1
+
+		# Average the tags
+		@tag_map.each do |tag, count|
+			@tag_map[tag] = (count / range + 1) * 3 + 10
+		end
+
 		respond_to do |format|
 			format.html # show.html.erb
 			#format.xml	{ render :xml => @title_reviews }

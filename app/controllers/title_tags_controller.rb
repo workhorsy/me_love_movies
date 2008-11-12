@@ -75,6 +75,7 @@ class TitleTagsController < ApplicationController
 		Tag.find(:all).each do |tag|
 			title_tag = TitleTag.new
 			title_tag.title = @title
+			title_tag.tag = tag
 			title_tag.count = UserTag.count(:conditions => ["title_id=? and tag_id=?", @title.id, tag.id])
 			title_tag.save!
 		end
@@ -133,6 +134,7 @@ class TitleTagsController < ApplicationController
 		Tag.find(:all).each do |tag|
 			title_tag = TitleTag.new
 			title_tag.title = @title
+			title_tag.tag = tag
 			title_tag.count = UserTag.count(:conditions => ["title_id=? and tag_id=?", @title.id, tag.id])
 			title_tag.save!
 		end

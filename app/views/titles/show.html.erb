@@ -57,15 +57,21 @@
 <table cellpadding="0" cellspacing="0" border="0" class="title"><tr><td><img src="/images/panel_oj_hleft.jpg" /></td>
 <td class="panel_title"><h1><!-- ==========================================================MOVIE TITLE GOES HERE -->
 
-Sponsor
+Tags
 
 </h1></td><td><img src="/images/panel_oj_hright.jpg" /></td></tr></table><!-- ============== CENTER STUFF ======== -->
 </td><td style="background:url(/images/oj_top_right.jpg) top right no-repeat;" width="22px" height="48px"></td></tr>
 <tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
 <!-- =================================================================================== END CENTER STUFF ======= -->
 
-stuff
-
+<% for tag, size in @tag_map %>
+	<span style="font-size: <%=size%>px;">
+		<%=link_to tag.name, :controller => 'titles', :action => 'search' %>
+	</span>
+<% end %>
+<% if @tag_map.length == 0 %>
+There are no tags
+<% end %>
 
 <!-- =================================================================================== START END TABLE ======== -->
 </td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
