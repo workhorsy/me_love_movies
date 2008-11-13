@@ -98,7 +98,7 @@
 			</div>
 
 
-			<div id="search_by_ratings" style="padding-left:20px; display: none;">
+			<div id="search_by_ratings" style="padding-left:20px;<%=@has_results ? 'display: none' : ''%>">
 			<% form_for @title_rating, :url => {:action => 'search'} do |f| %>
 				<div id="container">
 					<h2>Genre</h2>
@@ -161,7 +161,7 @@
 				<% end %>
 			</div>
 
-			<div id="search_results" style="padding-left:20px;">
+			<div id="search_results" style="padding-left:20px;<%=@has_results ? '' : 'display: none'%>">
 			<% if @person_map && @other_persons %>
 			<h1>Search Results</h1>
 			<div style="padding-bottom: 200px;">

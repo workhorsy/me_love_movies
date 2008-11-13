@@ -157,9 +157,12 @@ class TitlesController < ApplicationController
 		@title_rating = TitleRating.new
 		@titles = nil
 		@tags = Tag.find(:all, :order => 'name')
+		@has_results = false
 
 		# Just return unless this is the post back from the search button
 		return unless request.post?
+
+		@has_results = true
 
 		if params[:type] == 'by_title'
 			# Make sure something was selected
