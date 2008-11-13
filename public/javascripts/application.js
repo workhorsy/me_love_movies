@@ -13,14 +13,23 @@ function get_cookie(name) {
 	return value;
 }
 
-function set_cookie(name, value) {
-	document.cookie = name + "=" + escape(value) + ";expires=;path=/;domain=;";
+function set_cookie(name, value, expires, path, domain, secure){
+    var today = new Date();
+    if(expires){
+        expires = expires * 1000 * 3600 * 24;
+    }
+    document.cookie = name+'='+escape(value) +
+        ((expires) ? ';expires=' + new Date(today.getTime() + expires).toGMTString() : '') +
+        ((path) ? ';path=' + path : '') +
+        ((domain) ? ';domain=' + domain : '') +
+        ((secure) ? ';secure' : '');
 }
 
-function delete_cookie(name) {
-	var d = new Date();
-	document.cookie = name + "=;expires=" + d.toGMTString() + ";path=/;domain=;";
-}
+function delete_cookie(name, path, domain){
+    if(get_cookie(name)){
+        set_cookie(name, '', -30, path, domain);
+    }
+} 
 
 function get_user_greeting_from_cookie() {
 	var name = get_cookie('user_name');
