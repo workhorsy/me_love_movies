@@ -66,7 +66,7 @@ Tags
 
 <% for tag, size in @tag_map %>
 	<span style="font-size: <%=size%>px;">
-		<%=link_to tag.name, :controller => 'titles', :action => 'search' %>
+		<%=link_to tag.name, {:action => 'search', :type => 'by_tags', :tag_id => tag.id}, {:method => :post} %> 
 	</span>
 <% end %>
 <% if @tag_map.length == 0 %>

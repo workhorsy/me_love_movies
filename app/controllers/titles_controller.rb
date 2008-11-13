@@ -156,6 +156,7 @@ class TitlesController < ApplicationController
 	def search
 		@title_rating = TitleRating.new
 		@titles = nil
+		@tags = Tag.find(:all, :order => 'name')
 
 		# Just return unless this is the post back from the search button
 		return unless request.post?
@@ -292,6 +293,12 @@ class TitlesController < ApplicationController
 														*selected_fields.collect { |f| @title_rating.send(f) }
 														],
 									:order => selected_fields.collect { |f| "avg_#{f}" }.join(', ')).reverse
+		elsif params[:type] == 'by_tags'
+			@tag = Tag.find(params[:tag_id])
+			title_tags = TitleTag.find(:all, :conditions => ["tag_id=? and count > 0", @tag.id])
+			@titles = title_tags.collect do |title_tag|
+				title_tag.title
+			end
 		end
 	end
 end
