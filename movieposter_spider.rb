@@ -59,11 +59,18 @@ def dl_poster_thumbs
 			form.fields.name("ti").first.value = title.proper_name
 			page = agent.submit(form)
 
+			puts "#{title.name}"
+
 			number = 1
 			page.search("//div[@class='divinside']").each do |div|
 				# Skip any posters that do not have the exat title
 				poster_title = div.search("//div[@class='divinsidealigncontent']/a/b").innerHTML
-				next unless poster_title == "#{title.proper_name} poster".upcase
+				next unless poster_title == "#{title.proper_name} poster".upcase \
+							|| poster_title == "#{title.proper_name} poster".upcase.gsub('.', '')
+
+				# Skip any cards or stills
+				poster_stills = div.search("//span[@class='littletext']").innerHTML
+				next if poster_stills.downcase.include?("still") || poster_stills.downcase.include?("card")
 
 				poster_page = agent.click(div.search("//span[@class='img-shadow']").first.search("//a").first)
 				image_url = poster_page.search("//span[@class='img-shadow']").first.search("//img").first.raw_attributes["src"]
@@ -82,7 +89,7 @@ def dl_poster_thumbs
 						open("#{name}", "wb") do |file|
 							file.write(resp.body)
 						end
-						puts "downloaded: #{name}"
+						puts "\tdownloaded: #{name}"
 					rescue Exception => err
 						# Just ignore any errors
 					end
