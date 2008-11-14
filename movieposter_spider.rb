@@ -12,6 +12,8 @@ WWW::Mechanize::AGENT_ALIASES['Ubuntu Firefox 3.0'] =
 
 # Get the arguments
 $mode = ARGV.first
+DOMAIN = "movieposter.com"
+BASE_URL = "http://www.#{DOMAIN}/"
 
 # Print the usage if there are no args
 if ARGV.length == 0 || %w{ download }.include?($mode) == false
@@ -40,32 +42,66 @@ def dl_poster_thumbs
 		require "app/models/#{file}.rb"
 	end
 
-#	for title in Title.find(:all)
+	# Make sure the posterdir exists
+	Dir.mkdir 'posters' unless File.directory? 'posters'
+
+	for title in Title.find(:all)
 		begin
 			# Create a browser
 			agent = WWW::Mechanize.new
 			agent.user_agent_alias = 'Ubuntu Firefox 3.0'
 
 			# Go to the search page
-			page = agent.get("http://www.movieposter.com")
+			page = agent.get(BASE_URL)
 
+			# Enter the title name and submit the form
 			form = page.forms.with.name("regsearch").first
-			form.fields.name("ti").first.value = "Fight Club"
+			form.fields.name("ti").first.value = title.proper_name
 			page = agent.submit(form)
 
+			number = 1
 			page.search("//div[@class='divinside']").each do |div|
+				# Skip any posters that do not have the exat title
+				poster_title = div.search("//div[@class='divinsidealigncontent']/a/b").innerHTML
+				next unless poster_title == "#{title.proper_name} poster".upcase
+
 				poster_page = agent.click(div.search("//span[@class='img-shadow']").first.search("//a").first)
-				puts poster_page.search("//span[@class='img-shadow']").first.search("//img").first.raw_attributes["src"]
+				image_url = poster_page.search("//span[@class='img-shadow']").first.search("//img").first.raw_attributes["src"]
+
+				# Download and save the image
+				Net::HTTP.start(DOMAIN) do |http|
+					begin
+						# Make the dir for the title
+						name = "posters/#{title.name}/#{number}.jpg"
+						Dir.mkdir "posters/#{title.name}" unless File.directory? "posters/#{title.name}"
+
+						resp = http.get(image_url)
+						puts "Failed to get '#{name}'" and next unless resp.code == '200'
+
+						# Save the image
+						open("#{name}", "wb") do |file|
+							file.write(resp.body)
+						end
+						puts "downloaded: #{name}"
+					rescue Exception => err
+						# Just ignore any errors
+					end
+				end
+
+				number += 1
 
 				# Sleep for a bit as to not DOS movieposter.com
-				#sleep(1)
+				sleep(1)
 			end
+
+		rescue Exception => err
+			# Just ignore any errors
 		end
 
 		# Sleep for a bit as to not DOS movieposter.com
 		GC.start
 		sleep(2)
-#	end
+	end
 end
 
 
