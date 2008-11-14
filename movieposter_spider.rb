@@ -66,7 +66,8 @@ def dl_poster_thumbs
 				# Skip any posters that do not have the exat title
 				poster_title = div.search("//div[@class='divinsidealigncontent']/a/b").innerHTML
 				next unless poster_title == "#{title.proper_name} poster".upcase \
-							|| poster_title == "#{title.proper_name} poster".upcase.gsub('.', '')
+							|| poster_title == "#{title.proper_name} poster".upcase.gsub('.', '') \
+							|| poster_title == "#{title.unproper_name} poster".upcase
 
 				# Skip any cards or stills
 				poster_stills = div.search("//span[@class='littletext']").innerHTML

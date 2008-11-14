@@ -48,6 +48,10 @@ class Title < ActiveRecord::Base
 		return value
 	end
 
+	def unproper_name
+		self.name.split(',').first
+	end
+
 	def runtime_minutes
 		@runtime_minutes
 	end
