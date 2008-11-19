@@ -9,7 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 21) do
+ActiveRecord::Schema.define(:version => 23) do
+
+  create_table "posters", :force => true do |t|
+    t.integer "title_id"
+    t.text    "small_image_file"
+    t.text    "big_image_file"
+    t.string  "product_id"
+  end
 
   create_table "ratings", :force => true do |t|
     t.string "name"
@@ -121,7 +128,6 @@ ActiveRecord::Schema.define(:version => 21) do
     t.float    "avg_character_dev"
     t.float    "avg_cinematography"
     t.text     "data_source"
-    t.text     "affiliate_links"
   end
 
   add_index "titles", ["id"], :name => "index_titles_on_id"

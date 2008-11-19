@@ -38,14 +38,16 @@ def dl_poster_thumbs
 	ActiveRecord::Base.establish_connection(connection_format)
 
 	# Load all the relevent models from the website
-	%w{rating sex title title_rating title_review user user_type}.each do |file|
+	%w{rating sex title title_rating title_review user user_type poster}.each do |file|
 		require "app/models/#{file}.rb"
 	end
 
-	# Make sure the posterdir exists
+	# Make sure the poster dir exists
 	Dir.mkdir 'posters' unless File.directory? 'posters'
+	Dir.mkdir "posters/big" unless File.directory? "posters/big"
+	Dir.mkdir "posters/small" unless File.directory? "posters/small"
 
-	for title in Title.find(:all)
+	for title in [Title.find(3931)] #Title.find(:all)
 		begin
 			# Create a browser
 			agent = WWW::Mechanize.new
@@ -63,7 +65,7 @@ def dl_poster_thumbs
 
 			number = 1
 			page.search("//div[@class='divinside']").each do |div|
-				# Skip any posters that do not have the exat title
+				# Skip any posters that do not have the exact title
 				poster_title = div.search("//div[@class='divinsidealigncontent']/a/b").innerHTML
 				next unless poster_title == "#{title.proper_name} poster".upcase \
 							|| poster_title == "#{title.proper_name} poster".upcase.gsub('.', '') \
@@ -75,26 +77,37 @@ def dl_poster_thumbs
 
 				poster_page = agent.click(div.search("//span[@class='img-shadow']").first.search("//a").first)
 				image_url = poster_page.search("//span[@class='img-shadow']").first.search("//img").first.raw_attributes["src"]
+				poster_id = poster_page.search("//span[@class='posterid']").inner_text.split('Product ID:')[1].split("\n")[0].strip
+
+				big_image_file = "posters/big/#{title.name}/#{number}.jpg"
+				small_image_file = "posters/small/#{title.name}/#{number}.jpg"
 
 				# Download and save the image
 				Net::HTTP.start(DOMAIN) do |http|
 					begin
 						# Make the dir for the title
-						name = "posters/#{title.name}/#{number}.jpg"
-						Dir.mkdir "posters/#{title.name}" unless File.directory? "posters/#{title.name}"
+						Dir.mkdir "posters/big/#{title.name}" unless File.directory? "posters/big/#{title.name}"
 
 						resp = http.get(image_url)
-						puts "Failed to get '#{name}'" and next unless resp.code == '200'
+						puts "Failed to get '#{big_poster_name}'" and next unless resp.code == '200'
 
 						# Save the image
-						open("#{name}", "wb") do |file|
+						open("#{big_poster_name}", "wb") do |file|
 							file.write(resp.body)
 						end
-						puts "\tdownloaded: #{name}"
+						puts "\tdownloaded: #{big_poster_name}"
 					rescue Exception => err
 						# Just ignore any errors
 					end
 				end
+
+				# Save the poster model
+				poster = Poster.new
+				poster.title_id = title.id
+				poster.small_image_file = small_image_file
+				poster.big_image_file = big_image_file
+				poster.product_id = poster_id
+				poster.save!
 
 				number += 1
 
@@ -102,13 +115,13 @@ def dl_poster_thumbs
 				sleep(1)
 			end
 
-		rescue Exception => err
+#		rescue Exception => err
 			# Just ignore any errors
 		end
 
 		# Sleep for a bit as to not DOS movieposter.com
 		GC.start
-		sleep(2)
+		sleep(1)
 	end
 end
 

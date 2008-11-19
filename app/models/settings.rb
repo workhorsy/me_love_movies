@@ -13,6 +13,6 @@ class Settings < ActiveRecord::Base
 	end
 
 	def self.affiliate_id
-		1250588224
+		'4902487d53b00449'
 	end
 end
