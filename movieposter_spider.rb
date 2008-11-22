@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'mechanize'
 require 'active_record'
+require 'mini_magick'
 
 # Monkey patch Mechanize to include an Ubuntu Hardy Firefox user agent
 WWW::Mechanize::AGENT_ALIASES['Ubuntu Firefox 3.0'] = 
@@ -43,11 +44,11 @@ def dl_poster_thumbs
 	end
 
 	# Make sure the poster dir exists
-	Dir.mkdir 'posters' unless File.directory? 'posters'
-	Dir.mkdir "posters/big" unless File.directory? "posters/big"
-	Dir.mkdir "posters/small" unless File.directory? "posters/small"
+	Dir.mkdir 'public/posters' unless File.directory? 'public/posters'
+	Dir.mkdir "public/posters/big" unless File.directory? "public/posters/big"
+	Dir.mkdir "public/posters/small" unless File.directory? "public/posters/small"
 
-	for title in [Title.find(3931)] #Title.find(:all)
+	for title in Title.find(:all)
 		begin
 			# Create a browser
 			agent = WWW::Mechanize.new
@@ -79,14 +80,15 @@ def dl_poster_thumbs
 				image_url = poster_page.search("//span[@class='img-shadow']").first.search("//img").first.raw_attributes["src"]
 				poster_id = poster_page.search("//span[@class='posterid']").inner_text.split('Product ID:')[1].split("\n")[0].strip
 
-				big_image_file = "posters/big/#{title.name}/#{number}.jpg"
-				small_image_file = "posters/small/#{title.name}/#{number}.jpg"
+				big_image_file = "public/posters/big/#{title.name}/#{number}.jpg"
+				small_image_file = "public/posters/small/#{title.name}/#{number}.jpg"
 
 				# Download and save the image
 				Net::HTTP.start(DOMAIN) do |http|
 					begin
 						# Make the dir for the title
-						Dir.mkdir "posters/big/#{title.name}" unless File.directory? "posters/big/#{title.name}"
+						Dir.mkdir "public/posters/big/#{title.name}" unless File.directory? "public/posters/big/#{title.name}"
+						Dir.mkdir "public/posters/small/#{title.name}" unless File.directory? "public/posters/small/#{title.name}"
 
 						resp = http.get(image_url)
 						puts "Failed to get '#{big_poster_name}'" and next unless resp.code == '200'
@@ -115,13 +117,25 @@ def dl_poster_thumbs
 				sleep(1)
 			end
 
-#		rescue Exception => err
+		rescue Exception => err
 			# Just ignore any errors
 		end
 
 		# Sleep for a bit as to not DOS movieposter.com
 		GC.start
 		sleep(1)
+	end
+
+	Poster.find(:all, :order => "id").each do |poster|
+		# Resize the file
+		begin
+			Dir.mkdir "public/posters/small/#{poster.title.name}" unless File.directory? "public/posters/small/#{poster.title.name}"
+			image = MiniMagick::Image.from_file(poster.big_image_file)
+			image.resize("115x153")
+			image.write(poster.small_image_file)
+			puts "saved the image '#{poster.small_image_file}'"
+		rescue
+		end
 	end
 end
 

@@ -28,6 +28,20 @@ class Title < ActiveRecord::Base
 				character_dev cinematography}
 	end
 
+	def random_small_image_file
+		posters = self.posters
+		return "images/noposter.jpg" if posters.length == 0
+
+		posters[rand(posters.length)].small_image_file
+	end
+
+	def random_big_image_file
+		posters = self.posters
+		return "images/noposter.jpg" if posters.length == 0
+
+		posters[rand(posters.length)].big_image_file
+	end
+
 	def proper_name
 		value = self.name
 

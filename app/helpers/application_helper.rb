@@ -32,23 +32,22 @@ module ApplicationHelper
 
 	def poster_link(title)
 		# If there are no posters, use the no image
-		if title.affiliate_links == nil || title.affiliate_links.length == 0
+		if title.posters.length == 0
 <<EOF
 <div class="image_holder1">Poster</div>
 EOF
 		# If there are posters, show a random one
 		else
-			posters = title.affiliate_links.split(';')
-			item_id, poster_url = posters[rand(posters.length)].split(',')
+			poster = title.posters[rand(title.posters.length)]
+			poster_url = "http://www.movieposter.com/cgi-bin/viewPIDn.pl?acode=#{Settings.affiliate_id}&pid=#{poster.product_id}"
 <<EOF
-	<a class="APCTitleAnchor" href="http://affiliates.allposters.com/link/redirect.asp?item=#{item_id}&AID=#{Settings.affiliate_id}&PSTID=1&LTID=2&lang=1" target="_blank" title="#{title.proper_name}">
-		<img src="#{poster_url}" alt="#{title.proper_name}" border="0" height="" width="200">
+	<a class="APCTitleAnchor" href="#{poster_url}" target="_blank" title="#{title.proper_name}">
+		<img src="/#{poster.big_image_file}" alt="#{title.proper_name}" border="0" height="" width="200">
 	</a>
-	<img src="http://tracking.allposters.com/allposters.gif?AID=#{Settings.affiliate_id}&PSTID=1&LTID=2&lang=1" border="0" height="1" width="1">
 	<br />
 	<span style="font-family:verdana,arial,helvetica;font-size:10;" >
-		<a class="APCTitleAnchor" href="http://affiliates.allposters.com/link/redirect.asp?item=#{item_id}&AID=#{Settings.affiliate_id}&PSTID=1&LTID=2&lang=1" target="_blank" title="#{title.proper_name}">
-			Buy this poster at AllPosters.com
+		<a class="APCTitleAnchor" href="#{poster_url}">
+			Buy this poster at movieposter.com
 		</a>
 		<br />
 	</span>

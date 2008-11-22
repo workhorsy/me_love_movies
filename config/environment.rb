@@ -16,6 +16,7 @@ Rails::Initializer.run do |config|
 
   config.gem 'ezcrypto'
   config.gem 'mini_magick'
+  # sudo apt-get install imagemagick
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
