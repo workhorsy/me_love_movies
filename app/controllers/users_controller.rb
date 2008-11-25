@@ -44,6 +44,8 @@ class UsersController < ApplicationController
 	# POST /users
 	# POST /users.xml
 	def create
+		params['user'].each { |k, v| params['user'][k] = v.strip }
+
 		@user = User.new(params[:user])
 		@user.user_type = UserType::NAMES_ABBREVIATIONS.select { |k, v| v == 'U' }.first.last
 
