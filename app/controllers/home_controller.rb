@@ -35,6 +35,9 @@ class HomeController < ApplicationController
 									rating.title_review
 								end
 
+		# Get the titles that are opening soon. release_date > today limit 9
+		@titles_opening_soon = Title.find(:all, :conditions => ["release_date>?", Time.now], :order => 'release_date asc', :limit => 9)
+
 		# Get the total number of titles, users, reviews, and ratings.
 		@total_titles = Title.count
 		@total_users = User.count

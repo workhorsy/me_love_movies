@@ -198,33 +198,14 @@
 			<!-- =================================================================================== END CENTER STUFF ======= -->
 
 			<!-- Box Office Entry Block -->
-			<h2><a href="to_movie_profile" class="black">Death Race</a></h2>
-			<span class="money">Opening September 24th</span><br /><br />
+			<% for title in @titles_opening_soon %>
+			<h2><%=link_to(title.proper_name, {:controller => 'titles', :action => 'show', :id => title.id}, :class => 'black')%></h2>
+			<span class="money">Opening <%=title.release_date%></span><br /><br />
+			<% end %>
+			<% if @titles_opening_soon.length == 0 %>
+			There are no movies opening soon
+			<% end %>
 			<!-- Eng Entry Block -->
-
-			<h2><a href="to_movie_profile" class="black">Sukasaki Western Django</a></h2>
-			<span class="money">Opening December 12th</span><br /><br />
-
-			<h2><a href="to_movie_profile" class="black">Burn after Reading</a></h2>
-			<span class="money">Opening July 1st</span><br /><br />
-
-			<h2><a href="to_movie_profile" class="black">Lakeview Terrace</a></h2>
-			<span class="money">Opening December 12th</span><br /><br />
-
-			<h2><a href="to_movie_profile" class="black">Ghost Town</a></h2>
-			<span class="money">Opening July 1st</span><br /><br />
-
-			<h2><a href="to_movie_profile" class="black">My Best Freinds Girl</a></h2>
-			<span class="money">Opening December 30th</span><br /><br />
-
-			<h2><a href="to_movie_profile" class="black">Towelhead</a></h2>
-			<span class="money">Opening October 7st</span><br /><br />
-
-			<h2><a href="to_movie_profile" class="black">Righteous Kill</a></h2>
-			<span class="money">Opening January 17th</span><br /><br />
-
-			<h2><a href="to_movie_profile" class="black">The Women</a></h2>
-			<span class="money">Opening November 21st</span><br /><br />
 
 			<!-- =================================================================================== START END TABLE ======== -->
 			</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
