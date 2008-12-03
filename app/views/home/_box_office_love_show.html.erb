@@ -1,0 +1,29 @@
+<div id="box_office_love">
+	<table width="100%" cellpadding="0" cellspacing="0">
+	<% for entry in box_office_love_titles %>
+		<tr valign="bottom">
+		<td><h2><a href="to_movie_profile" class="black"><%=entry.title.proper_name%></a></h2></td>
+			<td class="money"><%=entry.amount%></td></tr>
+		<tr><td colspan="2" class="rating">
+			<span class="orange">Action: </span><span class="green">4.9</span> | 
+			<span class="orange">Comedy: </span><span class="green">4.7</span> | 
+			<span class="orange">Suspence: </span><span class="green">4.8</span><br /><br />
+		</td>
+		</tr>
+	<% end %>
+	</table>
+	<% if box_office_love_titles.length == 0 %>
+	<p>There are none</p>
+	<% end %>
+
+	<%= link_to_remote 'Edit information', 
+				{:url => {:controller => 'home', :action => '_box_office_love_edit'}, :update => "box_office_love"},
+				{:id => 'lnk_edit_box_office_love', :style => 'display: none;'} %>
+
+	<script type="text/javascript">
+		// <!CDATA[
+		// Show all the elements the user is allowed to see.
+		show_tags_to_moderator_only('a', 'lnk_edit_box_office_love');
+		// ]]>
+	</script>
+</div>

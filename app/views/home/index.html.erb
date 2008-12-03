@@ -119,55 +119,7 @@
 			<tr valign="top"><td style="background:url(/images/oj_left.jpg) left repeat-y;"></td><td class="panel_body">
 			<!-- =================================================================================== END CENTER STUFF ======= -->
 
-			<table width="100%" cellpadding="0" cellspacing="0">
-			<!-- Box Office Entry Block -->
-			<tr valign="bottom">
-			<td><h2><a href="to_movie_profile" class="black">The Dark Knight</a></h2></td>
-				<td class="money">378.5 MIL</td></tr>
-			<tr><td colspan="2" class="rating">
-				<span class="orange">Action: </span><span class="green">4.9</span> | 
-				<span class="orange">Comedy: </span><span class="green">4.7</span> | 
-				<span class="orange">Suspence: </span><span class="green">4.8</span><br /><br />
-			</td></tr>
-			<!-- Eng Entry Block -->
-
-			<tr valign="bottom">
-			<td><h2><a href="to_movie_profile" class="black">Tropic Thunder</a></h2></td>
-				<td class="money">68.3 MIL</td></tr>
-			<tr><td colspan="2" class="rating">
-				<span class="orange">Action: </span><span class="green">3.9</span> | 
-				<span class="orange">Comedy: </span><span class="green">4.3</span> | 
-				<span class="orange">Pace: </span><span class="green">3.6</span><br /><br />
-			</td></tr>
-
-			<tr valign="bottom">
-			<td><h2><a href="to_movie_profile" class="black">Death Race</a></h2></td>
-				<td class="money">18.5 MIL</td></tr>
-			<tr><td colspan="2" class="rating">
-				<span class="orange">Action: </span><span class="green">4.3</span> | 
-				<span class="orange">SFX: </span><span class="green">3.2</span> | 
-				<span class="orange">Comedy: </span><span class="green">3.4</span><br /><br />
-			</td></tr>
-
-			<tr valign="bottom">
-			<td><h2><a href="to_movie_profile" class="black">Tropic Thunder</a></h2></td>
-				<td class="money">68.3 MIL</td></tr>
-			<tr><td colspan="2" class="rating">
-				<span class="orange">Action: </span><span class="green">3.9</span> | 
-				<span class="orange">Comedy: </span><span class="green">4.3</span> | 
-				<span class="orange">Pace: </span><span class="green">3.6</span><br /><br />
-			</td></tr>
-
-			<tr valign="bottom">
-			<td><h2><a href="to_movie_profile" class="black">Sukasaki Western Django</a></h2></td>
-				<td class="money">18.5 MIL</td></tr>
-			<tr><td colspan="2" class="rating">
-				<span class="orange">Action: </span><span class="green">4.3</span> | 
-				<span class="orange">SFX: </span><span class="green">3.2</span> | 
-				<span class="orange">Comedy: </span><span class="green">3.4</span><br /><br />
-			</td></tr>
-			</table>
-
+			<%= render :partial => "box_office_love_show", :locals => {:box_office_love_titles => @box_office_love_titles} %>
 
 			<!-- =================================================================================== START END TABLE ======== -->
 			</td><td style="background:url(/images/oj_right.jpg) right repeat-y;"></td></tr><tr>
@@ -263,4 +215,5 @@
 <br style="clear:both"/>
 
 <%= link_to 'Browse titles', :controller => 'titles', :action => 'index' %>
+
 

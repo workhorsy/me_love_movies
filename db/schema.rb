@@ -9,7 +9,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 23) do
+ActiveRecord::Schema.define(:version => 24) do
+
+  create_table "box_office_love_titles", :force => true do |t|
+    t.integer "title_id"
+    t.string  "amount"
+  end
 
   create_table "posters", :force => true do |t|
     t.integer "title_id"

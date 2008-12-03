@@ -1,0 +1,18 @@
+
+<h1>Tags for '<%=@title.proper_name%>' from '<%=@user.user_name%>'</h1>
+
+<ul>
+	<% for user_tag in @user_tags %>
+	<li><%= user_tag.tag.name %></li>
+	<% end %>
+</ul>
+
+<%= link_to 'Edit these tags', {:controller => 'title_tags', :action => 'edit', :id => @title.id, :user_id => @user.id}, { :id => 'lnk_edit', :style => 'display: none;' } %> <br />
+<%= link_to "Back to " + @title.proper_name, :controller => 'titles', :action => 'show', :id => @title.id %>
+
+<script type="text/javascript">
+	// <!CDATA[
+	// Show all the elements the user is allowed to see.
+	show_tags_to_originating_user_only('a', 'lnk_edit', <%=@user.id%>);
+	// ]]>
+</script>

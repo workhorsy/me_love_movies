@@ -6,6 +6,7 @@ class Title < ActiveRecord::Base
 	has_many :title_tags
 	has_many :user_tags
 	has_many :posters
+	has_many :box_office_love_titles
 
 	attr_accessor :runtime_hours
 	attr_accessor :runtime_minutes

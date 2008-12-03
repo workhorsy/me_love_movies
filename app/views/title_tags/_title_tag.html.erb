@@ -1,0 +1,15 @@
+
+<% form_tag(:action => action) do |f| %>
+	<input type="hidden" name="id" value="<%=title.id%>" />
+	<input type="hidden" name="user_id" value="<%=user.id%>" />
+	<ul>
+		<% for tag, checked in @tag_map %>
+		<li><input type="checkbox" id="tag_<%=tag.id%>" name="tag[<%=tag.id%>]" <%=checked ? 'checked=\"checked\"' : ''%> /> <%= tag.name %></li>
+		<% end %>
+	</ul>
+	<p>
+		<%= submit_tag button_name %>
+	</p>
+<% end %>
+
+

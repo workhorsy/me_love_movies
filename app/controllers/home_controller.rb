@@ -38,6 +38,8 @@ class HomeController < ApplicationController
 		# Get the titles that are opening soon. release_date > today limit 9
 		@titles_opening_soon = Title.find(:all, :conditions => ["release_date>?", Time.now], :order => 'release_date asc', :limit => 9)
 
+		@box_office_love_titles = BoxOfficeLoveTitle.find(:all)
+
 		# Get the total number of titles, users, reviews, and ratings.
 		@total_titles = Title.count
 		@total_users = User.count
@@ -63,5 +65,45 @@ class HomeController < ApplicationController
 	end
 	
 	def why_sign_up
+	end
+
+	def _box_office_love_edit
+		respond_to do |format|
+			format.js { render :partial => 'box_office_love_edit', :locals => { :titles => Title.find(:all, :order => 'name') } }
+		end
+	end
+
+	def _box_office_love_update
+		# Get all the titles and their amounts
+		title_ids = params['titles'].split(';')
+		amounts = params['amounts'].split(';')
+
+		# Find all the titles
+		titles = Title.find(title_ids)
+
+		# Delete the old BoxOfficeLoveTitles
+		BoxOfficeLoveTitle.find(:all).each do |t|
+			t.destroy
+		end
+
+		# Save the new BoxOfficeLoveTitles
+		i=0
+		titles.each do |title|
+			box_office_love_title = BoxOfficeLoveTitle.new
+			box_office_love_title.title = title
+			box_office_love_title.amount = amounts[i]
+			box_office_love_title.save!
+			i += 1
+		end
+
+		respond_to do |format|
+			format.js { render :text => '' }
+		end
+	end
+
+	def _box_office_love_show
+		respond_to do |format|
+			format.js { render :partial => 'box_office_love_show', :locals => { :box_office_love_titles => BoxOfficeLoveTitle.find(:all) } }
+		end
 	end
 end

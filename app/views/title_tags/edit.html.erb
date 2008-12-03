@@ -1,0 +1,12 @@
+
+<h1>Editing tags for '<%=@title.proper_name%>' from '<%=@user.user_name%>'</h1>
+
+<%= render :partial => 'title_tag', 
+			:object => @tag_map, 
+			:locals => { :action => 'update',
+						:button_name => 'Update', 
+						:title => @title,
+						:user => @user} %>
+
+
+
