@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
 	layout 'default'
+	before_filter :authorize_admins_only, :only => ['_box_office_love_edit']
 
 	# GET /home
 	# GET /home.xml

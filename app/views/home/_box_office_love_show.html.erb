@@ -17,7 +17,11 @@
 	<% end %>
 
 	<%= link_to_remote 'Edit information', 
-				{:url => {:controller => 'home', :action => '_box_office_love_edit'}, :update => "box_office_love"},
+				{
+					:url => {:controller => 'home', :action => '_box_office_love_edit'},
+					:update => "box_office_love",
+					:loading => "$('box_office_love').innerHTML='<img src=\"images/ajax-loading.gif\" />'",
+				},
 				{:id => 'lnk_edit_box_office_love', :style => 'display: none;'} %>
 
 	<script type="text/javascript">
