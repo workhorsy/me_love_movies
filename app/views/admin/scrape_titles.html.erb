@@ -1,0 +1,20 @@
+
+<p>
+	Find all the titles between 
+	<%=select_tag("start_month", options_for_select(get_months_hash, Time.now.month))%>
+	<%=select_tag("start_day", options_for_select((1..Time.days_in_month(12)).to_a, Time.now.day))%>
+	 and 
+	<%=select_tag("start_month", options_for_select(get_months_hash, Time.now.month))%>
+	<%=select_tag("start_day", options_for_select((1..Time.days_in_month(12)).to_a, Time.now.day))%>
+</p>
+<p>
+	<%= link_to_remote 'Find', 
+				{
+					:url => {:controller => 'admin', :action => '_scrape_titles_show'},
+					:update => "found_titles",
+					:loading => "$('found_titles').innerHTML='<img src=\"/images/ajax-loading.gif\" />'",
+				},
+				{:id => 'lnk_find_titles'} %>
+<p>
+<div id="found_titles">
+</div>

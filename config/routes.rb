@@ -30,6 +30,8 @@ ActionController::Routing::Routes.draw do |map|
 										:_user_admin_disable => :get,
 										:_user_admin_enable => :get,
 										:_user_admin_show => :get,
+										:scrape_titles => :get,
+										:_scrape_titles_show => :get,
 										:disable_user => :get,
 										:enable_user => :get,
 										:destroy_user => :get }

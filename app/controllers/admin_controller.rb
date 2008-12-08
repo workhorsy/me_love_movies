@@ -72,6 +72,10 @@ class AdminController < ApplicationController
 		end
 	end
 
+	def scrape_titles
+
+	end
+
 	def _user_admin_disable
 		respond_to do |format|
 			format.js { render :partial => 'user_admin_disable', :locals => { :user => User.find(params[:id]) } }
@@ -87,6 +91,61 @@ class AdminController < ApplicationController
 	def _user_admin_show
 		respond_to do |format|
 			format.js { render :partial => 'user_admin_show', :locals => { :user => User.find(params[:id]) } }
+		end
+	end
+
+	def _scrape_titles_show
+		require 'mechanize'
+		scraping_broke = false
+
+		begin
+			# Monkey patch Mechanize to include an Ubuntu Hardy Firefox user agent
+			WWW::Mechanize::AGENT_ALIASES['Ubuntu Firefox 3.0'] = 
+					"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092510 Ubuntu/8.04 (hardy) Firefox/3.0.3"
+
+			domain = "en.wikipedia.org"
+			base_url = "http://www.#{domain}/wiki/2008_in_film"
+
+			# Create a browser
+			agent = WWW::Mechanize.new
+			agent.user_agent_alias = 'Ubuntu Firefox 3.0'
+
+			# Go to the page
+			page = agent.get(base_url)
+
+			# Grab all the tables that have title info
+			tables = page.search("//table[@class='wikitable']").select do |table|
+				table.search("//caption")[0].inner_text.downcase.include? "films that achieved wide-release status after initial release"
+			end
+
+			# Grab all the titles from each row
+			links = []
+			tables.each do |table|
+				# Skip the first row, because it is the header
+				table.search("//tr")[1..-1].each do |tr|
+					# Grab the third cell from the end, then grab the link inside it
+					links << tr.search("//td")[-3].search("//a")[0].raw_attributes['href']
+				end
+			end
+		rescue Exception => err
+			scraping_broke = true
+		end
+
+		respond_to do |format|
+			format.js do
+				if scraping_broke
+					render :text => "There was an error when scraping the page."
+				else
+					render :text => links.inspect
+				end
+			end
+			#return
+			#format.js { render :partial => 'scrape_titles_show', :locals => { 
+			#															:start_day => params[:start_day],
+			#															:start_month => params[:start_month],
+			#															:end_day => params[:end_day],
+			#															:end_month => params[:end_month],
+			#														 } }
 		end
 	end
 end
