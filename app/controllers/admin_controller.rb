@@ -95,10 +95,17 @@ class AdminController < ApplicationController
 	end
 
 	def _scrape_titles_show
+		start_day = params['start_day'].to_i
+		end_day = params['end_day'].to_i
+		start_month = params['start_month'].to_i
+		end_month = params['end_month'].to_i
+
 		require 'mechanize'
 		scraping_broke = false
 
 		begin
+			month_names = %w{january february march april may june july august september october november december}
+
 			# Monkey patch Mechanize to include an Ubuntu Hardy Firefox user agent
 			WWW::Mechanize::AGENT_ALIASES['Ubuntu Firefox 3.0'] = 
 					"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092510 Ubuntu/8.04 (hardy) Firefox/3.0.3"
@@ -120,15 +127,36 @@ class AdminController < ApplicationController
 
 			# Grab all the titles from each row
 			links = []
+			month, day = 0, 0
 			tables.each do |table|
 				# Skip the first row, because it is the header
 				table.search("//tr")[1..-1].each do |tr|
+					# Determine what month these titles are from
+					if tr.search("//td")[-6]
+						first_column = tr.search("//td")[-6].inner_text.gsub("\n", '').downcase
+						if month_names.include? first_column
+							month = month_names.index(first_column)+1
+						end
+					end
+
+					# Determine what day these titles are from
+					if tr.search("//td")[-5]
+						second_column = tr.search("//td")[-5].inner_text.downcase
+						if second_column =~ /^\d*$/
+							day = second_column.to_i
+						end
+					end
+
 					# Grab the third cell from the end, then grab the link inside it
-					links << tr.search("//td")[-3].search("//a")[0].raw_attributes['href']
+					#raise [day, month, start_month, end_month, start_day, end_day].inspect
+					if month >= start_month && month <= end_month &&
+						day >= start_day && day <= end_day
+						links << tr.search("//td")[-3].search("//a")[0].raw_attributes['href'] + ":#{month}:#{day}"
+					end
 				end
 			end
-		rescue Exception => err
-			scraping_broke = true
+#		rescue Exception => err
+#			scraping_broke = true
 		end
 
 		respond_to do |format|

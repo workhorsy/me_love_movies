@@ -4,17 +4,24 @@
 	<%=select_tag("start_month", options_for_select(get_months_hash, Time.now.month))%>
 	<%=select_tag("start_day", options_for_select((1..Time.days_in_month(12)).to_a, Time.now.day))%>
 	 and 
-	<%=select_tag("start_month", options_for_select(get_months_hash, Time.now.month))%>
-	<%=select_tag("start_day", options_for_select((1..Time.days_in_month(12)).to_a, Time.now.day))%>
+	<%=select_tag("end_month", options_for_select(get_months_hash, Time.now.month))%>
+	<%=select_tag("end_day", options_for_select((1..Time.days_in_month(12)).to_a, Time.now.day))%>
 </p>
 <p>
-	<%= link_to_remote 'Find', 
-				{
-					:url => {:controller => 'admin', :action => '_scrape_titles_show'},
-					:update => "found_titles",
-					:loading => "$('found_titles').innerHTML='<img src=\"/images/ajax-loading.gif\" />'",
-				},
-				{:id => 'lnk_find_titles'} %>
+	<a href="#" id="lnk_find_titles" onclick="new Ajax.Updater('found_titles', 
+													'/admin/_scrape_titles_show?' + 
+																			'start_day=' + $('start_day').value + 
+																			'&start_month=' + $('start_month').value + 
+																			'&end_day=' + $('end_day').value + 
+																			'&end_month=' + $('end_month').value, 
+												{asynchronous: true, evalScripts: true, 
+												onLoading: function(request){
+															$('found_titles').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+														},
+												parameters: 'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')}); return false;">
+	Find</a>
+<p>
+
 <p>
 <div id="found_titles">
 </div>
