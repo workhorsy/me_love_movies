@@ -94,11 +94,30 @@ class AdminController < ApplicationController
 		end
 	end
 
+	def _scrape_titles_edit
+		respond_to do |format|
+			format.js do
+				render :partial => 'scrape_titles_edit', 
+						:locals => { 
+									:start_day => params['start_day'],
+									:start_month => params['start_month'],
+									:end_day => params['end_day'],
+									:end_month => params['end_month'],
+									:year => params['year'],
+									:links => params['links']
+								 }
+			end
+		end
+	end
+
 	def _scrape_titles_show
+		# Get the params
 		start_day = params['start_day'].to_i
 		end_day = params['end_day'].to_i
 		start_month = params['start_month'].to_i
 		end_month = params['end_month'].to_i
+		year = params['year'].to_i
+		links = []
 
 		require 'mechanize'
 		scraping_broke = false
@@ -111,7 +130,7 @@ class AdminController < ApplicationController
 					"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092510 Ubuntu/8.04 (hardy) Firefox/3.0.3"
 
 			domain = "en.wikipedia.org"
-			base_url = "http://www.#{domain}/wiki/2008_in_film"
+			base_url = "http://www.#{domain}/wiki/#{year}_in_film"
 
 			# Create a browser
 			agent = WWW::Mechanize.new
@@ -122,41 +141,64 @@ class AdminController < ApplicationController
 
 			# Grab all the tables that have title info
 			tables = page.search("//table[@class='wikitable']").select do |table|
-				table.search("//caption")[0].inner_text.downcase.include? "films that achieved wide-release status after initial release"
+				table.search("//caption").length > 0 &&
+				table.search("//caption")[0].inner_text.downcase.include?("films that achieved wide-release status after initial release")
 			end
 
 			# Grab all the titles from each row
-			links = []
 			month, day = 0, 0
 			tables.each do |table|
+				# Figure out what column in this table has the title link
+				title_column = nil
+				counter = 1
+				table.search("//tr").first.search("//td").reverse.each do |td|
+					title_column = -counter if td.inner_text.downcase == "title"
+					counter += 1
+				end
+
 				# Skip the first row, because it is the header
 				table.search("//tr")[1..-1].each do |tr|
 					# Determine what month these titles are from
-					if tr.search("//td")[-6]
-						first_column = tr.search("//td")[-6].inner_text.gsub("\n", '').downcase
+					if tr.search("//td")[0]
+						first_column = tr.search("//td")[0].inner_text.gsub("\n", '').downcase
 						if month_names.include? first_column
 							month = month_names.index(first_column)+1
 						end
 					end
 
 					# Determine what day these titles are from
-					if tr.search("//td")[-5]
-						second_column = tr.search("//td")[-5].inner_text.downcase
+					if tr.search("//td")[1]
+						second_column = tr.search("//td")[1].inner_text.downcase
 						if second_column =~ /^\d*$/
 							day = second_column.to_i
 						end
 					end
 
 					# Grab the third cell from the end, then grab the link inside it
-					#raise [day, month, start_month, end_month, start_day, end_day].inspect
-					if month >= start_month && month <= end_month &&
-						day >= start_day && day <= end_day
-						links << tr.search("//td")[-3].search("//a")[0].raw_attributes['href'] + ":#{month}:#{day}"
+					begin
+						if DateTime.parse("#{year}-#{month}-#{day}") >= DateTime.parse("#{year}-#{start_month}-#{start_day}") &&
+							DateTime.parse("#{year}-#{month}-#{day}") <= DateTime.parse("#{year}-#{end_month}-#{end_day}")
+							links << tr.search("//td")[title_column].search("//a")[0].raw_attributes['href'] #+ ":#{month}:#{day}"
+						end
+					rescue
+						# FIXME: We need to not ignore titles that break the title
+						#links << "brokespoded:#{month}:#{day}"
 					end
 				end
 			end
-#		rescue Exception => err
-#			scraping_broke = true
+		rescue Exception => err
+			scraping_broke = true
+		end
+
+		# Get any titles that already use the same data_source as the links
+		#@titles = Title.find(:all, :conditions => "data_source in(" + 
+		#											links.collect { |link| "'http://en.wikipedia.org#{link}'" }.join(', ') +
+		#										")")
+		@links = []
+		links.each do |link|
+			@links << {
+				:link => "http://en.wikipedia.org#{link}",
+				:title => Title.find(:first, :conditions => ["data_source=?", "http://en.wikipedia.org#{link}"]) }
 		end
 
 		respond_to do |format|
@@ -164,16 +206,17 @@ class AdminController < ApplicationController
 				if scraping_broke
 					render :text => "There was an error when scraping the page."
 				else
-					render :text => links.inspect
+					render :partial => 'scrape_titles_show', 
+								:locals => { 
+											:start_day => start_day,
+											:start_month => start_month,
+											:end_day => end_day,
+											:end_month => end_month,
+											:year => year,
+											:links => @links
+										 }
 				end
 			end
-			#return
-			#format.js { render :partial => 'scrape_titles_show', :locals => { 
-			#															:start_day => params[:start_day],
-			#															:start_month => params[:start_month],
-			#															:end_day => params[:end_day],
-			#															:end_month => params[:end_month],
-			#														 } }
 		end
 	end
 end

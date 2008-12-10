@@ -1,27 +1,3 @@
 
-<p>
-	Find all the titles between 
-	<%=select_tag("start_month", options_for_select(get_months_hash, Time.now.month))%>
-	<%=select_tag("start_day", options_for_select((1..Time.days_in_month(12)).to_a, Time.now.day))%>
-	 and 
-	<%=select_tag("end_month", options_for_select(get_months_hash, Time.now.month))%>
-	<%=select_tag("end_day", options_for_select((1..Time.days_in_month(12)).to_a, Time.now.day))%>
-</p>
-<p>
-	<a href="#" id="lnk_find_titles" onclick="new Ajax.Updater('found_titles', 
-													'/admin/_scrape_titles_show?' + 
-																			'start_day=' + $('start_day').value + 
-																			'&start_month=' + $('start_month').value + 
-																			'&end_day=' + $('end_day').value + 
-																			'&end_month=' + $('end_month').value, 
-												{asynchronous: true, evalScripts: true, 
-												onLoading: function(request){
-															$('found_titles').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
-														},
-												parameters: 'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')}); return false;">
-	Find</a>
-<p>
+<%= render :partial => "scrape_titles_edit",  :locals => {  } %>
 
-<p>
-<div id="found_titles">
-</div>

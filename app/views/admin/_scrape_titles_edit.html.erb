@@ -1,0 +1,27 @@
+
+<div id="scrape_titles_box">
+	<p>
+		Find all the titles between 
+		<%=select_tag("start_month", options_for_select(get_months_hash, 1))%>
+		<%=select_tag("start_day", options_for_select((1..Time.days_in_month(12)).to_a, 1))%>
+		 and 
+		<%=select_tag("end_month", options_for_select(get_months_hash, Time.now.month))%>
+		<%=select_tag("end_day", options_for_select((1..Time.days_in_month(12)).to_a, Time.now.day))%>
+		 of 
+		<%=select_tag("year", options_for_select((2000..Time.now.year+1).to_a, Time.now.year))%>
+	</p>
+	<p>
+		<a href="#" id="lnk_find_titles" onclick="new Ajax.Updater('scrape_titles_box', 
+														'/admin/_scrape_titles_show?' + 
+																				'year=' + $('year').value + 
+																				'&start_day=' + $('start_day').value + 
+																				'&start_month=' + $('start_month').value + 
+																				'&end_day=' + $('end_day').value + 
+																				'&end_month=' + $('end_month').value, 
+													{asynchronous: true, evalScripts: true, 
+													onLoading: function(request){
+																$('scrape_titles_box').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+															},
+													parameters: 'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')}); return false;">
+		Find</a>
+</div>

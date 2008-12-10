@@ -1,3 +1,17 @@
-peep
 
-<% sleep(3) %>
+<div id="scrape_titles_box">
+	<table border="1">
+	<tr>
+		<th>Wikipedia Page</th>
+		<th>Our Page</th>
+	</tr>
+	<% for link in links %>
+		<% title = link[:title] %>
+		<tr>
+			<td><a href="<%=link[:link]%>" target="_blank"><%=link[:link]%></a></td>
+			<td><%=title ? link_to(title.proper_name, {:controller=>'titles', :action=>'show', :id =>title.id}, :target=>'_blank') : ''%></td>
+		<tr>
+	<% end %>
+	</table>
+</div>
+
