@@ -1,16 +1,40 @@
 
 <div id="scrape_titles_box">
-	<table border="1">
+	<table id="main_table" border="1">
 	<tr>
 		<th>Wikipedia Page</th>
 		<th>Our Page</th>
 	</tr>
+	<% counter = 0 %>
 	<% for link in links %>
 		<% title = link[:title] %>
 		<tr>
 			<td><a href="<%=link[:link]%>" target="_blank"><%=link[:link]%></a></td>
-			<td><%=title ? link_to(title.proper_name, {:controller=>'titles', :action=>'show', :id =>title.id}, :target=>'_blank') : ''%></td>
+			<td id="status[<%=counter%>]">
+				<% if title %>
+					<%=link_to(title.proper_name, 
+					{:controller=>'titles', :action=>'show', :id =>title.id}, 
+					:target=>'_blank') %>
+				<% else %>
+					<button id="btn_import_titles" onclick="
+															new Ajax.Updater('status[<%=counter%>]', 
+																'/admin/_scrape_titles_import', {
+																method: 'post',
+																asynchronous: true, 
+																evalScripts: true, 
+																onLoading: function(request){
+																			$('status[<%=counter%>]').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+																		},
+																parameters: {
+																	authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+																	link: '<%=link[:link]%>'
+																}
+															}); return false;">
+					Import</button>
+				<% end %>
+			</td>
 		<tr>
+		<% counter += 1 %>
 	<% end %>
 	</table>
 </div>

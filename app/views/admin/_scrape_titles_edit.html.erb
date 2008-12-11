@@ -11,7 +11,7 @@
 		<%=select_tag("year", options_for_select((2000..Time.now.year+1).to_a, Time.now.year))%>
 	</p>
 	<p>
-		<a href="#" id="lnk_find_titles" onclick="new Ajax.Updater('scrape_titles_box', 
+		<button id="btn_find_titles" onclick="new Ajax.Updater('scrape_titles_box', 
 														'/admin/_scrape_titles_show?' + 
 																				'year=' + $('year').value + 
 																				'&start_day=' + $('start_day').value + 
@@ -20,8 +20,9 @@
 																				'&end_month=' + $('end_month').value, 
 													{asynchronous: true, evalScripts: true, 
 													onLoading: function(request){
-																$('scrape_titles_box').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+																$('scrape_titles_box').innerHTML='<img src=\'/images/ajax-loading.gif\' />' +
+																'<p>Looking to see what titles are available for scraping. This will take a few seconds...<p>';
 															},
 													parameters: 'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')}); return false;">
-		Find</a>
+		Find</button>
 </div>

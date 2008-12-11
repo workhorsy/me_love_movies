@@ -94,6 +94,32 @@ class AdminController < ApplicationController
 		end
 	end
 
+	def _scrape_titles_import
+		# Get the params
+		link = params['link']
+		scraping_broke = false
+		@title = nil
+
+		begin
+			spider = SpiderWikipedia.new
+			@title = spider.scrape_page(link)
+			@title.save!
+		rescue Exception => err
+			scraping_broke = true
+		end
+
+		respond_to do |format|
+			format.js do
+				if scraping_broke
+					render :text => "Scraping broke"
+				else
+					render :partial => "scrape_titles_import",
+							:locals => { :title => @title }
+				end
+			end
+		end
+	end
+
 	def _scrape_titles_edit
 		respond_to do |format|
 			format.js do

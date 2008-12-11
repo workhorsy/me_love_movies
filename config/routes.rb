@@ -33,6 +33,7 @@ ActionController::Routing::Routes.draw do |map|
 										:scrape_titles => :get,
 										:_scrape_titles_show => :get,
 										:_scrape_titles_edit => :get,
+										:_scrape_titles_import => :post,
 										:disable_user => :get,
 										:enable_user => :get,
 										:destroy_user => :get }
