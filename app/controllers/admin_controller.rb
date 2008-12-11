@@ -98,12 +98,19 @@ class AdminController < ApplicationController
 		# Get the params
 		link = params['link']
 		scraping_broke = false
+		error_message = "Unknown error"
 		@title = nil
 
 		begin
+			error_message = "Broke when scraping the page"
 			spider = SpiderWikipedia.new
 			@title = spider.scrape_page(link)
-			@title.save!
+			unless @title.save
+				scraping_broke = true
+				error_message = "Could not save the title. Error: " + 
+								@title.errors.to_a[0][0] + " " +
+								@title.errors.to_a[0][1]
+			end
 		rescue Exception => err
 			scraping_broke = true
 		end
@@ -111,7 +118,7 @@ class AdminController < ApplicationController
 		respond_to do |format|
 			format.js do
 				if scraping_broke
-					render :text => "Scraping broke"
+					render :text => error_message
 				else
 					render :partial => "scrape_titles_import",
 							:locals => { :title => @title }

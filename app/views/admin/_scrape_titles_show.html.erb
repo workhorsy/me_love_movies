@@ -1,6 +1,20 @@
 
 <div id="scrape_titles_box">
-	<table id="main_table" border="1">
+
+	<button id="btn_go_back_top" onclick="new Ajax.Updater('scrape_titles_box', 
+											'/admin/_scrape_titles_edit', {
+											asynchronous: true, 
+											evalScripts: true, 
+											onLoading: function(request){
+														$('scrape_titles_box').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+													},
+											parameters: {
+												authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+											}
+											}); return false;">
+	Back to the import menu</button>
+
+	<table id="main_table" cellspacing="7">
 	<tr>
 		<th>Wikipedia Page</th>
 		<th>Our Page</th>
@@ -37,5 +51,18 @@
 		<% counter += 1 %>
 	<% end %>
 	</table>
+
+	<button id="btn_go_back_bottom" onclick="new Ajax.Updater('scrape_titles_box', 
+											'/admin/_scrape_titles_edit', {
+											asynchronous: true, 
+											evalScripts: true, 
+											onLoading: function(request){
+														$('scrape_titles_box').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+													},
+											parameters: {
+												authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+											}
+											}); return false;">
+	Back to the import menu</button>
 </div>
 
