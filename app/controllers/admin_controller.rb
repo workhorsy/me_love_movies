@@ -101,6 +101,7 @@ class AdminController < ApplicationController
 		error_message = "Unknown error"
 		@title = nil
 
+		# Scrape the page
 		begin
 			error_message = "Broke when scraping the page"
 			spider = SpiderWikipedia.new
@@ -113,6 +114,15 @@ class AdminController < ApplicationController
 			end
 		rescue Exception => err
 			scraping_broke = true
+		end
+
+		# Scrape the posters
+		unless scraping_broke
+			begin
+				spider = SpiderMoviePoster.new
+				spider.scrape_from_title(@title)
+			rescue Exception => err
+			end
 		end
 
 		respond_to do |format|

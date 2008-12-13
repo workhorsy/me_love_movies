@@ -1,7 +1,10 @@
 
 <div id="scrape_titles_box">
 	<%=link_to(@title.proper_name, 
-		{:controller => 'titles', :action => 'show', :id => @title.id},
-		:target=>'_blank')%>
+	{:controller=>'titles', :action=>'show', :id =>@title.id}, 
+	:target=>'_blank') %>
+	<%= @title.posters.collect do |poster|
+		"<img src=\"/" + poster.small_image_file + "\" width=\"50\" height=\"50\" />"
+	end.join %>
 </div>
 
