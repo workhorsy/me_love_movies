@@ -20,6 +20,11 @@ class SpiderMoviePoster
 			agent = WWW::Mechanize.new
 			agent.user_agent_alias = 'Ubuntu Firefox 3.0'
 
+			# Make sure all the directories exists
+			Dir.mkdir "public/posters/" unless File.directory? "public/posters/"
+			Dir.mkdir "public/posters/big/" unless File.directory? "public/posters/big/"
+			Dir.mkdir "public/posters/small/" unless File.directory? "public/posters/small/"
+
 			# Go to the search page
 			page = agent.get(BASE_URL)
 
