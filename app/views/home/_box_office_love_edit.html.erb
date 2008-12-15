@@ -1,11 +1,14 @@
 <div id="box_office_love">
 	<table width="100%" cellpadding="0" cellspacing="0">
-	<% options = options_for_select(titles.collect { |t| [t.name[0..50] , t.id] }) %>
+	<div style="display: none">
+		<%= select_tag("title_options_holder", options_for_select(titles.collect { |t| [t.name[0..50] , t.id] })) %>
+	</div>
+
 	<% 5.times do |i| %>
-		<%= select_tag("title[#{i}]", options, :style => 'width: 260px;') %>
-		<br />
+		<div id="container_title[<%=i%>]">
+			<%= select_tag("title[#{i}]", [], :style => 'width: 260px;') %>
+		</div>
 		grossed <%= text_field_tag("amount[#{i}]") %>
-		<br />
 	<% end %>
 
 	<input type="button" value="Update" onclick="
@@ -48,4 +51,16 @@
 	<%= link_to_remote "Don't edit", 
 				{:url => {:controller => 'home', :action => '_box_office_love_show'}, :update => "box_office_love"},
 				{:id => 'lnk_show_box_office_love'} %>
+
+	<script type="text/javascript">
+		// <!CDATA[
+		var options = $('title_options_holder').innerHTML;
+		for(i=0; i<5; i++) {
+			$('container_title[' + i + ']').innerHTML = "<select id=\"title[" + i + "]\" name=\"title[" + i + "]\" style=\"width: 260px;\">" + options + "</select>";
+		}
+		// ]]>
+	</script>
+
 </div>
+
+
