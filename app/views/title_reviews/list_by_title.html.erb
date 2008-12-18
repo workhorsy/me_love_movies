@@ -8,15 +8,16 @@
 	<% if @title_reviews.length == 0 %>
 		There are no reviews
 	<% else %>
-	<table>
+	<table border="1" style="width: 100%">
+	<% counter = 0 %>
 	<% for review in @title_reviews %>
 		<tr>
 		<% id = review.id %>
-		<td>
-			<div style="float:left; margin:10px;">
+		<td style="vertical-align: top;">
+			<div style="margin:10px; margin-top:0px">
 				<%= link_to(
 					image_tag(review.user.avatar_file_or_default, :size=>"100x100", :style=>"text-decoration: none;") +
-					h(review.user.user_name), 
+					'<br />' + h(review.user.user_name), 
 					:controller => 'users', 
 					:action => 'show', 
 					:id => review.user.id) %>
@@ -24,55 +25,71 @@
 		</td>
 		<td>
 			<div>
-				&quot;<%= h(review.body).gsub("\n", "<br />") %>&quot;
 				<% user_rating = review.get_user_rating(session[:user_id]) || 0 %>
-				<table><tr><td>
-				<div id="tr_rating_<%=id%>" class="rating_star" style="display: none;">
-					<b>How you rate this review:</b>
-					<input id="table_rating_<%=id%>" name="table_rating[<%=id%>]" class="holder" type="hidden" value="<%= user_rating %>" />
-					<a title="Don't Rate" class="dont" onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
-					<a title="ehh..."                  onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
-					<a title="Not Bad"                 onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 2)" onmouseout="star_mouse_off_rating(this)"></a>
-					<a title="Pretty Good"             onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 3)" onmouseout="star_mouse_off_rating(this)"></a>
-					<a title="Great"                   onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 4)" onmouseout="star_mouse_off_rating(this)"></a>
-					<a title="Awesome!"                onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 5)" onmouseout="star_mouse_off_rating(this)"></a>
-				</div>
-				<script type="text/javascript" language="JavaScript">
-					// <![CDATA[
-					// Set the initial value of the stars
-					star_mouse_off_rating($("tr_rating_<%=id%>").getElementsByTagName('a')[0]);
+				<table border="1" style="width: 100%; height: 100%">
+					<tr>
+						<td colspan="2">
+								&quot;<%= h(review.body).gsub("\n", "<br />") %>&quot;
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div id="tr_rating_<%=id%>" class="rating_star" style="display: none;">
+								<b>How you rate this review:</b>
+								<input id="table_rating_<%=id%>" name="table_rating[<%=id%>]" class="holder" type="hidden" value="<%= user_rating %>" />
+								<a title="Don't Rate" class="dont" onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 0)" onmouseout="star_mouse_off_rating(this)"></a>
+								<a title="ehh..."                  onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 1)" onmouseout="star_mouse_off_rating(this)"></a>
+								<a title="Not Bad"                 onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 2)" onmouseout="star_mouse_off_rating(this)"></a>
+								<a title="Pretty Good"             onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 3)" onmouseout="star_mouse_off_rating(this)"></a>
+								<a title="Great"                   onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 4)" onmouseout="star_mouse_off_rating(this)"></a>
+								<a title="Awesome!"                onclick="star_click_rating(this); rate_review('table_rating_<%=id%>', <%=id%>);" onmouseover="star_update_images(this, 5)" onmouseout="star_mouse_off_rating(this)"></a>
+							</div>
+							<script type="text/javascript" language="JavaScript">
+								// <![CDATA[
+								// Set the initial value of the stars
+								star_mouse_off_rating($("tr_rating_<%=id%>").getElementsByTagName('a')[0]);
 
-					function rate_review(star_value_id, review_id) {
-						var hidden = $(star_value_id);
-						var count = hidden.value;
+								function rate_review(star_value_id, review_id) {
+									var hidden = $(star_value_id);
+									var count = hidden.value;
 
-						new Ajax.Updater(hidden.id, 
-										'/title_reviews/set_review_rating?rating=' + count + '&review_id=' + review_id, 
-										{asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')});
-					}
-					// ]]>
-				</script>
-
-				</td><td>
-
-				<% avg_rating = review.avg_user_rating || 0 %>
-				<div id="table_average_<%=id%>_container">
-					<input id="table_average_<%=id%>" type="hidden" value="<%=avg_rating%>" />
-					<b>How others rated this review:</b><br />
-					<span id="table_average_<%=id%>_info">
-						<%=
-							("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * avg_rating) +
-							("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - avg_rating))
-						%>
-					</span>
-				</div>
-				
-				</td></tr></table>
-
+									new Ajax.Updater(hidden.id, 
+													'/title_reviews/set_review_rating?rating=' + count + '&review_id=' + review_id, 
+													{asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')});
+								}
+								// ]]>
+							</script>
+						</td>
+						<td>
+							<% avg_rating = review.avg_user_rating || 0 %>
+							<div id="table_average_<%=id%>_container">
+								<input id="table_average_<%=id%>" type="hidden" value="<%=avg_rating%>" />
+								<b>How others rated this review:</b><br />
+								<span id="table_average_<%=id%>_info">
+									<%=
+										("<img src=\"/images/heart_on.jpg\" alt=\"\" />" * avg_rating) +
+										("<img src=\"/images/heart_off.jpg\" alt=\"\" />" * (5 - avg_rating))
+									%>
+								</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<%= render :partial => "default_title_comment", 
+								:locals => {
+									:counter => counter,
+									:title_id => @title_id,
+									:review_id => review.id
+								} %>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</td>
 	
 		</tr>
+	<% counter += 1 %>
 	<% end %>
 	</table>
 	<% end %>

@@ -160,10 +160,23 @@ class TitleReviewsController < ApplicationController
 		@title_id = params[:id].to_i
 		@title_reviews = TitleReview.paginate(:conditions => ["title_id=?", @title_id],
 											:page => params[:page], 
-											:per_page => 4, #Title::per_page, 
+											:per_page => 2, #Title::per_page, 
 											:order => 'created_at desc')
 
 		render :layout => false
+	end
+
+	def _add_title_comment
+		respond_to do |format|
+			format.js do
+				render :partial => 'add_title_comment', 
+						:locals => { 
+									:element_id => params['element_id'],
+									:title_id => params['title_id'],
+									:review_id => params['review_id']
+								 }
+			end
+		end
 	end
 
 	private
