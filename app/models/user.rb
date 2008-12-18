@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 	has_many :title_reviews
 	has_many :title_review_ratings
 	has_many :user_tags
+	has_many :review_comments
 
 	validates_presence_of :name, :email, :user_name, :year_of_birth, :time_zone, :gender, :message => 'is required'
 	validates_uniqueness_of :user_name, :email, :message => "is already used by another user"

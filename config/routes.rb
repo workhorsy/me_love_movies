@@ -25,7 +25,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :title_ratings
   map.resources :title_reviews, :member => { :list_by_title => :get }, 
 								:collection => { :_add_title_comment => :get, 
-												:_default_title_comment => :get}
+												:_default_title_comment => :get,
+												:_create_title_comment => :post}
   map.resources :admin, :collection => { :list_users => :get,
 										:list_title_ratings => :get,
 										:list_title_reviews => :get,

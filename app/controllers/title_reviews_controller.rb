@@ -166,6 +166,19 @@ class TitleReviewsController < ApplicationController
 		render :layout => false
 	end
 
+	def _default_title_comment
+		respond_to do |format|
+			format.js do
+				render :partial => 'default_title_comment', 
+						:locals => { 
+									:element_id => params['element_id'],
+									:title_id => params['title_id'],
+									:review_id => params['review_id']
+								 }
+			end
+		end
+	end
+
 	def _add_title_comment
 		respond_to do |format|
 			format.js do
@@ -175,6 +188,41 @@ class TitleReviewsController < ApplicationController
 									:title_id => params['title_id'],
 									:review_id => params['review_id']
 								 }
+			end
+		end
+	end
+
+	def _create_title_comment
+		# Get the params and make sure they exists
+		title_review = TitleReview.find(params['title_review_id'])
+		user = User.find(session[:user_id])
+		body = params['body']
+
+		# Create the review comment
+		review_comment = ReviewComment.new
+		review_comment.title_review_id = title_review.id
+		review_comment.user_id = user.id
+		review_comment.body = body
+
+		respond_to do |format|
+			format.js do
+				if review_comment.save
+					render :partial => 'add_title_comment', 
+							:locals => { 
+										:element_id => params['element_id'],
+										:title_id => params['title_id'],
+										:review_id => params['review_id']
+									 }
+				else
+					render :text => "fail" + review_comment.errors.inspect
+					return
+					render :partial => 'error_title_comment', 
+							:locals => { 
+										:element_id => params['element_id'],
+										:title_id => params['title_id'],
+										:review_id => params['review_id']
+									 }
+				end
 			end
 		end
 	end

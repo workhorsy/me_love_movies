@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 24) do
+ActiveRecord::Schema.define(:version => 25) do
 
   create_table "box_office_love_titles", :force => true do |t|
     t.integer "title_id"
@@ -26,6 +26,14 @@ ActiveRecord::Schema.define(:version => 24) do
   create_table "ratings", :force => true do |t|
     t.string "name"
     t.string "abbreviation"
+  end
+
+  create_table "review_comments", :force => true do |t|
+    t.integer  "title_review_id"
+    t.integer  "user_id"
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "sexes", :force => true do |t|

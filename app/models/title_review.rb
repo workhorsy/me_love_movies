@@ -2,6 +2,7 @@ class TitleReview < ActiveRecord::Base
 	belongs_to :title
 	belongs_to :user
 	has_many :title_review_ratings
+	has_many :review_comments
 
 	def self.max_body_length
 		1000

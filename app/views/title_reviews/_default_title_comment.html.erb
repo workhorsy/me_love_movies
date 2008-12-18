@@ -1,13 +1,13 @@
 
-<div id="comment_container[<%=@counter%>]">
-	<button id="btn_comment" onclick="new Ajax.Updater('comment_container[<%=@counter%>]', 
+<div id="<%=element_id%>">
+	<button id="btn_comment" onclick="new Ajax.Updater('<%=element_id%>', 
 													'/title_reviews/_add_title_comment?' + 
-																			'element_id=' + encodeURIComponent('comment_container[<%=@counter%>]') + 
-																			'&title_id=<%=@title_id%>' + 
-																			'&review_id=<%=@review_id%>', 
+																			'element_id=' + encodeURIComponent('<%=element_id%>') + 
+																			'&title_id=<%=title_id%>' + 
+																			'&review_id=<%=review_id%>', 
 												{asynchronous: true, evalScripts: true, 
 												onLoading: function(request){
-															$('comment_container[<%=@counter%>]').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+															$('<%=element_id%>').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
 														},
 												parameters: 'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')}); return false;">
 	Add a comment</button>
