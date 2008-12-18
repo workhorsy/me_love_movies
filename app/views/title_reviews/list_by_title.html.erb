@@ -60,7 +60,7 @@
 								// ]]>
 							</script>
 						</td>
-						<td>
+						<td style="padding-bottom: 15px;">
 							<% avg_rating = review.avg_user_rating || 0 %>
 							<div id="table_average_<%=id%>_container">
 								<input id="table_average_<%=id%>" type="hidden" value="<%=avg_rating%>" />
@@ -74,6 +74,16 @@
 							</div>
 						</td>
 					</tr>
+					<% for comment in review.review_comments %>
+					<tr>
+						<td colspan="2" style="">
+							<img style="width: 30px; height: 30px; float: left" src="<%=comment.user.avatar_file_or_default%>" />
+							&quot;<%=comment.body%>&quot;
+							<br style="clear: both" />
+							<hr style="background-color: #E0E0E0; color: #E0E0E0; height: 1px; border: 0; margin-top: 10px; margin-bottom: 10px;"/>
+						</td>
+					</tr>
+					<% end %>
 					<tr>
 						<td colspan="2">
 							<%= render :partial => "default_title_comment", 
@@ -90,7 +100,9 @@
 	
 		</tr>
 		<tr>
-			<td colspan="2"><hr /></td>
+			<td colspan="2">
+				<hr style="background-color: #E0E0E0; color: #E0E0E0; height: 1px; border: 0;" />
+			</td>
 		</tr>
 	<% counter += 1 %>
 	<% end %>
