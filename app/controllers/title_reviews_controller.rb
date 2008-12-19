@@ -154,9 +154,7 @@ class TitleReviewsController < ApplicationController
 		end
 	end
 
-	# GET /list_by_title/1
-	# GET /list_by_title/1.xml
-	def list_by_title
+	def _list_by_title
 		@title_id = params[:id].to_i
 		@title_reviews = TitleReview.paginate(:conditions => ["title_id=?", @title_id],
 											:page => params[:page], 

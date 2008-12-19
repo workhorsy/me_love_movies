@@ -283,7 +283,7 @@ Other Reviews
 <script type="text/javascript">
 	// <!CDATA[
 	new Ajax.Updater("external_title_reviews", 
-					"/title_reviews/list_by_title/<%=@title.id%>", 
+					"/title_reviews/_list_by_title/<%=@title.id%>", 
 					{asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')});
 	// ]]>
 </script>

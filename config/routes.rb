@@ -23,7 +23,7 @@ ActionController::Routing::Routes.draw do |map|
 										:_box_office_love_show => :get }
   map.resources :titles, :collection => { :search => :get }
   map.resources :title_ratings
-  map.resources :title_reviews, :member => { :list_by_title => :get }, 
+  map.resources :title_reviews, :member => { :_list_by_title => :get }, 
 								:collection => { :_add_title_comment => :get, 
 												:_default_title_comment => :get,
 												:_create_title_comment => :post}
