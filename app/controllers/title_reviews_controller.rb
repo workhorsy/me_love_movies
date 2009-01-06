@@ -184,7 +184,8 @@ class TitleReviewsController < ApplicationController
 						:locals => { 
 									:element_id => params['element_id'],
 									:title_id => params['title_id'],
-									:review_id => params['review_id']
+									:review_id => params['review_id'],
+									:page => params['page']
 								 }
 			end
 		end
@@ -210,6 +211,7 @@ class TitleReviewsController < ApplicationController
 										:element_id => params['element_id'],
 										:title_id => params['title_id'],
 										:review_id => params['review_id'],
+										:page => params['page'],
 										:refresh_everything => true
 									 }
 				else

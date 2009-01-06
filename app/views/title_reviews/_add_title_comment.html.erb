@@ -14,7 +14,8 @@
 														authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
 														title_review_id: '<%=review_id%>',
 														title_id: '<%=title_id%>',
-														body: $('comment_body').value
+														body: $('comment_body').value,
+														page: '<%= params['page'] %>'
 													}
 												}); return false;">
 	Submit your comment</button>

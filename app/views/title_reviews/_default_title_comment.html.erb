@@ -4,7 +4,8 @@
 													'/title_reviews/_add_title_comment?' + 
 																			'element_id=' + encodeURIComponent('<%=element_id%>') + 
 																			'&title_id=<%=title_id%>' + 
-																			'&review_id=<%=review_id%>', 
+																			'&review_id=<%=review_id%>' +
+																			'&page=<%=params['page']%>', 
 												{asynchronous: true, evalScripts: true, 
 												onLoading: function(request){
 															$('<%=element_id%>').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
@@ -16,7 +17,7 @@
 		// <!CDATA[
 		<% if defined?(refresh_everything) != nil && refresh_everything == true %>
 			new Ajax.Updater("external_title_reviews", 
-							"/title_reviews/_list_by_title/<%=title_id%>", 
+							"/title_reviews/_list_by_title/<%=title_id%>?page=<%=page%>", 
 							{asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')});
 		<% end %>		
 		// ]]>
