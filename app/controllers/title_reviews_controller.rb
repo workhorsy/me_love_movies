@@ -205,11 +205,12 @@ class TitleReviewsController < ApplicationController
 		respond_to do |format|
 			format.js do
 				if review_comment.save
-					render :partial => 'add_title_comment', 
+					render :partial => 'default_title_comment', 
 							:locals => { 
 										:element_id => params['element_id'],
 										:title_id => params['title_id'],
-										:review_id => params['review_id']
+										:review_id => params['review_id'],
+										:refresh_everything => true
 									 }
 				else
 					render :text => "fail" + review_comment.errors.inspect
