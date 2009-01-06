@@ -69,8 +69,19 @@ class HomeController < ApplicationController
 	end
 
 	def _box_office_love_edit
+		# Get all the titles that have been out for at lease a month.
+		# Also get all the titles that were in the previous BOL.
+		@titles = Title.find(:all, 
+							:conditions => ["release_date < ? and release_date > ? or id in (?)", 
+										DateTime.now, 
+										DateTime.now - 1.month,
+										BoxOfficeLoveTitle.find(:all).collect { |n| n.title_id }.join(',')], 
+							:order => 'name')
+
 		respond_to do |format|
-			format.js { render :partial => 'box_office_love_edit', :locals => { :titles => Title.find(:all, :order => 'name') } }
+			format.js { render :partial => 'box_office_love_edit', 
+								:locals => { :titles => @titles }
+						}
 		end
 	end
 
