@@ -23,9 +23,9 @@
 				<tr valign="top">
 				<% for title in @titles[category] %>
 					<td align="center" width="100px">
-						<%=link_to("<img src=\"/#{title.random_small_image_file}\" />", {:controller => 'titles', :action => 'show', :id => title.id}, :class => 'black')%>
+						<%=link_to("<img src=\"/#{title.random_small_image_file}\" />", {:controller => 'titles', :action => 'show', :id => title.url_name}, :class => 'black')%>
 						<h2 style="padding:0">
-							<%=link_to(title.proper_name, {:controller => 'titles', :action => 'show', :id => title.id}, :class => 'black')%>
+							<%=link_to(title.proper_name, {:controller => 'titles', :action => 'show', :id => title.url_name}, :class => 'black')%>
 						</h2>
 					</td>
 				<% end %>
@@ -151,7 +151,7 @@
 
 			<!-- Box Office Entry Block -->
 			<% for title in @titles_opening_soon %>
-			<h2><%=link_to(title.proper_name, {:controller => 'titles', :action => 'show', :id => title.id}, :class => 'black')%></h2>
+			<h2><%=link_to(title.proper_name, {:controller => 'titles', :action => 'show', :id => title.url_name}, :class => 'black')%></h2>
 			<span class="money">Opening <%=title.release_date%></span><br /><br />
 			<% end %>
 			<% if @titles_opening_soon.length == 0 %>
@@ -188,8 +188,8 @@
 			<% for review in @top_reviews %>
 			<!-- Start Entry Block -->
 			<div>
-			<h2><%=link_to(h(review.title.proper_name), {:controller => 'titles', :action => 'show', :id => review.title.id}, :class => 'black')%></h2>
-			<div class="rating"><%=link_to('read full review', {:controller => 'titles', :action => 'show', :id => review.title.id})%> by <%=link_to(h(review.user.user_name), :controller => 'users', :action => 'show', :id => review.user.id)%></div>
+			<h2><%=link_to(h(review.title.proper_name), {:controller => 'titles', :action => 'show', :id => review.title.url_name}, :class => 'black')%></h2>
+			<div class="rating"><%=link_to('read full review', {:controller => 'titles', :action => 'show', :id => review.title.url_name})%> by <%=link_to(h(review.user.user_name), :controller => 'users', :action => 'show', :id => review.user.id)%></div>
 			<p><%=h(truncate(review.body, 80)) %>
 			</p>
 			</div>
@@ -215,5 +215,4 @@
 <br style="clear:both"/>
 
 <%= link_to 'Browse titles', :controller => 'titles', :action => 'index' %>
-
 

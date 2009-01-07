@@ -68,6 +68,10 @@ class Title < ActiveRecord::Base
 		self.name.split(',').first
 	end
 
+	def url_name
+		self.proper_name.gsub('.', ',')
+	end
+
 	def runtime_minutes
 		@runtime_minutes
 	end
