@@ -4,4 +4,4 @@
 
 <%= render :partial => 'title', :object => @title, :locals => { :button_name => 'Update'} %>
 
-<%= link_to 'Back to title', @title %>
+<%= link_to('Back to title', {:controller => 'titles', :action => 'show', :id => @title.url_name}) %>

@@ -9,7 +9,7 @@
 <% for title in @titles -%>
 <% n = @titles.index(title) %>
 	<tr>
-		<td><%= link_to(h(title.name), title) %></td>
+		<td><%= link_to(title.name, {:controller => 'titles', :action => 'show', :id => title.url_name}) %></td>
 		<td><%= link_to 'Edit', edit_title_path(title), :id => "lnk_edit_#{n}", :style => 'display: none;' %></td>
 		<td><%= link_to 'Destroy', title, :id => "lnk_delete_#{n}", :style => 'display: none;', :confirm => 'Are you sure?', :method => :delete %></td>
 	</tr>
