@@ -2,7 +2,7 @@ class TitleReviewsController < ApplicationController
 	layout 'default'
 	before_filter :authorize_admins_only, :only => ['destroy']
 	before_filter :authorize_users_only, :only => ['new', 'create']
-	before_filter :authorize_originating_user_only, :only => ['edit', 'update']
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update', '_add_title_comment', '_create_title_comment']
 	before_filter :authorize_title_is_released, :only => ['new']
 
 	# GET /title_reviews
@@ -155,9 +155,14 @@ class TitleReviewsController < ApplicationController
 	end
 
 	def _list_by_title
+		page = if params[:page] == nil || params[:page] == ""
+			1
+		else
+			params[:page]
+		end
 		@title_id = params[:id].to_i
 		@title_reviews = TitleReview.paginate(:conditions => ["title_id=?", @title_id],
-											:page => params[:page], 
+											:page => page, 
 											:per_page => 2, #Title::per_page, 
 											:order => 'created_at desc')
 
@@ -231,7 +236,8 @@ class TitleReviewsController < ApplicationController
 	private
 
 	def get_originating_user_id
-		review = TitleReview.find_by_id(params[:id])
+		review_id = params[:title_review_id] || params[:review_id]
+		review = TitleReview.find_by_id(review_id)
 		review.user.id
 	end
 end
