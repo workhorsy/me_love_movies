@@ -20,15 +20,14 @@ class TitlesController < ApplicationController
 		@user_id = session[:user_id]
 
 		# Determine the title
-		params[:id] = params[:id].to_s if params[:id].is_a? Array
 		name = if params[:id].downcase[0, 4] == "the "
-			params[:id][4 .. -1] + ", The"
+			params[:id][4 .. -1].gsub(',', '.') + ", The"
 		elsif params[:id].downcase[0, 2] == "a "
-			params[:id][2 .. -1] + ", A"
+			params[:id][2 .. -1].gsub(',', '.') + ", A"
 		elsif params[:id].downcase[0, 3] == "an"
-			params[:id][3 .. -1] + ", An"
+			params[:id][3 .. -1].gsub(',', '.') + ", An"
 		else
-			params[:id]
+			params[:id].gsub(',', '.')
 		end
 
 		@title = Title.find_by_name(name)
@@ -113,7 +112,7 @@ class TitlesController < ApplicationController
 		respond_to do |format|
 			if @title.save
 				flash_notice 'The Title was successfully created.'
-				format.html { redirect_to(:controller => 'titles', :action => 'show', :id => @title.url_name) }
+				format.html { redirect_to(@title) }
 				#format.xml	{ render :xml => @title, :status => :created, :location => @title }
 			else
 				format.html { render :action => "new" }
@@ -137,7 +136,7 @@ class TitlesController < ApplicationController
 		respond_to do |format|
 			if @title.update_attributes(params[:title])
 				flash_notice 'The Title was successfully updated.'
-				format.html { redirect_to(:controller => 'titles', :action => 'show', :id => @title.url_name) }
+				format.html { redirect_to(@title) }
 				#format.xml	{ head :ok }
 			else
 				format.html { render :action => "edit" }

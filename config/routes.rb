@@ -21,15 +21,7 @@ ActionController::Routing::Routes.draw do |map|
 										:_box_office_love_edit => :get,
 										:_box_office_love_update => :post,
 										:_box_office_love_show => :get }
-
-  # FIXME: The way we have a mixture of resources and connect here is retarded.
-  map.resources :titles, :member => { :edit => :get, 
-									:update => :post },
-						:collection => { :search => :get }
-  map.connect "titles/*id", 
-				:controller => 'titles', 
-				:action => "show"
-
+  map.resources :titles, :collection => { :search => :get }
   map.resources :title_ratings
   map.resources :title_reviews, :member => { :_list_by_title => :get }, 
 								:collection => { :_add_title_comment => :get, 
