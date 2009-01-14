@@ -16,7 +16,7 @@
 
 
 <%= link_to 'Edit this review', edit_title_review_path(@title_review), { :id => 'lnk_edit_review', :style => 'display: none;' } %> <br />
-<%= link_to "Back to '#{@title_review.title.proper_name}'", :controller => 'titles', :action => 'show', :id => @title_review.title.id %>
+<%= link_to "Back to '#{@title_review.title.proper_name}'", :controller => 'titles', :action => 'show', :id => @title_review.title.url_name %>
 
 <script type="text/javascript">
 	// <!CDATA[
