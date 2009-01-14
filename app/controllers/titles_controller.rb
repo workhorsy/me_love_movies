@@ -113,7 +113,7 @@ class TitlesController < ApplicationController
 		respond_to do |format|
 			if @title.save
 				flash_notice 'The Title was successfully created.'
-				format.html { redirect_to(@title) }
+				format.html { redirect_to(:controller => 'titles', :action => 'show', :id => @title.url_name) }
 				#format.xml	{ render :xml => @title, :status => :created, :location => @title }
 			else
 				format.html { render :action => "new" }
@@ -137,7 +137,7 @@ class TitlesController < ApplicationController
 		respond_to do |format|
 			if @title.update_attributes(params[:title])
 				flash_notice 'The Title was successfully updated.'
-				format.html { redirect_to(@title) }
+				format.html { redirect_to(:controller => 'titles', :action => 'show', :id => @title.url_name) }
 				#format.xml	{ head :ok }
 			else
 				format.html { render :action => "edit" }
