@@ -20,14 +20,15 @@ class TitlesController < ApplicationController
 		@user_id = session[:user_id]
 
 		# Determine the title
+		params[:id] = params[:id].to_s if params[:id].is_a? Array
 		name = if params[:id].downcase[0, 4] == "the "
-			params[:id][4 .. -1].gsub(',', '.') + ", The"
+			params[:id][4 .. -1] + ", The"
 		elsif params[:id].downcase[0, 2] == "a "
-			params[:id][2 .. -1].gsub(',', '.') + ", A"
+			params[:id][2 .. -1] + ", A"
 		elsif params[:id].downcase[0, 3] == "an"
-			params[:id][3 .. -1].gsub(',', '.') + ", An"
+			params[:id][3 .. -1] + ", An"
 		else
-			params[:id].gsub(',', '.')
+			params[:id]
 		end
 
 		@title = Title.find_by_name(name)

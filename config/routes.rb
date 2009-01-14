@@ -22,6 +22,12 @@ ActionController::Routing::Routes.draw do |map|
 										:_box_office_love_update => :post,
 										:_box_office_love_show => :get }
   map.resources :titles, :collection => { :search => :get }
+  # FIXME: We just catch any unknown actions here and assume it is the name for a show.
+  # It is bad that we can't find a way to do this using resources.
+  map.connect "titles/*id", 
+				:controller => 'titles', 
+				:action => "show"
+
   map.resources :title_ratings
   map.resources :title_reviews, :member => { :_list_by_title => :get }, 
 								:collection => { :_add_title_comment => :get, 
