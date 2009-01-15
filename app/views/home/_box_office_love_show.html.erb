@@ -3,7 +3,7 @@
 	<% for entry in box_office_love_titles %>
 		<tr valign="bottom">
 		<td><h2>
-				<%=link_to(entry.title.proper_name, {:controller => 'titles', :action => 'show', :id => entry.title.name}, :class => 'black')%>
+				<%=link_to(entry.title.proper_name, {:controller => 'titles', :action => 'show', :id => entry.title.url_name}, :class => 'black')%>
 			</h2>
 		</td>
 			<td class="money"><%=entry.amount%></td></tr>
