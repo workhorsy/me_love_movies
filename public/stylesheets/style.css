@@ -412,3 +412,16 @@ blockquote {
 	color: #f7ef2c;
 }
 
+.big_avatar_image {
+	width: 100px;
+	height: 100px;
+	text-align: center;
+}
+
+.small_avatar_image {
+	width: 30px;
+	height: 30px;
+	text-align: center;
+
+}
+

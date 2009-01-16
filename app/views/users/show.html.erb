@@ -41,9 +41,9 @@
 			<table class="content" width="100%" align="center">
 			<tr valign="top">
 			<td>
-				<p>
-					<%= image_tag @user.avatar_file_or_default, :size => "100x100" %>
-				</p>
+				<div class="big_avatar_image">
+					<%= image_tag @user.avatar_file_or_default %>
+				</div>
 
 				<p>
 					<div id="div_no_upload_avatar" style="display: none;">

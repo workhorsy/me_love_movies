@@ -195,8 +195,8 @@ Ratings
 	<% else %>
 	<% id = review.id %>
 	<div>
-		<div style="float:left; margin:10px;">
-			<%= image_tag review.user.avatar_file_or_default, :size=>"100x100" %>
+		<div class="big_avatar_image" style="float: left">
+			<%= image_tag review.user.avatar_file_or_default %>
 		</div>
 
 		<div>
