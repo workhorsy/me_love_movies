@@ -66,40 +66,73 @@
 		</td>
 		<td class="panel_body">
 			<div id="search_by_title" style="padding-left:20px; display: none;">
-				<% form_tag :action => 'search', :method => 'post' do -%>
-					<b>Search by Title: </b><%= text_field_tag :title, params[:title] %>
-
-					<%= hidden_field_tag :type, 'by_title' %>
+					<b>Search by Title: </b>
+					<%= text_field_tag :title, params[:title], :onKeyPress => "if(event.keyCode == 13) $('btn_by_title').click();"%>
 					<br />
-					<%= submit_tag 'Search', :style => 'width: 80px;' %>
-				<% end -%>
+					<button id="btn_by_title" style="width: 80px;" onclick=" new Ajax.Updater('search_results', 
+												'/titles/_search', 
+												{asynchronous: true, evalScripts: true, 
+													onLoading: function(request) {
+																$('search_by_title').hide();
+																$('search_results').show();
+																$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+													},
+													parameters: {
+														authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+														type: 'by_title',
+														title: encodeURIComponent($('title').value)
+													}
+												}); return false;">
+					Search</button>
 			</div>
 
-
 			<div id="search_by_director" style="padding-left:20px; display: none;">
-				<% form_tag :action => 'search', :method => 'post' do -%>
-					<b>Search by Director: </b><%= text_field_tag :director, params[:director] %>
+					<b>Search by Director: </b>
+					<%= text_field_tag :director, params[:director], :onKeyPress => "if(event.keyCode == 13) $('btn_by_director').click();" %>
 
-					<%= hidden_field_tag :type, 'by_director' %>
 					<br />
-					<%= submit_tag 'Search', :style => 'width: 80px;' %>
-				<% end -%>
+					<button id="btn_by_director" style="width: 80px;" onclick=" new Ajax.Updater('search_results', 
+												'/titles/_search', 
+												{asynchronous: true, evalScripts: true, 
+													onLoading: function(request) {
+																$('search_by_director').hide();
+																$('search_results').show();
+																$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+													},
+													parameters: {
+														authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+														type: 'by_director',
+														director: $('director').value
+													}
+												}); return false;">
+					Search</button>
 			</div>
 
 
 			<div id="search_by_actor" style="padding-left:20px; display: none;">
-				<% form_tag :action => 'search', :method => 'post' do -%>
-					<b>Search by Actor: </b><%= text_field_tag :actor, params[:actor] %>
+					<b>Search by Actor: </b>
+					<%= text_field_tag :actor, params[:actor], :onKeyPress => "if(event.keyCode == 13) $('btn_by_actor').click();" %>
 
-					<%= hidden_field_tag :type, 'by_actor' %>
 					<br />
-					<%= submit_tag 'Search', :style => 'width: 80px;' %>
-				<% end -%>
+					<button id="btn_by_actor" style="width: 80px;" onclick=" new Ajax.Updater('search_results', 
+												'/titles/_search', 
+												{asynchronous: true, evalScripts: true, 
+													onLoading: function(request) {
+																$('search_by_actor').hide();
+																$('search_results').show();
+																$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+													},
+													parameters: {
+														authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+														type: 'by_actor',
+														actor: $('actor').value
+													}
+												}); return false;">
+					Search</button>
 			</div>
 
 
 			<div id="search_by_ratings" style="padding-left:20px;<%=@has_results ? 'display: none' : ''%>">
-			<% form_for @title_rating, :url => {:action => 'search'} do |f| %>
 				<div id="container">
 					<h2>Genre</h2>
 						<% for genre in Title::genres %>
@@ -149,10 +182,22 @@
 
 					<br style="clear:both"/>
 
-					<%= hidden_field_tag :type, 'by_rating' %>
-					<%= f.submit 'Search', :class => 'submitbutton' %>
+					<button style="width: 80px;" onclick=" new Ajax.Updater('search_results', 
+												'/titles/_search', 
+												{asynchronous: true, evalScripts: true, 
+													onLoading: function(request) {
+																$('search_by_rating').hide();
+																$('search_results').show();
+																$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+													},
+													parameters: {
+														authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+														type: 'by_rating',
+														actor: $('actor').value
+													}
+												}); return false;">
+					Search</button>
 				</div>
-			<% end %>
 			</div>
 
 			<div id="search_by_tags" style="padding-left:20px; display: none;">
@@ -162,46 +207,6 @@
 			</div>
 
 			<div id="search_results" style="padding-left:20px;<%=@has_results ? '' : 'display: none'%>">
-			<% if @person_map && @other_persons %>
-			<h1>Search Results</h1>
-			<div style="padding-bottom: 200px;">
-				<% for person, titles in @person_map %>
-					<%=h(person)%>
-					<ul>
-					<% for title in titles %>
-						<li><%= link_to title.proper_name, :controller => 'titles', :action => 'show', :id => title.url_name %></li>
-					<% end %>
-					</ul>
-				<% end %>
-				<% if @other_persons.length > 0 %>
-					Other people you may be looking for:
-					<% form_tag({:action => 'search', :method => 'post' }, {:id => 'other_person_form'}) do -%>
-						<input type="hidden" name="type" value="by_<%=@person_type%>" />
-						<input id="person_field" type="hidden" name="<%=@person_type%>" value="" />
-						<ul>
-						<% for person in @other_persons %>
-							<li><%=link_to_function(h(person), "$('person_field').value='#{person}'; $('other_person_form').submit()")%></li>
-						<% end %>
-						</ul>
-					<% end %>
-				<% end %>
-				<% if @person_map.length == 0 && @other_persons.length == 0 %>
-					There were no people found.
-				<% end %>
-			</div>
-			<% elsif @titles %>
-			<h1>Search Results</h1>
-			<div style="padding-bottom: 200px;">
-				<% for title in @titles %>
-				<%= link_to title.proper_name, :controller => 'titles', :action => 'show', :id => title.url_name %><br />
-				<% end %>
-				<% if @titles.length == 0 %>
-					There were no results for your search
-				<% end %>
-			</div>
-			<% else %>
-				Click one of the tabs above to select the way you want to search.
-			<% end %>
 			</div>
 		</td>
 		<td style="background:url(/images/oj_right.jpg) right repeat-y;">

@@ -168,6 +168,10 @@ class TitlesController < ApplicationController
 		# Just return unless this is the post back from the search button
 		return unless request.post?
 
+		_search
+	end
+
+	def _search
 		@has_results = true
 
 		if params[:type] == 'by_title'
@@ -186,6 +190,12 @@ class TitlesController < ApplicationController
 											search_params.collect { |n| "#{db_field} like ?"}.join(' and '),
 											*search_params.collect { |n| "%#{n}%"}],
 								 :order => :name)
+
+			respond_to do |format|
+				format.js { render :partial => 'search', :locals => { 
+																:titles => @titles 
+														} }
+			end
 		elsif params[:type] == 'by_director'
 			@person_type = "director"
 			# Make sure something was selected
@@ -231,6 +241,14 @@ class TitlesController < ApplicationController
 			end
 
 			@other_persons = @other_persons.sort
+
+			respond_to do |format|
+				format.js { render :partial => 'search', :locals => { 
+															:titles => @titles,
+															:other_persons => @other_persons,
+															:person_map => @person_map
+															} }
+			end
 		elsif params[:type] == 'by_actor'
 			@person_type = "actor"
 			# Make sure something was selected
@@ -276,6 +294,15 @@ class TitlesController < ApplicationController
 			end
 
 			@other_persons = @other_persons.sort
+
+			respond_to do |format|
+				format.js { render :partial => 'search', :locals => { 
+															:titles => @titles,
+															:other_persons => @other_persons,
+															:person_map => @person_map,
+															:person_type => @person_type
+															} }
+			end
 		elsif params[:type] == 'by_rating'
 			# Make sure something was selected
 			if params[:title_rating].values.uniq == ["0"]
