@@ -133,7 +133,8 @@ class UsersController < ApplicationController
 
 		# Log the user in and show a success message
 		elsif user && user.is_email_activated == true
-			login_set_sessions_and_cookies(user)
+			is_persistent = params[:is_persistent] == "on"
+			login_set_sessions_and_cookies(user, is_persistent)
 
  			flash_notice "You are now logged in."
 		end

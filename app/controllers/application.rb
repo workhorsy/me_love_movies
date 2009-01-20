@@ -113,13 +113,22 @@ private
 		cookies[:user_id] = nil
 	end
 
-	def login_set_sessions_and_cookies(user)
+	def login_set_sessions_and_cookies(user, login_is_persistent)
 		greetings = ['Howdy', 'Holla', 'Bonjour', 'Guten Tag', 'Aloha', 'Konnichi Wa']
 		session[:user_id] = user.id
-		cookies[:user_name] = { :value => user.user_name }
-		cookies[:user_greeting] = { :value => greetings[rand(greetings.length)] }
-		cookies[:user_type] = { :value => user.user_type }
-		cookies[:user_id] = { :value => user.id.to_s }
+
+		# If the login is persistent, set the cookie expiration date 
+		# for 30 days from now.
+		expires = if login_is_persistent
+			{:expires => 30.days.from_now}
+		else
+			{}
+		end
+
+		cookies[:user_name] = { :value => user.user_name }.merge(expires)
+		cookies[:user_greeting] = { :value => greetings[rand(greetings.length)] }.merge(expires)
+		cookies[:user_type] = { :value => user.user_type }.merge(expires)
+		cookies[:user_id] = { :value => user.id.to_s }.merge(expires)
 	end
 end
 
