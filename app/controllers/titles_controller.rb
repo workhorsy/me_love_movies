@@ -165,10 +165,7 @@ class TitlesController < ApplicationController
 		@tags = Tag.find(:all, :order => 'name')
 		@has_results = false
 
-		# Just return unless this is the post back from the search button
-		return unless request.post?
-
-		_search
+		@has_results = true if request.post?
 	end
 
 	def _search

@@ -65,7 +65,7 @@
 		<td style="background:url(/images/oj_left.jpg) left repeat-y;">
 		</td>
 		<td class="panel_body">
-			<div id="search_by_title" style="padding-left:20px; display: none;">
+			<div id="search_by_title" style="padding-left:20px;<%=@has_results ? '' : 'display: none'%>">
 					<b>Search by Title: </b>
 					<%= text_field_tag :title, params[:title], :onKeyPress => "if(event.keyCode == 13) $('btn_by_title').click();"%>
 					<br />
@@ -84,6 +84,13 @@
 													}
 												}); return false;">
 					Search</button>
+					<script type="text/javascript">
+					// <!CDATA[
+						if(<%=@has_results.to_s%> == true) {
+							$('btn_by_title').click();
+						}
+					// ]]>
+					</script>
 			</div>
 
 			<div id="search_by_director" style="padding-left:20px; display: none;">
