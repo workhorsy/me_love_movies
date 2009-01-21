@@ -182,18 +182,20 @@
 
 					<br style="clear:both"/>
 
-					<button style="width: 80px;" onclick=" new Ajax.Updater('search_results', 
+					<button style="width: 80px;" onclick="new Ajax.Updater('search_results', 
 												'/titles/_search', 
 												{asynchronous: true, evalScripts: true, 
 													onLoading: function(request) {
-																$('search_by_rating').hide();
+																$('search_by_ratings').hide();
 																$('search_results').show();
 																$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
 													},
 													parameters: {
 														authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
 														type: 'by_rating',
-														actor: $('actor').value
+														<% for genre in Title::genres + Title::attributes %>
+														'title_rating[<%=genre%>]' : $('title_rating_<%=genre%>').value,
+														<% end %>
 													}
 												}); return false;">
 					Search</button>
@@ -202,7 +204,20 @@
 
 			<div id="search_by_tags" style="padding-left:20px; display: none;">
 				<% for tag in @tags %>
-					<%=link_to tag.name, {:action => 'search', :type => 'by_tags', :tag_id => tag.id}, {:method => :post} %>, 
+					<a href="" onclick="new Ajax.Updater('search_results', 
+												'/titles/_search', 
+												{asynchronous: true, evalScripts: true, 
+													onLoading: function(request) {
+																$('search_by_tags').hide();
+																$('search_results').show();
+																$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+													},
+													parameters: {
+														authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+														type: 'by_tags',
+														tag_id: <%=tag.id%>
+													}
+												}); return false;"><%=tag.name%></a>
 				<% end %>
 			</div>
 

@@ -308,8 +308,7 @@ class TitlesController < ApplicationController
 			if params[:title_rating].values.uniq == ["0"]
 				respond_to do |format|
 					flash_notice "No search parameters were selected"
-					format.html { render :action => "search" }
-					#format.xml	{ render :xml => @title_rating.errors, :status => :unprocessable_entity }
+					format.js { render :partial => 'search', :locals => { } }
 				end
 				return
 			else
@@ -329,11 +328,23 @@ class TitlesController < ApplicationController
 														*selected_fields.collect { |f| @title_rating.send(f) }
 														],
 									:order => selected_fields.collect { |f| "avg_#{f}" }.join(', ')).reverse
+
+			respond_to do |format|
+				format.js { render :partial => 'search', :locals => { 
+															:titles => @titles
+															} }
+			end
 		elsif params[:type] == 'by_tags'
 			@tag = Tag.find(params[:tag_id])
 			title_tags = TitleTag.find(:all, :conditions => ["tag_id=? and count > 0", @tag.id])
 			@titles = title_tags.collect do |title_tag|
 				title_tag.title
+			end
+
+			respond_to do |format|
+				format.js { render :partial => 'search', :locals => { 
+															:titles => @titles
+															} }
 			end
 		end
 	end

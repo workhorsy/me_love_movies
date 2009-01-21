@@ -1,0 +1,41 @@
+<% if @person_map && @other_persons %>
+<h1>Search Results</h1>
+<div style="padding-bottom: 200px;">
+	<% for person, titles in @person_map %>
+		<%=h(person)%>
+		<ul>
+		<% for title in titles %>
+			<li><%= link_to title.proper_name, :controller => 'titles', :action => 'show', :id => title.url_name %></li>
+		<% end %>
+		</ul>
+	<% end %>
+	<% if @other_persons.length > 0 %>
+		Other people you may be looking for:
+		<% form_tag({:action => 'search', :method => 'post' }, {:id => 'other_person_form'}) do -%>
+			<input type="hidden" name="type" value="by_<%=@person_type%>" />
+			<input id="person_field" type="hidden" name="<%=@person_type%>" value="" />
+			<ul>
+			<% for person in @other_persons %>
+				<li><%=link_to_function(h(person), "$('person_field').value='#{person}'; $('other_person_form').submit()")%></li>
+			<% end %>
+			</ul>
+		<% end %>
+	<% end %>
+	<% if @person_map.length == 0 && @other_persons.length == 0 %>
+		There were no people found.
+	<% end %>
+</div>
+<% elsif @titles %>
+<h1>Search Results</h1>
+<div style="padding-bottom: 200px;">
+	<% for title in @titles %>
+	<%= link_to title.proper_name, :controller => 'titles', :action => 'show', :id => title.url_name %><br />
+	<% end %>
+	<% if @titles.length == 0 %>
+		There were no results for your search
+	<% end %>
+</div>
+<% else %>
+	Try again
+<% end %>
+
