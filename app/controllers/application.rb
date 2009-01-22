@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '455e48fedc601070a5a1eb98ddffca90'
 
+	before_filter :login_return_users
 	before_filter :check_for_disabled_user
 	before_filter :check_beta_login_requirements
 
@@ -34,6 +35,12 @@ class ApplicationController < ActionController::Base
 		# If we are in beta, and the user is not logged in, take them to the beta page
 		if Settings.is_beta && session[:user_id] == nil
 			redirect_to :controller => 'users', :action => 'beta'
+		end
+	end
+
+	def login_return_users
+		if session[:user_id] == nil && cookies[:user_id] != nil:
+			session[:user_id] = cookies[:user_id]
 		end
 	end
 
