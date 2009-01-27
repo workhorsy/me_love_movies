@@ -28,8 +28,63 @@
 <% elsif @titles %>
 <h1>Search Results</h1>
 <div style="padding-bottom: 200px;">
+	<% for i in 1..@titles.total_pages %>
+	<a href="" id="link_search_result_page_<%=i%>" style="width: 80px;" onclick="new Ajax.Updater('search_results', 
+							'/titles/_search', 
+							{asynchronous: true, evalScripts: true, 
+								onLoading: function(request) {
+											$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+								},
+								parameters: {
+									authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+									type: 'by_title',
+									title: encodeURIComponent('<%=@title%>'),
+									page: <%=i%>
+								}
+							}); return false;">
+	<%=i%></a>
+	<% end %>
+
 	<% for title in @titles %>
-	<%= link_to title.proper_name, :controller => 'titles', :action => 'show', :id => title.url_name %><br />
+	<table>
+		<tr>
+			<td>
+				<%= link_to("<img src=\"/" + title.random_small_image_file + "\" />", 
+					:controller => 'titles', :action => 'show', :id => title.url_name)%>
+			</td>
+			<td>
+				<%= link_to title.proper_name, :controller => 'titles', :action => 'show', :id => title.url_name %>
+				<br />
+				<table>
+					<tr><td><b>Genre</b></td></tr>
+
+					<% count = 0; incr = 4 %>
+					<% while count < Title::genres.length %>
+					<tr>
+						<% for genre in Title::genres.slice(count, incr) %>
+						<td><%="&nbsp;" * 8 + genre.humanize + ": "%></td>
+						<td><%=(title.send("avg_#{genre}") || 0.0).to_precision(1).to_s%></td>
+						<% end %>
+						<% count += incr %>
+					</tr>
+					<% end %>
+
+					<tr><td><b>Attributes</b></td></tr>
+
+					<% count = 0; incr = 4 %>
+					<% while count < Title::attributes.length %>
+					<tr>
+						<% for attribute in Title::attributes.slice(count, incr) %>
+						<td><%="&nbsp;" * 8 + attribute.humanize + ": "%></td>
+						<td><%=(title.send("avg_#{attribute}") || 0.0).to_precision(1).to_s%></td>
+						<% end %>
+						<% count += incr %>
+					</tr>
+					<% end %>
+				</table>
+			</td>
+		</tr>
+	</table>
 	<% end %>
 	<% if @titles.length == 0 %>
 		There were no results for your search

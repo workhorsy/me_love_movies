@@ -170,10 +170,11 @@ class TitlesController < ApplicationController
 
 	def _search
 		@has_results = true
+		@title = params[:title].strip
 
 		if params[:type] == 'by_title'
 			# Make sure something was selected
-			s_title = params[:title].strip
+			s_title = @title
 			if s_title == ''
 				flash_notice "No search parameters were specified."
 				return
@@ -183,15 +184,14 @@ class TitlesController < ApplicationController
 			db_field = 'name'
 			search_params = s_title.split(' ').collect { |n| n.strip }
 
-			@titles = Title.find(:all, :conditions => [
+			@titles = Title.paginate(:all, :conditions => [
 											search_params.collect { |n| "#{db_field} like ?"}.join(' and '),
 											*search_params.collect { |n| "%#{n}%"}],
-								 :order => :name)
+								 :order => :name,
+								:page => params[:page], :per_page => 3)
 
 			respond_to do |format|
-				format.js { render :partial => 'search', :locals => { 
-																:titles => @titles 
-														} }
+				format.js { render :partial => 'search' }
 			end
 		elsif params[:type] == 'by_director'
 			@person_type = "director"
@@ -240,11 +240,7 @@ class TitlesController < ApplicationController
 			@other_persons = @other_persons.sort
 
 			respond_to do |format|
-				format.js { render :partial => 'search', :locals => { 
-															:titles => @titles,
-															:other_persons => @other_persons,
-															:person_map => @person_map
-															} }
+				format.js { render :partial => 'search' }
 			end
 		elsif params[:type] == 'by_actor'
 			@person_type = "actor"
@@ -293,19 +289,14 @@ class TitlesController < ApplicationController
 			@other_persons = @other_persons.sort
 
 			respond_to do |format|
-				format.js { render :partial => 'search', :locals => { 
-															:titles => @titles,
-															:other_persons => @other_persons,
-															:person_map => @person_map,
-															:person_type => @person_type
-															} }
+				format.js { render :partial => 'search' }
 			end
 		elsif params[:type] == 'by_rating'
 			# Make sure something was selected
 			if params[:title_rating].values.uniq == ["0"]
 				respond_to do |format|
 					flash_notice "No search parameters were selected"
-					format.js { render :partial => 'search', :locals => { } }
+					format.js { render :partial => 'search' }
 				end
 				return
 			else
@@ -327,9 +318,7 @@ class TitlesController < ApplicationController
 									:order => selected_fields.collect { |f| "avg_#{f}" }.join(', ')).reverse
 
 			respond_to do |format|
-				format.js { render :partial => 'search', :locals => { 
-															:titles => @titles
-															} }
+				format.js { render :partial => 'search' }
 			end
 		elsif params[:type] == 'by_tags'
 			@tag = Tag.find(params[:tag_id])
@@ -339,9 +328,7 @@ class TitlesController < ApplicationController
 			end
 
 			respond_to do |format|
-				format.js { render :partial => 'search', :locals => { 
-															:titles => @titles
-															} }
+				format.js { render :partial => 'search' }
 			end
 		end
 	end
