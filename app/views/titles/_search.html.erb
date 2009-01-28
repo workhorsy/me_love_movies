@@ -27,9 +27,11 @@
 </div>
 <% elsif @titles %>
 <h1>Search Results</h1>
-<div style="padding-bottom: 200px;">
-	<% for i in 1..@titles.total_pages %>
-	<a href="" id="link_search_result_page_<%=i%>" style="width: 80px;" onclick="new Ajax.Updater('search_results', 
+
+<!-- Link to First -->
+<% if @titles.current_page != 1 %>
+	<% if @titles.current_page != 1 && @titles.current_page != 2 && @titles.current_page != 3 %>
+	<a href="" id="link_search_result_page_1" style="width: 80px;" onclick="new Ajax.Updater('search_results', 
 							'/titles/_search', 
 							{asynchronous: true, evalScripts: true, 
 								onLoading: function(request) {
@@ -39,12 +41,102 @@
 									authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
 									type: 'by_title',
 									title: encodeURIComponent('<%=@title%>'),
-									page: <%=i%>
+									page: 1
 								}
 							}); return false;">
-	<%=i%></a>
+	First</a>
+	<% end %>
+<% end %>
+
+<!-- Link to Previous -->
+<% if @titles.current_page != 1 %>
+	<a href="" id="link_search_result_page_<%=@titles.current_page-1%>" style="width: 80px;" onclick="new Ajax.Updater('search_results', 
+							'/titles/_search', 
+							{asynchronous: true, evalScripts: true, 
+								onLoading: function(request) {
+											$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+								},
+								parameters: {
+									authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+									type: 'by_title',
+									title: encodeURIComponent('<%=@title%>'),
+									page: <%=@titles.current_page-1%>
+								}
+							}); return false;">
+	Previous</a>
+<% end %>
+
+<!-- Links to Middle Pages -->
+<% for j in (@titles.current_page-2 .. @titles.current_page+2) %>
+	<% next if j < 1 %>
+	<% break if j > @titles.total_pages %>
+
+	<% if j == @titles.current_page %>
+		<b><%=j%></b>
+	<% else %>
+	<a href="" id="link_search_result_page_<%=j%>" style="width: 80px;" onclick="new Ajax.Updater('search_results', 
+							'/titles/_search', 
+							{asynchronous: true, evalScripts: true, 
+								onLoading: function(request) {
+											$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+								},
+								parameters: {
+									authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+									type: 'by_title',
+									title: encodeURIComponent('<%=@title%>'),
+									page: <%=j%>
+								}
+							}); return false;">
+	<%=j%></a>
 	<% end %>
 
+	<% if @titles.current_page + 2 || j == @titles.total_pages %>
+		 
+	<% else %>
+		 | 
+	<% end %>
+<% end %>
+
+<!-- Link to Next -->
+<% if @titles.current_page != @titles.total_pages %>
+	<a href="" id="link_search_result_page_<%=@titles.current_page+1%>" style="width: 80px;" onclick="new Ajax.Updater('search_results', 
+							'/titles/_search', 
+							{asynchronous: true, evalScripts: true, 
+								onLoading: function(request) {
+											$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+								},
+								parameters: {
+									authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+									type: 'by_title',
+									title: encodeURIComponent('<%=@title%>'),
+									page: <%=@titles.current_page+1%>
+								}
+							}); return false;">
+	Next</a>
+<% end %>
+
+<!-- Link to Last -->
+<% if @titles.current_page != @titles.total_pages %>
+	<% if @titles.current_page != @titles.total_pages && @titles.current_page + 1 != @titles.total_pages && @titles.current_page + 2 != @titles.total_pages %>
+	<a href="" id="link_search_result_page_<%=@titles.total_pages%>" style="width: 80px;" onclick="new Ajax.Updater('search_results', 
+							'/titles/_search', 
+							{asynchronous: true, evalScripts: true, 
+								onLoading: function(request) {
+											$('search_results').innerHTML='<img src=\'/images/ajax-loading.gif\' />';
+								},
+								parameters: {
+									authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
+									type: 'by_title',
+									title: encodeURIComponent('<%=@title%>'),
+									page: <%=@titles.total_pages%>
+								}
+							}); return false;">
+	Last</a>
+	<% end %>
+<% end %>
+
+
+<div style="padding-bottom: 200px;">
 	<% for title in @titles %>
 	<table>
 		<tr>
