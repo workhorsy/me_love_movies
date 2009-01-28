@@ -171,8 +171,9 @@ class TitlesController < ApplicationController
 	def _search
 		@has_results = true
 		@title = params[:title].strip if params[:title]
+		@type = params[:type]
 
-		if params[:type] == 'by_title'
+		if @type == 'by_title'
 			# Make sure something was selected
 			s_title = @title
 			if s_title == ''
@@ -193,7 +194,7 @@ class TitlesController < ApplicationController
 			respond_to do |format|
 				format.js { render :partial => 'search' }
 			end
-		elsif params[:type] == 'by_director'
+		elsif @type == 'by_director'
 			@person_type = "director"
 			# Make sure something was selected
 			s_title = params[:director].strip
@@ -242,7 +243,7 @@ class TitlesController < ApplicationController
 			respond_to do |format|
 				format.js { render :partial => 'search' }
 			end
-		elsif params[:type] == 'by_actor'
+		elsif @type == 'by_actor'
 			@person_type = "actor"
 			# Make sure something was selected
 			s_title = params[:actor].strip
@@ -291,7 +292,7 @@ class TitlesController < ApplicationController
 			respond_to do |format|
 				format.js { render :partial => 'search' }
 			end
-		elsif params[:type] == 'by_rating'
+		elsif @type == 'by_rating'
 			# Make sure something was selected
 			if params[:title_rating].values.uniq == ["0"]
 				respond_to do |format|
@@ -311,20 +312,29 @@ class TitlesController < ApplicationController
 			selected_fields = fields.select { |f| @title_rating.send(f) }
 
 			# Find the titles that have matching field values. Order by most matching.
-			@titles = Title.find(:all, :conditions => [
+			@titles = Title.paginate(:all, :conditions => [
 														selected_fields.collect { |f| "avg_#{f}=?" }.join(' or '),
 														*selected_fields.collect { |f| @title_rating.send(f) }
 														],
-									:order => selected_fields.collect { |f| "avg_#{f}" }.join(', ')).reverse
+									:order => selected_fields.collect { |f| "avg_#{f}" }.join(', '),
+									:page => params[:page], :per_page => 3).reverse
 
 			respond_to do |format|
 				format.js { render :partial => 'search' }
 			end
-		elsif params[:type] == 'by_tags'
+		elsif @type == 'by_tags'
 			@tag = Tag.find(params[:tag_id])
 			title_tags = TitleTag.find(:all, :conditions => ["tag_id=? and count > 0", @tag.id])
 			@titles = title_tags.collect do |title_tag|
 				title_tag.title
+			end
+
+			if @titles.length > 0
+				@titles = Title.paginate(:conditions => "id in(" + @titles.collect{|t| t.id}.join(', ') + ")",
+										:page => params[:page], :per_page => 3)
+			else
+				@titles = Title.paginate(:conditions => ["id=0"],
+										:page => params[:page], :per_page => 3)
 			end
 
 			respond_to do |format|
