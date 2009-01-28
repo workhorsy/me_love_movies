@@ -170,7 +170,7 @@ class TitlesController < ApplicationController
 
 	def _search
 		@has_results = true
-		@title = params[:title].strip
+		@title = params[:title].strip if params[:title]
 
 		if params[:type] == 'by_title'
 			# Make sure something was selected
