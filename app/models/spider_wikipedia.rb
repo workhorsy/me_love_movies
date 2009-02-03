@@ -116,7 +116,7 @@ class SpiderWikipedia
 
 	def get_movie_name(doc)
 		doc.search("//table[@class='infobox vevent']").each do |table|
-			return format_name(table.search("tr").search("th").first.innerText.gsub("\n", ' ').gsub(/\s+/, ' '))
+			return format_name(table.search("tr").search("td").first.innerText.gsub("\n", ' ').gsub(/\s+/, ' '))
 		end
 
 		return nil

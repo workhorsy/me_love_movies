@@ -49,15 +49,15 @@ class SpiderMoviePoster
 				image_url = poster_page.search("//span[@class='img-shadow']").first.search("//img").first.raw_attributes["src"]
 				poster_id = poster_page.search("//span[@class='posterid']").inner_text.split('Product ID:')[1].split("\n")[0].strip
 
-				big_image_file = "public/posters/big/#{title.name}/#{number}.jpg"
-				small_image_file = "public/posters/small/#{title.name}/#{number}.jpg"
+				big_image_file = "public/posters/big/#{title.id}/#{number}.jpg"
+				small_image_file = "public/posters/small/#{title.id}/#{number}.jpg"
 
 				# Download and save the image
 				Net::HTTP.start(DOMAIN) do |http|
 					begin
 						# Make the dir for the title
-						Dir.mkdir "public/posters/big/#{title.name}" unless File.directory? "public/posters/big/#{title.name}"
-						Dir.mkdir "public/posters/small/#{title.name}" unless File.directory? "public/posters/small/#{title.name}"
+						Dir.mkdir "public/posters/big/#{title.id}" unless File.directory? "public/posters/big/#{title.id}"
+						Dir.mkdir "public/posters/small/#{title.id}" unless File.directory? "public/posters/small/#{title.id}"
 
 						resp = http.get(image_url)
 						puts "Failed to get '#{big_image_file}'" and next unless resp.code == '200'
@@ -66,7 +66,7 @@ class SpiderMoviePoster
 						open("#{big_image_file}", "wb") do |file|
 							file.write(resp.body)
 						end
-						puts "\tdownloaded: #{big_image_file}"
+						puts "\tdownloaded: '#{title.proper_name}' : '#{big_image_file}'"
 					rescue Exception => err
 						# Just ignore any errors
 					end
@@ -74,7 +74,7 @@ class SpiderMoviePoster
 
 				# Save a samall copy of the image
 				begin
-					Dir.mkdir "public/posters/small/#{title.name}" unless File.directory? "public/posters/small/#{title.name}"
+					Dir.mkdir "public/posters/small/#{title.id}" unless File.directory? "public/posters/small/#{title.id}"
 					image = MiniMagick::Image.from_file(big_image_file)
 					image.resize("115x153")
 					image.write(small_image_file)

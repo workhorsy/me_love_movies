@@ -38,7 +38,7 @@ def dl_poster_thumbs
 							#:socket => '/var/lib/mysql/mysql.sock' }    # Fedora
 	ActiveRecord::Base.establish_connection(connection_format)
 
-	# Load all the relevent models from the website
+	# Load all the relevant models from the website
 	%w{rating sex title title_rating title_review user user_type poster}.each do |file|
 		require "app/models/#{file}.rb"
 	end
@@ -80,24 +80,24 @@ def dl_poster_thumbs
 				image_url = poster_page.search("//span[@class='img-shadow']").first.search("//img").first.raw_attributes["src"]
 				poster_id = poster_page.search("//span[@class='posterid']").inner_text.split('Product ID:')[1].split("\n")[0].strip
 
-				big_image_file = "public/posters/big/#{title.name}/#{number}.jpg"
-				small_image_file = "public/posters/small/#{title.name}/#{number}.jpg"
+				big_image_file = "public/posters/big/#{title.id}/#{number}.jpg"
+				small_image_file = "public/posters/small/#{title.id}/#{number}.jpg"
 
 				# Download and save the image
 				Net::HTTP.start(DOMAIN) do |http|
 					begin
 						# Make the dir for the title
-						Dir.mkdir "public/posters/big/#{title.name}" unless File.directory? "public/posters/big/#{title.name}"
-						Dir.mkdir "public/posters/small/#{title.name}" unless File.directory? "public/posters/small/#{title.name}"
+						Dir.mkdir "public/posters/big/#{title.id}" unless File.directory? "public/posters/big/#{title.id}"
+						Dir.mkdir "public/posters/small/#{title.id}" unless File.directory? "public/posters/small/#{title.id}"
 
 						resp = http.get(image_url)
-						puts "Failed to get '#{big_poster_name}'" and next unless resp.code == '200'
+						puts "Failed to get '#{title.proper_name}': '#{big_poster_name}'" and next unless resp.code == '200'
 
 						# Save the image
 						open("#{big_poster_name}", "wb") do |file|
 							file.write(resp.body)
 						end
-						puts "\tdownloaded: #{big_poster_name}"
+						puts "\tdownloaded: '#{title.proper_name}': #{big_poster_name}"
 					rescue Exception => err
 						# Just ignore any errors
 					end
@@ -129,7 +129,7 @@ def dl_poster_thumbs
 	Poster.find(:all, :order => "id").each do |poster|
 		# Resize the file
 		begin
-			Dir.mkdir "public/posters/small/#{poster.title.name}" unless File.directory? "public/posters/small/#{poster.title.name}"
+			Dir.mkdir "public/posters/small/#{poster.title.id}" unless File.directory? "public/posters/small/#{poster.title.id}"
 			image = MiniMagick::Image.from_file(poster.big_image_file)
 			image.resize("115x153")
 			image.write(poster.small_image_file)
