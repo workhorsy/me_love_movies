@@ -281,7 +281,7 @@ Other Reviews
 
 <div id="external_title_reviews"></div>
 <script type="text/javascript">
-	// <!CDATA[
+	// <![CDATA[
 	new Ajax.Updater("external_title_reviews", 
 					"/title_reviews/_list_by_title/<%=@title.id%>", 
 					{asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('<%=form_authenticity_token%>')});
@@ -298,7 +298,7 @@ Other Reviews
 
 
 <script type="text/javascript">
-	// <!CDATA[
+	// <![CDATA[
 	// Show all the elements the user is allowed to see.
 	show_tags_to_moderator_only('a', 'lnk_edit_title');
 	show_tags_to_user_only('a', 'lnk_edit_rating');

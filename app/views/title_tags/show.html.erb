@@ -11,7 +11,7 @@
 <%= link_to "Back to " + @title.proper_name, :controller => 'titles', :action => 'show', :id => @title.id %>
 
 <script type="text/javascript">
-	// <!CDATA[
+	// <![CDATA[
 	// Show all the elements the user is allowed to see.
 	show_tags_to_originating_user_only('a', 'lnk_edit', <%=@user.id%>);
 	// ]]>
