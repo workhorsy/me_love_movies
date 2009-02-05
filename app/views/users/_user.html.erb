@@ -73,6 +73,10 @@ User Information
 		<%= f.select :gender, Sex::NAMES_ABBREVIATIONS, {:selected => user.gender || 'U'} %>
 	</p>
 	<p>
+		<label for="send_comment_email"><span><b>Notify me for comments</b></span></label>
+		<%= f.check_box :send_comment_email, :checked => @user.send_comment_email %>
+	</p>
+	<p>
 		<%= f.submit button_name %>
 	</p>
 <% end %>

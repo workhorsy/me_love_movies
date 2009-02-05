@@ -95,6 +95,24 @@ class Mailer < ActionMailer::Base
 		body[:user_id] = user_id
 		body[:server_domain] = server_domain
 	end
+
+	def comment_to_reviewer(reviewer_id, reviewer_email, reviewer_name, commenter_id, commenter_name, server_domain, title_name)
+		@subject       = "Me Love Movies Review Comment"
+		@body          = {}
+		@recipients    = reviewer_email
+		@from          = "noreply@melovemovies.com"
+		@headers       = { "Reply-to" => "noreply@melovemovies.com" }
+		@sent_on       = Time.now
+		@content_type  = "text/xhtml"
+
+		body[:reviewer_id] = reviewer_id
+		body[:reviewer_email] = reviewer_email
+		body[:reviewer_name] = reviewer_name
+		body[:commenter_id] = commenter_id
+		body[:commenter_name] = commenter_name
+		body[:server_domain] = server_domain
+		body[:title_name] = title_name
+	end
 end
 
 

@@ -211,6 +211,18 @@ class TitleReviewsController < ApplicationController
 		respond_to do |format|
 			format.js do
 				if review_comment.save
+					# Send the reviewer an email
+					if review_comment.title_review.user.send_comment_email
+						Mailer.deliver_comment_to_reviewer(
+													review_comment.title_review.user.id, 
+													review_comment.title_review.user.email, 
+													review_comment.title_review.user.user_name,
+													review_comment.user.id, 
+													review_comment.user.user_name, 
+													get_server_url(request), 
+													review_comment.title_review.title.proper_name)
+					end
+
 					render :partial => 'default_title_comment', 
 							:locals => { 
 										:element_id => params['element_id'],

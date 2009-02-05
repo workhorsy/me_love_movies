@@ -91,6 +91,11 @@
 						<%=h Sex::NAMES_ABBREVIATIONS.select { |k, v| v == @user.gender }.first.first %>
 					</p>
 
+					<p>
+						<b>Notify me for comments:</b>
+						<%=h @user.send_comment_email ? 'yes' : 'no' %>
+					</p>
+
 					<%= link_to 'Edit user information', edit_user_path(@user), :id => 'lnk_edit_user', :style => 'display: none;' %>
 				</div>
 			</td>
