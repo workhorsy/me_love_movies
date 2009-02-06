@@ -43,6 +43,7 @@
 									title: encodeURIComponent('<%=@title%>'),
 									page: 1,
 									tag_id: <%=params[:tag_id]||0%>,
+									search_ratings_greater_or_equal: $('search_ratings_greater_or_equal').checked,
 									<% for genre in Title::genres + Title::attributes %>
 									'title_rating[<%=genre%>]' : $('title_rating_<%=genre%>').value,
 									<% end %>
@@ -66,6 +67,7 @@
 									title: encodeURIComponent('<%=@title%>'),
 									page: <%=@titles.current_page-1%>,
 									tag_id: <%=params[:tag_id]||0%>,
+									search_ratings_greater_or_equal: $('search_ratings_greater_or_equal').checked,
 									<% for genre in Title::genres + Title::attributes %>
 									'title_rating[<%=genre%>]' : $('title_rating_<%=genre%>').value,
 									<% end %>
@@ -94,6 +96,7 @@
 									title: encodeURIComponent('<%=@title%>'),
 									page: <%=j%>,
 									tag_id: <%=params[:tag_id]||0%>,
+									search_ratings_greater_or_equal: $('search_ratings_greater_or_equal').checked,
 									<% for genre in Title::genres + Title::attributes %>
 									'title_rating[<%=genre%>]' : $('title_rating_<%=genre%>').value,
 									<% end %>
@@ -123,6 +126,7 @@
 									title: encodeURIComponent('<%=@title%>'),
 									page: <%=@titles.current_page+1%>,
 									tag_id: <%=params[:tag_id]||0%>,
+									search_ratings_greater_or_equal: $('search_ratings_greater_or_equal').checked,
 									<% for genre in Title::genres + Title::attributes %>
 									'title_rating[<%=genre%>]' : $('title_rating_<%=genre%>').value,
 									<% end %>
@@ -146,6 +150,7 @@
 									title: encodeURIComponent('<%=@title%>'),
 									page: <%=@titles.total_pages%>,
 									tag_id: <%=params[:tag_id]||0%>,
+									search_ratings_greater_or_equal: $('search_ratings_greater_or_equal').checked,
 									<% for genre in Title::genres + Title::attributes %>
 									'title_rating[<%=genre%>]' : $('title_rating_<%=genre%>').value,
 									<% end %>

@@ -309,11 +309,21 @@ class TitlesController < ApplicationController
 
 			# Get only the fields that were not blank
 			fields = (Title::genres + Title::attributes)
-			selected_fields = fields.select { |f| @title_rating.send(f) }
+			selected_fields = fields.select do |f|
+				params['title_rating'].has_key?(f) && params['title_rating'][f] != '0'
+			end
+
+			# Determine if the user wants to include all titles that have a greater average
+			avg_operator = if params[:search_ratings_greater_or_equal] == 'true'
+				'>='
+			else
+				'='
+			end
 
 			# Find the titles that have matching field values. Order by most matching.
 			@titles = Title.paginate(:all, :conditions => [
-														selected_fields.collect { |f| "avg_#{f}=?" }.join(' or '),
+														"(" + selected_fields.collect { |f| "avg_#{f}#{avg_operator}?" }.join(' and ') + ")" +
+														"and (" + selected_fields.collect { |f| "avg_#{f} is not null" }.join(' and ') + ")",
 														*selected_fields.collect { |f| @title_rating.send(f) }
 														],
 									:order => selected_fields.collect { |f| "avg_#{f}" }.join(', '),

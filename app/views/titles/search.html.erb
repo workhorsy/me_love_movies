@@ -189,6 +189,11 @@
 
 					<br style="clear:both"/>
 
+					<p style="padding: 10px;">
+						<input id="search_ratings_greater_or_equal" type="checkbox" />
+						<label for="search_ratings_greater_or_equal">Include titles that have a higher rating</label>
+					</p>
+
 					<button style="width: 80px;" onclick="new Ajax.Updater('search_results', 
 												'/titles/_search', 
 												{asynchronous: true, evalScripts: true, 
@@ -200,6 +205,7 @@
 													parameters: {
 														authenticity_token: encodeURIComponent('<%=form_authenticity_token%>'), 
 														type: 'by_rating',
+														search_ratings_greater_or_equal: $('search_ratings_greater_or_equal').checked,
 														<% for genre in Title::genres + Title::attributes %>
 														'title_rating[<%=genre%>]' : $('title_rating_<%=genre%>').value,
 														<% end %>
