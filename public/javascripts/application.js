@@ -18,16 +18,17 @@ function set_cookie(name, value, expires, path, domain, secure){
     if(expires){
         expires = expires * 1000 * 3600 * 24;
     }
-    document.cookie = name+'='+escape(value) +
-        ((expires) ? ';expires=' + new Date(today.getTime() + expires).toGMTString() : '') +
-        ((path) ? ';path=' + path : '') +
-        ((domain) ? ';domain=' + domain : '') +
-        ((secure) ? ';secure' : '');
+    var value = name + '=' + escape(value) +
+                     ((expires) ? ';expires=' + new Date(today.getTime() + expires).toGMTString() : '') +
+                     ((path) ? ';path=' + path : '') +
+                     ((domain) ? ';domain=' + domain : '') +
+                     ((secure) ? ';secure' : '') + ';';
+    document.cookie = value;
 }
 
-function delete_cookie(name, path, domain){
+function delete_cookie(name){
     if(get_cookie(name)){
-        set_cookie(name, '', -30, path, domain);
+        set_cookie(name, get_cookie(name), -30);
     }
 } 
 
