@@ -248,7 +248,7 @@ class TitleReviewsController < ApplicationController
 	private
 
 	def get_originating_user_id
-		review_id = params[:title_review_id] || params[:review_id]
+		review_id = params[:title_review_id] || params[:review_id] || params[:id]
 		review = TitleReview.find_by_id(review_id)
 		review.user.id
 	end
