@@ -212,7 +212,7 @@ class TitleReviewsController < ApplicationController
 			format.js do
 				if review_comment.save
 					# Send the reviewer an email
-					if review_comment.title_review.user.send_comment_email
+					if review_comment.title_review.user.closed == false && review_comment.title_review.user.send_comment_email
 						Mailer.deliver_comment_to_reviewer(
 													review_comment.title_review.user.id, 
 													review_comment.title_review.user.email, 
