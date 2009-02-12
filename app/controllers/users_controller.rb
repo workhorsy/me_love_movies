@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
 	layout 'default'
-	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'set_avatar_file', 'send_feedback']
+	before_filter :authorize_originating_user_only, :only => ['edit', 'update', 'set_avatar_file', 'send_feedback', 'set_close_account']
 
 	# GET /users
 	# GET /users.xml
@@ -136,7 +136,12 @@ class UsersController < ApplicationController
 			is_persistent = params[:is_persistent] == "on"
 			login_set_sessions_and_cookies(user, is_persistent)
 
- 			flash_notice "You are now logged in."
+			if user.closed
+				user.update_attribute(:closed, false)
+				flash_notice "You are now logged in. Your account was closed. Now it is open."
+ 			else
+				flash_notice "You are now logged in."
+			end
 		end
 
 		# Go back to the page the user came from, or the homepage
@@ -206,7 +211,7 @@ class UsersController < ApplicationController
 			flash_notice 'Failed to activate the user.'
 			redirect_to :controller => 'home', :action => 'index'
 		elsif user.update_attributes({ :is_email_activated => true})
-			login_set_sessions_and_cookies(user)
+			login_set_sessions_and_cookies(user, false)
 			flash_notice 'The User was successfully activated. You are now logged in.'
 			redirect_to :controller => 'users', :action => 'show', :id => user.id
 		else
@@ -315,6 +320,21 @@ class UsersController < ApplicationController
 			render :text => "The user #{@user.user_name} is now a " + name
 		else
 			render :text => "Error updating the user!"
+		end
+	end
+
+	# GET /users/set_close_account
+	# GET /users/set_close_account.xml
+	def set_close_account
+		# Get the id and user
+		id = params[:id]
+		@user = User.find(id)
+
+		respond_to do |format|
+			if @user.update_attributes(:closed => true)
+				login_clear_sessions_and_cookies()
+				format.html { redirect_to('/users/login') }
+			end
 		end
 	end
 

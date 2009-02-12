@@ -45,7 +45,11 @@ class User < ActiveRecord::Base
 	end
 
 	def avatar_file_or_default
-		self.avatar_file || "/images/noimage.jpg"
+		if self.closed
+			"/images/closed.jpg"
+		else
+			self.avatar_file || "/images/noimage.jpg"
+		end
 	end
 
 	def before_destroy

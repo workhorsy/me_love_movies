@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 26) do
+ActiveRecord::Schema.define(:version => 27) do
 
   create_table "box_office_love_titles", :force => true do |t|
     t.integer "title_id"
@@ -173,7 +173,8 @@ ActiveRecord::Schema.define(:version => 26) do
     t.boolean  "is_email_activated", :default => false, :null => false
     t.boolean  "disabled"
     t.text     "disabled_reason"
-    t.boolean  "send_review_email"
+    t.boolean  "send_comment_email"
+    t.boolean  "closed"
   end
 
   add_index "users", ["id"], :name => "index_users_on_id"

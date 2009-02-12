@@ -22,6 +22,15 @@
 		</td>
 	<tr>
 	<tr>
+		<td colspan="3">
+			<% if @user.closed %>
+			<p>
+				<b>This account has been closed. It will be reopened when it is logged into.</b>
+			</p>
+			<% end %>
+		</td>
+	<tr>
+	<tr>
 		<td style="vertical-align: top;">
 			<div style="width: 300px; height: 100%; margin:5px;">
 			<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
@@ -78,6 +87,7 @@
 						<%=h @user.email %>
 					</p>
 					<% end %>
+					<% if @user.closed == false %>
 					<p>
 						<b>Year of birth:</b>
 						<%=h @user.year_of_birth %>
@@ -95,6 +105,7 @@
 						<b>Notify me for comments:</b>
 						<%=h @user.send_comment_email ? 'yes' : 'no' %>
 					</p>
+					<% end %>
 
 					<%= link_to 'Edit user information', edit_user_path(@user), :id => 'lnk_edit_user', :style => 'display: none;' %>
 				</div>
@@ -190,6 +201,16 @@
 		</td>
 	</tr>
 	<tr>
+		<td colspan="3" style="text-align: right;">
+			<div id="div_close_account" style="display: none">
+				<% form_tag :action => 'set_close_account', :method => 'post' do %>
+					<input name="id" type="hidden" value="<%=@user.id%>" />
+					<%= submit_tag "Close Your Account" %>
+				<% end %>
+			</div>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="3">
 			<div id="div_feedback_form" style="width: 930px; height: 100%; margin:5px; display: none">
 			<!-- ====================================================================================TABLE BLOCK STARTS HERE -->
@@ -231,5 +252,6 @@
 	show_tags_to_originating_user_only('div', 'div_no_upload_avatar', <%=@user.id%>);
 	show_tags_to_originating_user_only('a', 'lnk_edit_user', <%=@user.id%>);
 	show_tags_to_originating_user_only('div', 'div_feedback_form', <%=@user.id%>);
+	show_tags_to_originating_user_only('div', 'div_close_account', <%=@user.id%>);
 	// ]]>
 </script>
