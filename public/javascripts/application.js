@@ -13,7 +13,11 @@ function get_cookie(name) {
 	return value;
 }
 
-function set_cookie(name, value, expires, path, domain, secure){
+function set_cookie(name, value, expires) {
+    var path = "/";
+    var domain = null;
+    var secure = null;
+
     var today = new Date();
     if(expires){
         expires = expires * 1000 * 3600 * 24;
@@ -26,7 +30,7 @@ function set_cookie(name, value, expires, path, domain, secure){
     document.cookie = value;
 }
 
-function delete_cookie(name){
+function delete_cookie(name) {
     if(get_cookie(name)){
         set_cookie(name, get_cookie(name), -30);
     }
@@ -172,8 +176,11 @@ function update_flash_notice() {
 	var message = get_cookie('flash_notice');
 	if(message == "") message = null;
 
+	var is_shown = get_cookie('flash_notice_is_shown');
+	if(is_shown == "false") is_shown = null;
+
 	// Add the message to the flash and make it visible if there is a message
-	if(message) {
+	if(message && is_shown == "true") {
 		$('flash_notice').innerHTML = unescape(message).replace(/[+]/g, ' ');
 		$('flash_notice').style.display = "";
 	} else {
@@ -183,6 +190,7 @@ function update_flash_notice() {
 
 	// Remove the value from the cookie
 	delete_cookie('flash_notice');
+	set_cookie('flash_notice_is_shown', false);
 }
 
 function scale_avatar_images() {

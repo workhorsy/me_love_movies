@@ -110,6 +110,7 @@ private
 
 	def flash_notice(value)
 		cookies[:flash_notice] = value
+		cookies[:flash_notice_is_shown] = "true"
 	end
 
 	def login_clear_sessions_and_cookies
