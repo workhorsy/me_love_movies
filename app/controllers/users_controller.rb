@@ -375,6 +375,9 @@ class UsersController < ApplicationController
 
 		# Resize the file
 		image = MiniMagick::Image.from_file("#{RAILS_ROOT}/public/user_avatars/#{id}/#{file.original_filename}")
+		w, h = image[:width], image[:height]
+		padding = w > h ? "0x#{(w-h)/2}" : "#{(h-w)/2}x0"
+		image.frame(padding, "-mattecolor \"white\"")
 		image.resize("100x100")
 		image.write("#{RAILS_ROOT}/public/user_avatars/#{id}/#{file.original_filename}")
 

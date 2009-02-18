@@ -193,30 +193,5 @@ function update_flash_notice() {
 	set_cookie('flash_notice_is_shown', false);
 }
 
-function scale_avatar_images() {
-	var class_names = ["big_avatar_image", "small_avatar_image"];
-	for(j=0; j<class_names.length; j++) {
-		divs = document.getElementsByClassName(class_names[j]);
-		for(i=0; i<divs.length; i++) {
-			img = divs[i].getElementsByTagName('img')[0];
-			img.style.width = "";
-			img.style.height = "";
-			if(img.width > img.height) {
-				img.style.width = '100%';
-			} else {
-				img.style.height = '100%';
-			}
-			img.style.position = "relative";
-			var div_height = 0;
-			if(divs[i].currentStyle) {
-				div_height = divs[i].currentStyle.height.split('px')[0];
-			} else {
-				div_height = document.defaultView.getComputedStyle(divs[i], '').getPropertyValue("height").split('px')[0];
-			}
-			img.style.top = (div_height / 2) - (img.height / 2) + "px";
-		}
-	}
-}
-
 
 

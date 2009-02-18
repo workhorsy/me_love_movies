@@ -14,9 +14,9 @@
 		<tr>
 		<% id = review.id %>
 		<td style="vertical-align: top;">
-			<div class="big_avatar_image">
+			<div>
 				<%= link_to(
-					image_tag(review.user.avatar_file_or_default, :style=>"text-decoration: none;") +
+					image_tag(review.user.avatar_file_or_default, :class => 'big_avatar_image', :style=>"text-decoration: none;") +
 					'<br />' + h(review.user.user_name), 
 					:controller => 'users', 
 					:action => 'show', 
@@ -77,8 +77,8 @@
 					<% for comment in review.review_comments %>
 					<tr>
 						<td colspan="2" style="">
-							<div class="small_avatar_image" style="float: left">
-								<img src="<%=comment.user.avatar_file_or_default%>" />
+							<div style="float: left">
+								<img class="small_avatar_image" src="<%=comment.user.avatar_file_or_default%>" />
 							</div>
 							&quot;<%=h(comment.body)%>&quot;
 							<br />
@@ -119,7 +119,6 @@
 	// <![CDATA[
 	// Show all the elements the user is allowed to see.
 	show_tags_to_user_only('div', /^tr_rating_\d*$/);
-	scale_avatar_images();
 	// ]]>
 </script>
 

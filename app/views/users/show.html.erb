@@ -50,8 +50,8 @@
 			<table class="content" width="100%" align="center">
 			<tr valign="top">
 			<td>
-				<div class="big_avatar_image">
-					<%= image_tag @user.avatar_file_or_default %>
+				<div>
+					<%= image_tag @user.avatar_file_or_default, :class => 'big_avatar_image' %>
 				</div>
 
 				<p>
