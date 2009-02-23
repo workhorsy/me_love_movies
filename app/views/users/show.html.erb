@@ -87,7 +87,7 @@
 						<%=h @user.email %>
 					</p>
 					<% end %>
-					<% if @user.closed == false %>
+					<% if @user.closed != true %>
 					<p>
 						<b>Year of birth:</b>
 						<%=h @user.year_of_birth %>
