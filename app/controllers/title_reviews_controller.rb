@@ -61,6 +61,7 @@ class TitleReviewsController < ApplicationController
 		@title_review = TitleReview.new(params[:title_review])
 		@title_review.user_id = session[:user_id]
 		@title_name = Title.find(@title_review.title_id).name
+		@title_review.body = @title_review.body.gsub("\r\n", "\n")
 
 		respond_to do |format|
 			# Save the title_reviews, then if there is another by the same user, undo the save and print a warning
@@ -212,7 +213,7 @@ class TitleReviewsController < ApplicationController
 			format.js do
 				if review_comment.save
 					# Send the reviewer an email
-					if review_comment.title_review.user.closed == false && review_comment.title_review.user.send_comment_email
+					if review_comment.title_review.user.closed != true && review_comment.title_review.user.send_comment_email
 						Mailer.deliver_comment_to_reviewer(
 													review_comment.title_review.user.id, 
 													review_comment.title_review.user.email, 
