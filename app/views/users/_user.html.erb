@@ -66,7 +66,7 @@ User Information
 	</p>
 	<p>
 		<label for="time_zone"><span><b>Time Zone</b></span></label>
-		<%= f.time_zone_select :time_zone, TimeZone.all, :include_blank => true %>
+		<%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.all, :include_blank => true %>
 	</p>
 	<p>
 		<label for="gender"><span><b>Gender</b></span></label>
