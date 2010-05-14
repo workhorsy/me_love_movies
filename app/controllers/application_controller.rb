@@ -100,7 +100,7 @@ private
 		if ENV['RAILS_ENV'] == 'production'
 			"http://mlm.workhorsy.org"
 		else
-			"http://" + request.env_table['HTTP_HOST']
+			"http://" + request.env['HTTP_HOST']
 		end
 	end
 

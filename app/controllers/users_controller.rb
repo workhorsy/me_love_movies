@@ -145,12 +145,12 @@ class UsersController < ApplicationController
 		end
 
 		# Go back to the page the user came from, or the homepage
-		from_same_site = (request.env_table['HTTP_REFERER'] && request.env_table['HTTP_REFERER'].index(get_server_url(request)) == 0)
+		from_same_site = (request.env['HTTP_REFERER'] && request.env['HTTP_REFERER'].index(get_server_url(request)) == 0)
 		if from_same_site
-			if request.env_table['HTTP_REFERER'].index("/users/beta") != nil
+			if request.env['HTTP_REFERER'].index("/users/beta") != nil
 				redirect_to :controller => 'home', :action => 'index'
 			else
-				redirect_to(request.env_table['HTTP_REFERER'])
+				redirect_to(request.env['HTTP_REFERER'])
 			end
 		else
 			redirect_to :controller => 'home', :action => 'index'
@@ -164,9 +164,9 @@ class UsersController < ApplicationController
 		flash_notice "You are now logged out."
 
 		# Remove the sessions and cookies. Try to go to the previous page. If there is none, or it is from a different site, go home.
-		from_same_site = (request.env_table['HTTP_REFERER'] && request.env_table['HTTP_REFERER'].index(get_server_url(request)) == 0)
+		from_same_site = (request.env['HTTP_REFERER'] && request.env['HTTP_REFERER'].index(get_server_url(request)) == 0)
 		if from_same_site
-			redirect_to(request.env_table['HTTP_REFERER'])
+			redirect_to(request.env['HTTP_REFERER'])
 		else
 			redirect_to :controller => 'home', :action => 'index'
 		end
