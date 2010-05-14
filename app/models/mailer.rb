@@ -6,8 +6,8 @@ class Mailer < ActionMailer::Base
 		@subject       = "Welcome to Me Love Movies"
 		@body          = {}
 		@recipients    = email
-		@from          = "noreply@melovemovies.com"
-		@headers       = { "Reply-to" => "noreply@melovemovies.com" }
+		@from          = "noreply@mlm.workhorsy.org"
+		@headers       = { "Reply-to" => "noreply@mlm.workhorsy.org" }
 		@sent_on       = Time.now
 		@content_type  = "text/xhtml"
 
@@ -22,8 +22,8 @@ class Mailer < ActionMailer::Base
 		@subject       = "Me Love Movies Beta Request"
 		@body          = {}
 		@recipients    = Settings.beta_email_processor
-		@from          = "noreply@melovemovies.com"
-		@headers       = { "Reply-to" => "noreply@melovemovies.com" }
+		@from          = "noreply@mlm.workhorsy.org"
+		@headers       = { "Reply-to" => "noreply@mlm.workhorsy.org" }
 		@sent_on       = Time.now
 		@content_type  = "text/xhtml"
 
@@ -38,8 +38,8 @@ class Mailer < ActionMailer::Base
 		@subject       = "Me Love Movies password reminder"
 		@body          = {}
 		@recipients    = email
-		@from          = "noreply@melovemovies.com"
-		@headers       = { "Reply-to" => "noreply@melovemovies.com" }
+		@from          = "noreply@mlm.workhorsy.org"
+		@headers       = { "Reply-to" => "noreply@mlm.workhorsy.org" }
 		@sent_on       = Time.now
 		@content_type  = "text/xhtml"
 
@@ -53,8 +53,8 @@ class Mailer < ActionMailer::Base
 		@subject       = "Welcome to Me Love Movies"
 		@body          = {}
 		@recipients    = email
-		@from          = "noreply@melovemovies.com"
-		@headers       = { "Reply-to" => "noreply@melovemovies.com" }
+		@from          = "noreply@mlm.workhorsy.org"
+		@headers       = { "Reply-to" => "noreply@mlm.workhorsy.org" }
 		@sent_on       = Time.now
 		@content_type  = "text/xhtml"
 
@@ -69,8 +69,8 @@ class Mailer < ActionMailer::Base
 		@subject       = "Me Love Movies Beta Request"
 		@body          = {}
 		@recipients    = email
-		@from          = "noreply@melovemovies.com"
-		@headers       = { "Reply-to" => "noreply@melovemovies.com" }
+		@from          = "noreply@mlm.workhorsy.org"
+		@headers       = { "Reply-to" => "noreply@mlm.workhorsy.org" }
 		@sent_on       = Time.now
 		@content_type  = "text/xhtml"
 
@@ -84,8 +84,8 @@ class Mailer < ActionMailer::Base
 		@subject       = "Me Love Movies User Comment"
 		@body          = {}
 		@recipients    = Settings.beta_email_processor
-		@from          = "noreply@melovemovies.com"
-		@headers       = { "Reply-to" => "noreply@melovemovies.com" }
+		@from          = "noreply@mlm.workhorsy.org"
+		@headers       = { "Reply-to" => "noreply@mlm.workhorsy.org" }
 		@sent_on       = Time.now
 		@content_type  = "text/xhtml"
 
@@ -100,8 +100,8 @@ class Mailer < ActionMailer::Base
 		@subject       = "Me Love Movies Review Comment"
 		@body          = {}
 		@recipients    = reviewer_email
-		@from          = "noreply@melovemovies.com"
-		@headers       = { "Reply-to" => "noreply@melovemovies.com" }
+		@from          = "noreply@mlm.workhorsy.org"
+		@headers       = { "Reply-to" => "noreply@mlm.workhorsy.org" }
 		@sent_on       = Time.now
 		@content_type  = "text/xhtml"
 

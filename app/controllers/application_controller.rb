@@ -98,7 +98,7 @@ private
 
 	def get_server_url(request)
 		if ENV['RAILS_ENV'] == 'production'
-			"http://melovemovies.com"
+			"http://mlm.workhorsy.org"
 		else
 			"http://" + request.env_table['HTTP_HOST']
 		end

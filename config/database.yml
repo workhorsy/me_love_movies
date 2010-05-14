@@ -38,9 +38,8 @@ test:
 production:
   adapter: mysql
   encoding: utf8
-  database: me_love_movies_production
-  username: root
-  password: letmein
-  socket: /var/run/mysqld/mysqld.sock # debian/ubuntu
-#  socket: /var/lib/mysql/mysql.sock    # fedora
+  database: mlmdb
+  username: mlmuser
+  password: JivoofJos7
+  host: mlmdb.workhorsy.org
 
