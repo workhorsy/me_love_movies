@@ -2,8 +2,7 @@
 
 # Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
-ENV['RAILS_ENV'] = 'production'
-#RAILS_ENV = ENV['RAILS_ENV']
+#ENV['RAILS_ENV'] = 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
@@ -15,7 +14,7 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate'
   config.gem 'ezcrypto'
   config.gem 'mini_magick'
-  config.gem 'passenger'
+  config.gem 'passenger' if ENV['RAILS_ENV'] == 'production'
   # sudo apt-get install imagemagick
 
   config.action_mailer.delivery_method = :smtp
